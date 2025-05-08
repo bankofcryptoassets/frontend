@@ -1,7 +1,7 @@
 import '@/styles/globals.css'
 import { Metadata, Viewport } from 'next'
 import { siteConfig } from '@/config/site'
-import { fontSans } from '@/config/fonts'
+import { fontMono, fontSans } from '@/config/fonts'
 import { Navbar } from '@/components/navbar'
 import { Providers } from '@/Providers'
 import { cn } from '@heroui/react'
@@ -35,7 +35,8 @@ export default async function RootLayout({
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
-          fontSans.variable
+          fontSans.variable,
+          fontMono.variable
         )}
       >
         <Providers

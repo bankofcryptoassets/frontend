@@ -10,6 +10,8 @@ export const title = tv({
       cyan: 'from-[#00b7fa] to-[#01cfea]',
       green: 'from-[#6FEE8D] to-[#17c964]',
       pink: 'from-[#FF72E1] to-[#F54C7A]',
+      primary:
+        'dark:from-primary-600 dark:to-primary-400 from-secondary-400 to-secondary-600',
       foreground: 'dark:from-[#FFFFFF] dark:to-[#4B4B4B]',
     },
     size: {
@@ -33,6 +35,7 @@ export const title = tv({
         'cyan',
         'green',
         'pink',
+        'primary',
         'foreground',
       ],
       class: 'bg-clip-text text-transparent bg-gradient-to-b',
@@ -41,7 +44,7 @@ export const title = tv({
 })
 
 export const subtitle = tv({
-  base: 'w-full md:w-1/2 my-2 text-lg lg:text-xl text-default-700 block max-w-6xl',
+  base: 'w-full md:w-1/2 my-2 text-lg lg:text-xl text-default-900 block max-w-6xl',
   variants: {
     fullWidth: {
       true: '!w-full',

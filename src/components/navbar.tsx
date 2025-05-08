@@ -43,6 +43,7 @@ export const Navbar = () => {
             </span>
           </NextLink>
         </NavbarBrand>
+
         <ul className="ml-2 hidden justify-start gap-8 lg:flex">
           {siteConfig.navItems.map((item) => (
             <NavbarItem key={item.href}>
@@ -70,49 +71,16 @@ export const Navbar = () => {
         </NavbarItem>
 
         <NavbarItem className="hidden gap-2 sm:flex">
-          {isMainApp ? (
-            <Tabs
-              variant="bordered"
-              color="primary"
-              selectedKey={isLend ? 'lend' : 'borrow'}
-              className="font-medium"
-            >
-              <Tab key="borrow" title="Borrow" as={NextLink} href="/borrow" />
-              <Tab key="lend" title="Lend" as={NextLink} href="/lend" />
-            </Tabs>
-          ) : (
-            <Button
-              as={NextLink}
-              href="/borrow"
-              color="primary"
-              variant="shadow"
-            >
-              Enter App
-            </Button>
-          )}
+          <NavbarMenuActions isMainApp={isMainApp} isLend={isLend} />
         </NavbarItem>
       </NavbarContent>
 
       {/* Mobile menu */}
-      <NavbarContent className="basis-1 pl-4 lg:hidden" justify="end">
+      <NavbarContent className="basis-1 gap-2 pl-4 lg:hidden" justify="end">
         <ThemeSwitch />
 
         <NavbarItem>
-          {isMainApp ? (
-            <Button color="primary" variant="shadow" size="sm">
-              Enter App
-            </Button>
-          ) : (
-            <Button
-              as={NextLink}
-              href="/borrow"
-              color="primary"
-              variant="shadow"
-              size="sm"
-            >
-              Enter App
-            </Button>
-          )}
+          <NavbarMenuActions isMainApp={isMainApp} isMobile isLend={isLend} />
         </NavbarItem>
 
         <NavbarMenuToggle />
@@ -130,5 +98,41 @@ export const Navbar = () => {
         </div>
       </NavbarMenu>
     </HeroUINavbar>
+  )
+}
+
+type NavbarMenuItemProps = {
+  isMainApp: boolean
+  isMobile?: boolean
+  isLend?: boolean
+}
+
+const NavbarMenuActions = ({
+  isMainApp,
+  isMobile,
+  isLend,
+}: NavbarMenuItemProps) => {
+  return isMainApp ? (
+    <Tabs
+      variant="bordered"
+      color={isLend ? 'secondary' : 'primary'}
+      selectedKey={isLend ? 'lend' : 'borrow'}
+      className="font-semibold"
+      {...(isMobile && { size: 'sm' })}
+    >
+      <Tab key="borrow" title="Borrow" as={NextLink} href="/borrow" />
+      <Tab key="lend" title="Lend" as={NextLink} href="/lend" />
+    </Tabs>
+  ) : (
+    <Button
+      as={NextLink}
+      href="/borrow"
+      color="primary"
+      variant="shadow"
+      className="font-medium"
+      {...(isMobile && { size: 'sm' })}
+    >
+      Enter App
+    </Button>
   )
 }

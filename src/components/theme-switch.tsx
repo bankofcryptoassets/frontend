@@ -62,7 +62,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
                 'flex items-center justify-center',
                 'group-data-[selected=true]:bg-default',
                 '!text-foreground',
-                'p-1.5 lg:p-2',
+                'p-1.5 lg:p-2.5',
               ],
               classNames?.wrapper
             ),
