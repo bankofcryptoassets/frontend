@@ -70,12 +70,10 @@ export const BorrowersCalculator = () => {
     }
   }, [btcAmount, loanTerm])
 
-  console.log('calculateLoanAmounts', calculateLoanAmounts)
-
   return (
     <Card className="w-full max-w-lg bg-background" radius="md">
       <MagicCard
-        gradientColor={theme === 'dark' ? '#333333' : '#D9D9D999'}
+        gradientColor={theme === 'dark' ? '#333333' : '#D9D9D9aa'}
         className="p-0"
       >
         <div className="p-6">
@@ -104,6 +102,9 @@ export const BorrowersCalculator = () => {
                     numeral(value?.target?.value ?? 0).value() || undefined
                   )
               }}
+              classNames={{
+                inputWrapper: 'bg-default/35 data-[hover=true]:bg-default/50',
+              }}
             />
 
             <Select
@@ -113,6 +114,10 @@ export const BorrowersCalculator = () => {
               fullWidth
               selectedKeys={loanTerm}
               onSelectionChange={setLoanTerm}
+              classNames={{
+                trigger:
+                  'bg-default/35 data-[hover=true]:bg-default/50 transition-colors',
+              }}
             >
               {[3, 6, 12, 24, 36, 48].map((term) => (
                 <SelectItem key={term} textValue={`${term} Months`}>
@@ -161,7 +166,7 @@ export const BorrowersCalculator = () => {
             </div>
           </div>
 
-          <div className="w-full space-y-3 rounded-xl bg-default-100 p-3">
+          <div className="w-full space-y-3 rounded-xl bg-default/35 p-3">
             <p className="text-sm">
               Want your full repayment schedule, BTC unlock plan, and
               pre-closure projections?
@@ -185,7 +190,7 @@ export const BorrowersCalculator = () => {
 
 const Counter = ({ value }: { value: string }) => {
   return (
-    <div className="flex items-center">
+    <div className="flex select-none items-center">
       <span className="font-semibold">$</span>
       <SlotCounter
         useMonospaceWidth
