@@ -14,7 +14,14 @@ module.exports = {
       },
       container: {
         center: true,
-        padding: '1rem',
+        padding: {
+          DEFAULT: '1rem',
+          sm: '1rem',
+          md: '1rem',
+          lg: '1rem',
+          xl: '2.5rem',
+          '2xl': '2.5rem',
+        },
       },
     },
   },

@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@heroui/react'
-import { subtitle, title } from './primitives'
+import { subtitle, title } from '../primitives'
 import Link from 'next/link'
 import { EM_DASH } from '@/utils/constants'
 
@@ -8,7 +8,7 @@ export const Hero = () => {
   return (
     <div className="relative z-0">
       <div
-        className="absolute inset-2 -z-[1] overflow-hidden rounded-xl border-2 border-default-200"
+        className="pointer-events-none absolute inset-2 -z-[1] select-none overflow-hidden rounded-xl border-2 border-default-200"
         style={{
           background: `
               url("data:image/svg+xml,%3Csvg viewBox='0 0 1799 1799' opacity='0.4' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),

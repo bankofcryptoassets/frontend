@@ -2,7 +2,8 @@ import '@/styles/globals.css'
 import { Metadata, Viewport } from 'next'
 import { siteConfig } from '@/config/site'
 import { fontMono, fontSans } from '@/config/fonts'
-import { Navbar } from '@/components/navbar'
+import { Navbar } from '@/components/Navbar'
+import { Footer } from '@/components/Footer'
 import { Providers } from '@/Providers'
 import { cn } from '@heroui/react'
 
@@ -49,20 +50,8 @@ export default async function RootLayout({
         >
           <div className="relative flex h-screen flex-col">
             <Navbar />
-
             {children}
-
-            {/* <footer className="flex w-full items-center justify-center py-3">
-              <Link
-                isExternal
-                className="flex items-center gap-1 text-current"
-                href="https://heroui.com?utm_source=next-app-template"
-                title="heroui.com homepage"
-              >
-                <span className="text-default-600">Powered by</span>
-                <p className="text-primary">HeroUI</p>
-              </Link>
-            </footer> */}
+            <Footer />
           </div>
         </Providers>
       </body>

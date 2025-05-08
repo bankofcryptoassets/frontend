@@ -3010,6 +3010,11 @@
   dependencies:
     undici-types "~6.21.0"
 
+"@types/numeral@2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@types/numeral/-/numeral-2.0.5.tgz#388e5c4ff4b0e1787f130753cbbe83d3ba770858"
+  integrity sha512-kH8I7OSSwQu9DS9JYdFWbuvhVzvFRoCPCkGxNwoGgaPeDfEPJlcxNvEOypZhQ3XXHsGbfIuYcxcJxKUfJHnRfw==
+
 "@types/react-dom@19.1.2":
   version "19.1.2"
   resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-19.1.2.tgz"
@@ -4844,6 +4849,11 @@ normalize-range@^0.1.2:
   resolved "https://registry.npmjs.org/normalize-range/-/normalize-range-0.1.2.tgz"
   integrity sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==
 
+numeral@2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/numeral/-/numeral-2.0.6.tgz#4ad080936d443c2561aed9f2197efffe25f4e506"
+  integrity sha512-qaKRmtYPZ5qdw4jWJD6bxEf1FJEqllJrwxCLIm0sQU/A7v2/czigzOb+C2uSiFsa9lBUzeH7M1oK+Q+OLxL3kA==
+
 object-assign@^4.0.1, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz"
@@ -5118,10 +5128,20 @@ react-dom@19.1.0:
   dependencies:
     scheduler "^0.26.0"
 
+react-icons@5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-5.5.0.tgz#8aa25d3543ff84231685d3331164c00299cdfaf2"
+  integrity sha512-MEFcXdkP3dLo8uumGI5xN3lDFNsRtrjbOEKDLD7yv76v4wpnEq2Lt2qeHaQOr34I/wPN3s3+N08WkQ+CW37Xiw==
+
 react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-slot-counter@3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/react-slot-counter/-/react-slot-counter-3.3.1.tgz#7ecae9e174863c103eea00b307d4f51608638ad1"
+  integrity sha512-+blRPrKBLDC9GyyGENfyNQYOW3XxkaWmUL1fTtut3slZQS2+yMaAJdvwAyWUYB1eD+6Pd1aZzXFmBxmlSkvhfg==
 
 react-textarea-autosize@^8.5.3:
   version "8.5.9"
