@@ -6,7 +6,7 @@ import { EM_DASH } from '@/utils/constants'
 
 export const Hero = () => {
   return (
-    <div className="relative z-0">
+    <section className="relative z-0" id="hero">
       <div
         className="pointer-events-none absolute inset-2 -z-[1] select-none overflow-hidden rounded-xl border-2 border-default-200"
         style={{
@@ -21,8 +21,8 @@ export const Hero = () => {
         }}
       ></div>
 
-      <main className="container mx-auto max-w-7xl flex-grow px-6 py-16">
-        <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+      <div className="container py-16">
+        <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
           <div className="inline-block max-w-4xl justify-center text-center">
             <h1 className="max-lg:text-balance">
               <span className={title()}>Buy Bitcoin with 80% Financing. </span>
@@ -61,8 +61,8 @@ export const Hero = () => {
               Start Earning
             </Button>
           </div>
-        </section>
-      </main>
-    </div>
+        </div>
+      </div>
+    </section>
   )
 }
