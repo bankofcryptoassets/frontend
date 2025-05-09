@@ -1,3 +1,4 @@
+import { Footer } from '@/components/Footer'
 import {
   Borrowers,
   CTABanner,
@@ -20,6 +21,7 @@ export default function Home() {
       <Team />
       <FAQs />
       <CTABanner />
+      <Footer />
     </>
   )
 }

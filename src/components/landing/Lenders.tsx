@@ -14,7 +14,7 @@ const BENEFITS = [
 
 export const Lenders = () => {
   return (
-    <section className="relative z-0" id="borrowers">
+    <section className="relative z-0" id="lenders">
       <div
         className="pointer-events-none absolute inset-2 -z-[1] select-none overflow-hidden rounded-xl border-2 border-default-200"
         style={{
@@ -26,7 +26,7 @@ export const Lenders = () => {
         }}
       ></div>
 
-      <div className="container flex items-center justify-between gap-8 py-16 max-lg:flex-col-reverse">
+      <div className="container flex items-center justify-between gap-8 py-24 max-lg:flex-col-reverse max-lg:py-16">
         <LendingPools />
 
         <div className="flex flex-col gap-6">

@@ -9,7 +9,7 @@ import {
 
 export const Stats = () => {
   return (
-    <div className="container py-12">
+    <section className="container py-16 max-lg:py-12" id="stats">
       <div className="grid grid-cols-1 place-items-center gap-4 lg:grid-cols-3">
         <div className="flex flex-col items-center justify-center gap-2 text-center">
           <div className="rounded-full bg-primary-50 p-2">
@@ -63,6 +63,6 @@ export const Stats = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

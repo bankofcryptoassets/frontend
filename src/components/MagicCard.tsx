@@ -82,7 +82,7 @@ export const MagicCard = ({
           background: useMotionTemplate`
               radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${gradientColor}, transparent 100%)
             `,
-          opacity: gradientOpacity,
+          opacity: gradientOpacity.toString(),
         }}
       />
       <div className="relative">{children}</div>

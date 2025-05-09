@@ -27,7 +27,7 @@ export const Borrowers = () => {
         }}
       ></div>
 
-      <div className="container flex items-center justify-between gap-8 py-16 max-lg:flex-col">
+      <div className="container flex items-center justify-between gap-8 py-24 max-lg:flex-col max-lg:py-16">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <Chip color="primary" classNames={{ content: 'font-semibold' }}>

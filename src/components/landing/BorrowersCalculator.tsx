@@ -30,9 +30,9 @@ export const BorrowersCalculator = () => {
   const calculateLoanAmounts = useMemo(() => {
     if (!btcAmount || loanTerm === 'all' || !loanTerm.size) {
       return {
-        upfront: '0.0',
-        monthly: '0.0',
-        total: '0.0',
+        upfront: '0.00',
+        monthly: '0.00',
+        total: '0.00',
       }
     }
 
@@ -64,9 +64,9 @@ export const BorrowersCalculator = () => {
     const totalPayment = upfrontAmount + monthlyPayment * termMonths
 
     return {
-      upfront: numeral(upfrontAmount).format('0,0.0'),
-      monthly: numeral(monthlyPayment).format('0,0.0'),
-      total: numeral(totalPayment).format('0,0.0'),
+      upfront: numeral(upfrontAmount).format('0,0.[00]'),
+      monthly: numeral(monthlyPayment).format('0,0.[00]'),
+      total: numeral(totalPayment).format('0,0.[00]'),
     }
   }, [btcAmount, loanTerm])
 

@@ -3,7 +3,6 @@ import { Metadata, Viewport } from 'next'
 import { siteConfig } from '@/config/site'
 import { fontMono, fontSans } from '@/config/fonts'
 import { Navbar } from '@/components/Navbar'
-import { Footer } from '@/components/Footer'
 import { Providers } from '@/Providers'
 import { cn } from '@heroui/react'
 
@@ -31,7 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html suppressHydrationWarning lang="en" className="scroll-smooth">
       <head />
       <body
         className={cn(
@@ -48,10 +47,9 @@ export default async function RootLayout({
             enableColorScheme: true,
           }}
         >
-          <div className="relative flex h-screen flex-col">
+          <div className="relative flex min-h-screen flex-col">
             <Navbar />
             {children}
-            <Footer />
           </div>
         </Providers>
       </body>
