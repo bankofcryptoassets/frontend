@@ -9,36 +9,36 @@ const MENU_ITEMS = [
   {
     title: 'PRODUCTS',
     links: [
-      { text: 'Borrowing', url: '#' },
-      { text: 'Lending', url: '#' },
-      { text: 'Pricing', url: '#' },
-      { text: 'API', url: '#' },
+      { text: 'Borrowing', url: '/borrow' },
+      { text: 'Lending', url: '/lend' },
+      { text: 'Pricing', url: '' },
+      { text: 'API', url: '' },
     ],
   },
   {
     title: 'RESOURCES',
     links: [
-      { text: 'Documentation', url: '#' },
-      { text: 'Guides', url: '#' },
-      { text: 'Blog', url: '#' },
-      { text: 'Support', url: '#' },
+      { text: 'Documentation', url: '' },
+      { text: 'Guides', url: '' },
+      { text: 'Blog', url: '' },
+      { text: 'Support', url: '' },
     ],
   },
   {
     title: 'COMPANY',
     links: [
-      { text: 'About', url: '#' },
-      { text: 'Team', url: '#' },
-      { text: 'Careers', url: '#' },
-      { text: 'Contact', url: '#' },
+      { text: 'About', url: '' },
+      { text: 'Team', url: '/#team' },
+      { text: 'Careers', url: '' },
+      { text: 'Contact', url: '' },
     ],
   },
 ]
 
 const BOTTOM_LINKS = [
-  { text: 'Privacy Policy', url: '#' },
-  { text: 'Terms of Service', url: '#' },
-  { text: 'Legal', url: '#' },
+  { text: 'Privacy Policy', url: '' },
+  { text: 'Terms of Service', url: '' },
+  { text: 'Legal', url: '' },
 ]
 
 const SOCIAL_LINKS = [
@@ -78,7 +78,7 @@ export const Footer = () => {
           <div className="col-span-2 mb-8 lg:mb-0">
             <Logo />
             <p className="mt-2 text-sm font-medium">
-              Revolutionizing Bitcoin financing and yield for everyone.
+              Revolutionizing BTC Ownership and Yield for Everyone.
             </p>
 
             <div className="mt-4 flex flex-wrap gap-2">
@@ -114,6 +114,7 @@ export const Footer = () => {
                       className="text-default-800 hover:text-primary"
                       underline="hover"
                       size="sm"
+                      isDisabled={!link.url}
                     >
                       {link.text}
                     </StyledLink>
@@ -135,6 +136,7 @@ export const Footer = () => {
                   className="text-default-800 hover:text-primary"
                   underline="hover"
                   size="sm"
+                  isDisabled={!link.url}
                 >
                   {link.text}
                 </StyledLink>

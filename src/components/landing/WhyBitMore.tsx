@@ -29,8 +29,8 @@ const FEATURES = [
         <LuCoins className="text-primary" size={24} />
       </div>
     ),
-    title: 'Earn or acquire BTC with minimal capital',
-    description: 'Low barriers to entry for both borrowers and lenders.',
+    title: 'Acquire Bitcoin with Minimal Capital',
+    description: 'Lowering the barrier for Bitcoin ownership for everyone.',
   },
   {
     icon: (
@@ -38,9 +38,9 @@ const FEATURES = [
         <LuCalendarClock className="text-warning" size={24} />
       </div>
     ),
-    title: 'Stress-free repayments',
+    title: 'Timely Automated Monthly Repayments',
     description:
-      'Predictable monthly payments with no risk of liquidation if you stay on schedule.',
+      'Just maintain the right balance, or automatically rebalance with BTC loan position.',
   },
   {
     icon: (

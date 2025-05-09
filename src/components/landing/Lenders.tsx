@@ -44,8 +44,11 @@ export const Lenders = () => {
 
           <div className="flex flex-col gap-2">
             {BENEFITS.map((item) => (
-              <div key={item} className="flex items-center gap-2">
-                <LuCircleCheckBig className="text-secondary" size={16} />
+              <div key={item} className="flex items-start gap-2">
+                <LuCircleCheckBig
+                  className="mt-1 min-w-4 text-secondary"
+                  size={16}
+                />
                 <span>{item}</span>
               </div>
             ))}

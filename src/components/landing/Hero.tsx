@@ -2,7 +2,6 @@
 import { Button } from '@heroui/react'
 import { subtitle, title } from '../primitives'
 import Link from 'next/link'
-import { EM_DASH } from '@/utils/constants'
 
 export const Hero = () => {
   return (
@@ -25,16 +24,16 @@ export const Hero = () => {
         <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
           <div className="inline-block max-w-4xl justify-center text-center">
             <h1 className="max-lg:text-balance">
-              <span className={title()}>Buy Bitcoin with 80% Financing. </span>
+              <span className={title()}>Own BTC like a Mortgage. </span>
               <span className={title({ color: 'primary' })}>
                 Earn <br className="max-lg:hidden" /> Yield
               </span>
-              <span className={title()}> Backed by Real Demand.</span>
+              <span className={title()}> Backed by BTC Loans.</span>
             </h1>
 
             <p className={subtitle({ class: 'mt-10' })}>
-              BitMore lets you own BTC with a small upfront payment {EM_DASH} or
-              earn yield by lending to Bitcoin buyers. All secured by smart
+              BitMore lets you own BTC with a small upfront payment. Or earn
+              stable yield by lending to Bitcoin buyers. All secured by smart
               contracts.
             </p>
           </div>

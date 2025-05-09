@@ -4,7 +4,7 @@ import { Card, Chip, cn } from '@heroui/react'
 import { useTheme } from 'next-themes'
 import { subtitle, title } from '../primitives'
 import { MagicCard } from '../MagicCard'
-import { FaLinkedin, FaGithub } from 'react-icons/fa'
+import { FaLinkedin, FaGithub, FaGlobe } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 import Link from 'next/link'
 
@@ -12,6 +12,7 @@ const SOCIAL_ICONS = {
   github: <FaGithub size={20} />,
   linkedin: <FaLinkedin size={20} />,
   x: <FaXTwitter size={20} />,
+  website: <FaGlobe size={20} />,
 } as const
 
 const SOCIAL_COLORS = {
@@ -19,6 +20,7 @@ const SOCIAL_COLORS = {
   linkedin:
     'hover:bg-default-50 dark:hover:bg-default-900 hover:text-[#0077B5]',
   x: 'hover:bg-default-900 hover:text-default-50',
+  website: 'hover:bg-default-900 hover:text-default-50',
 }
 
 const TEAM = [
@@ -27,15 +29,15 @@ const TEAM = [
     name: 'Jose Paul',
     role: 'Product & BD',
     description:
-      'Leading product strategy and business development with 8+ years in fintech.',
+      'Leading product strategy and business development with 5+ years in fintech.',
     social: [
       {
-        name: 'x',
-        href: 'https://x.com/josepaul',
+        name: 'linkedin',
+        href: 'https://www.linkedin.com/in/josepaul0/',
       },
       {
-        name: 'linkedin',
-        href: 'https://www.linkedin.com/in/jose-paul/',
+        name: 'website',
+        href: 'https://josepaul-jp.replit.app/',
       },
     ],
   },
@@ -59,9 +61,9 @@ const TEAM = [
   {
     image: 'https://placehold.co/200?text=Suryansh+Chandak',
     name: 'Suryansh Chandak',
-    role: 'Back End',
+    role: 'DeFi Strategy',
     description:
-      'Building robust APIs and infrastructure with blockchain integration expertise.',
+      'Building simulations and finanical modelling for optimised yields.',
     social: [
       {
         name: 'github',

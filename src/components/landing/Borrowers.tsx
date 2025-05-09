@@ -6,11 +6,10 @@ import Link from 'next/link'
 import { BorrowersCalculator } from './BorrowersCalculator'
 
 const BENEFITS = [
-  '20% upfront to get 100% BTC exposure',
-  'Monthly payments, flexible terms',
-  'BTC gradually unlocks as you repay',
-  "No forced liquidation if you're on time",
-  'Early close = more upside',
+  'Own a full Bitcoin today like a Mortgage',
+  'Monthly EMIs, Flexible Terms, Auto Payments',
+  'BTC unlocks as you pay monthly',
+  'Sell your full BTC and close your loan anytime',
 ]
 
 export const Borrowers = () => {
@@ -35,14 +34,17 @@ export const Borrowers = () => {
             </Chip>
 
             <h2 className={title({ size: 'xs' })}>
-              Own Bitcoin Like a Mortgage
+              Get Upto 80% Financing on Your BTC
             </h2>
           </div>
 
           <div className="flex flex-col gap-2">
             {BENEFITS.map((item) => (
-              <div key={item} className="flex items-center gap-2">
-                <LuCircleCheckBig className="text-primary" size={16} />
+              <div key={item} className="flex items-start gap-2">
+                <LuCircleCheckBig
+                  className="mt-1 min-w-4 text-primary"
+                  size={16}
+                />
                 <span>{item}</span>
               </div>
             ))}

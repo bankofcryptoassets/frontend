@@ -150,12 +150,12 @@ export const BorrowersCalculator = () => {
 
             <div className="flex flex-col gap-2">
               <div className="flex justify-between gap-2">
-                <div>Upfront Cost:</div>
+                <div>Down Payment:</div>
                 <Counter value={calculateLoanAmounts?.upfront} />
               </div>
 
               <div className="flex justify-between gap-2">
-                <div>Monthly Payment:</div>
+                <div>Monthly EMI:</div>
                 <Counter value={calculateLoanAmounts?.monthly} />
               </div>
 

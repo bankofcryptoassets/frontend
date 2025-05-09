@@ -53,12 +53,6 @@ export const LendingPools = () => {
                 <div className="space-y-0.5">
                   <div className="text-sm text-default-700">Current APY</div>
                   <div className="text-3xl font-bold">{pool.currentAPY}</div>
-                  <div className="text-xs text-default-700">
-                    30-day average:{' '}
-                    <span className="font-semibold">
-                      {pool.thirtyDayAverage}
-                    </span>
-                  </div>
                 </div>
 
                 <div className="mt-2 flex justify-between gap-2 text-sm">
