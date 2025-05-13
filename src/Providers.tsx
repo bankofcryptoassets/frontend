@@ -1,5 +1,6 @@
 'use client'
 import { HeroUIProvider } from '@heroui/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import {
   ThemeProvider as NextThemesProvider,
   ThemeProviderProps,
@@ -14,6 +15,16 @@ declare module '@react-types/shared' {
   }
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+})
+
 type ProvidersProps = {
   children: React.ReactNode
   themeProps?: ThemeProviderProps
@@ -21,8 +32,10 @@ type ProvidersProps = {
 
 export const Providers = ({ children, themeProps }: ProvidersProps) => {
   return (
-    <HeroUIProvider>
-      <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
-    </HeroUIProvider>
+    <QueryClientProvider client={queryClient}>
+      <HeroUIProvider>
+        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+      </HeroUIProvider>
+    </QueryClientProvider>
   )
 }

@@ -119,7 +119,7 @@ export const BorrowersCalculator = () => {
                   'bg-default/35 data-[hover=true]:bg-default/50 transition-colors',
               }}
             >
-              {[3, 6, 12, 24, 36, 48].map((term) => (
+              {[6, 12, 18].map((term) => (
                 <SelectItem key={term} textValue={`${term} Months`}>
                   {term} Months
                 </SelectItem>
