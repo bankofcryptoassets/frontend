@@ -42,16 +42,12 @@ const TEAM = [
     ],
   },
   {
-    image: 'https://placehold.co/200?text=Sudeep+Kamat',
+    image: '/team/sudeep.jpeg',
     name: 'Sudeep Kamat',
     role: 'Smart Contracts',
     description:
       'Solidity expert specializing in DeFi security and optimization.',
     social: [
-      {
-        name: 'github',
-        href: 'https://github.com/sudeepkamat',
-      },
       {
         name: 'linkedin',
         href: 'https://www.linkedin.com/in/sudeep-kamat/',

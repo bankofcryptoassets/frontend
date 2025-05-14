@@ -2,6 +2,7 @@
 import { cn } from '@heroui/react'
 import { motion, useMotionTemplate, useMotionValue } from 'motion/react'
 import React, { useCallback, useEffect, useRef } from 'react'
+import NoSSRWrapper from './NoSSRWrapper'
 
 interface MagicCardProps {
   children?: React.ReactNode
@@ -76,15 +77,15 @@ export const MagicCard = ({
       ref={cardRef}
       className={cn('group relative rounded-[inherit]', className)}
     >
-      <motion.div
-        className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{
-          background: useMotionTemplate`
-              radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${gradientColor}, transparent 100%)
-            `,
-          opacity: gradientOpacity.toString(),
-        }}
-      />
+      <NoSSRWrapper>
+        <motion.div
+          className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background: useMotionTemplate`radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${gradientColor}, transparent 100%)`,
+            opacity: gradientOpacity.toString(),
+          }}
+        />
+      </NoSSRWrapper>
       <div className="relative">{children}</div>
     </div>
   )

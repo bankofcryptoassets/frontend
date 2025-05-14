@@ -101,3 +101,20 @@ export const TIME_PERIOD_AND_INTEREST_RATES = [
     interestRate: '15',
   },
 ] as const
+
+export const MY_LENDINGS = [
+  {
+    id: 1,
+    approved: 1000,
+    utilised: 1000,
+    yieldEarned: 1000,
+    principalReturned: 1000,
+  },
+  {
+    id: 2,
+    approved: 2000,
+    utilised: 2000,
+    yieldEarned: 2000,
+    principalReturned: 2000,
+  },
+]

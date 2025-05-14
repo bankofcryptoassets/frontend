@@ -17,46 +17,21 @@ import {
 } from '@heroui/react'
 import { useState } from 'react'
 import { LuInfo } from 'react-icons/lu'
-import {
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '../Chart'
-import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-  XAxis,
-  YAxis,
-} from 'recharts'
 import { NoData } from '../NoData'
 import { AmortizationSchedule } from '@/types'
 import numeral from 'numeral'
 
 type Props = {
   isLoading: boolean
-  interestOverTimeData?: {
-    type: 'interest' | 'principal'
-    amount: number
-    fill: string
-  }[]
   unlockScheduleData?: AmortizationSchedule[]
 }
 
-export const LoanConditions = ({
-  isLoading,
-  interestOverTimeData,
-  unlockScheduleData,
-}: Props) => {
+export const LoanConditions = ({ isLoading, unlockScheduleData }: Props) => {
   const [conditions, setConditions] = useState({
-    interestOverTime: false,
-    fees: false,
+    yieldOverTime: false,
+    withdrawalConditions: false,
     unlockSchedule: false,
-    liquidationThreshold: false,
+    earlyExit: false,
   })
 
   const isAccepted = Object.values(conditions).every((value) => value)
@@ -65,7 +40,7 @@ export const LoanConditions = ({
     <Card className="relative w-full">
       {isLoading && (
         <div className="absolute inset-0 z-[1] grid place-items-center bg-default/50 p-4 backdrop-blur-sm">
-          <Spinner color="primary" />
+          <Spinner color="secondary" />
         </div>
       )}
 
@@ -77,50 +52,25 @@ export const LoanConditions = ({
         <div className="flex w-full items-start gap-1">
           <div className="mt-1">
             <Checkbox
-              checked={conditions.interestOverTime}
+              color="secondary"
+              checked={conditions.yieldOverTime}
               onValueChange={(value) =>
-                setConditions((prev) => ({ ...prev, interestOverTime: value }))
+                setConditions((prev) => ({ ...prev, yieldOverTime: value }))
               }
             />
           </div>
 
           <Card className="h-full w-full">
             <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-              <span>Interest Over Time</span>
+              <span>Yield Over Time</span>
 
-              <Tooltip content="Interest Over Time">
+              <Tooltip content="Yield Over Time">
                 <LuInfo />
               </Tooltip>
             </CardHeader>
 
             <CardBody className="bg-default-200/50">
-              {interestOverTimeData ? (
-                <ChartContainer
-                  config={{
-                    amount: { label: 'Amount' },
-                    interest: { label: 'Interest' },
-                    principal: { label: 'Principal ' },
-                  }}
-                >
-                  <PieChart>
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Pie
-                      data={interestOverTimeData}
-                      dataKey="amount"
-                      nameKey="type"
-                    />
-                    <ChartLegend
-                      content={<ChartLegendContent nameKey="type" />}
-                      className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
-                    />
-                  </PieChart>
-                </ChartContainer>
-              ) : (
-                <NoData />
-              )}
+              <NoData />
             </CardBody>
           </Card>
         </div>
@@ -128,45 +78,28 @@ export const LoanConditions = ({
         <div className="flex w-full items-start gap-1">
           <div className="mt-1">
             <Checkbox
-              checked={conditions.fees}
+              color="secondary"
+              checked={conditions.withdrawalConditions}
               onValueChange={(value) =>
-                setConditions((prev) => ({ ...prev, fees: value }))
+                setConditions((prev) => ({
+                  ...prev,
+                  withdrawalConditions: value,
+                }))
               }
             />
           </div>
 
           <Card className="h-full w-full">
             <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-              <span>Fees</span>
+              <span>Wallet Funds Withdrawal Condition</span>
 
-              <Tooltip content="Fees">
+              <Tooltip content="Wallet Funds Withdrawal Condition">
                 <LuInfo />
               </Tooltip>
             </CardHeader>
 
-            <CardBody className="bg-default-200/50 p-4">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <span>Loan Origination Fees (1%)</span>
-                  <Tooltip content="Fees">
-                    <LuInfo />
-                  </Tooltip>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span>Pre Closure Fees (1%)</span>
-                  <Tooltip content="Fees">
-                    <LuInfo />
-                  </Tooltip>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span>Non Repayment Fees</span>
-                  <Tooltip content="Fees">
-                    <LuInfo />
-                  </Tooltip>
-                </div>
-              </div>
+            <CardBody className="bg-default-200/50">
+              <NoData />
             </CardBody>
           </Card>
         </div>
@@ -174,6 +107,7 @@ export const LoanConditions = ({
         <div className="flex w-full items-start gap-1">
           <div className="mt-1">
             <Checkbox
+              color="secondary"
               checked={conditions.unlockSchedule}
               onValueChange={(value) =>
                 setConditions((prev) => ({ ...prev, unlockSchedule: value }))
@@ -238,19 +172,17 @@ export const LoanConditions = ({
         <div className="flex w-full items-start gap-1">
           <div className="mt-1">
             <Checkbox
-              checked={conditions.liquidationThreshold}
+              color="secondary"
+              checked={conditions.earlyExit}
               onValueChange={(value) =>
-                setConditions((prev) => ({
-                  ...prev,
-                  liquidationThreshold: value,
-                }))
+                setConditions((prev) => ({ ...prev, earlyExit: value }))
               }
             />
           </div>
 
           <Card className="h-full w-full">
             <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-              <span>Liquidation Threshold</span>
+              <span>Early Exit</span>
 
               <Tooltip content="Liquidation Threshold">
                 <LuInfo />
@@ -258,64 +190,7 @@ export const LoanConditions = ({
             </CardHeader>
 
             <CardBody className="bg-default-200/50 py-4">
-              {!!unlockScheduleData?.length ? (
-                <ChartContainer
-                  config={{
-                    threshhold: {
-                      label: 'Threshhold',
-                      color: 'hsl(var(--heroui-primary))',
-                    },
-                  }}
-                  className="my-auto"
-                >
-                  <LineChart
-                    accessibilityLayer
-                    data={[
-                      { month: '1', threshhold: 186 },
-                      { month: '2', threshhold: 305 },
-                      { month: '3', threshhold: 237 },
-                      { month: '4', threshhold: 73 },
-                      { month: '5', threshhold: 209 },
-                      { month: '6', threshhold: 214 },
-                    ]}
-                  >
-                    <CartesianGrid vertical={false} />
-                    <XAxis
-                      dataKey="month"
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={8}
-                      tickFormatter={(value) => value.slice(0, 3)}
-                    />
-                    <YAxis
-                      dataKey="threshhold"
-                      tickLine={false}
-                      axisLine={false}
-                      label={{
-                        value: `Liquidation Threshold`,
-                        style: { textAnchor: 'middle' },
-                        angle: -90,
-                        position: 'left',
-                        offset: 0,
-                      }}
-                      tickMargin={8}
-                    />
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Line
-                      dataKey="threshhold"
-                      type="linear"
-                      stroke="var(--color-threshhold)"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  </LineChart>
-                </ChartContainer>
-              ) : (
-                <NoData />
-              )}
+              <NoData />
             </CardBody>
           </Card>
         </div>
@@ -333,7 +208,7 @@ export const LoanConditions = ({
           >
             <Button
               variant="shadow"
-              color="primary"
+              color="secondary"
               size="lg"
               className="pointer-events-auto font-semibold"
               isDisabled={!isAccepted}
@@ -341,7 +216,7 @@ export const LoanConditions = ({
                 console.log('clicked...')
               }}
             >
-              Get Loan
+              Supply
             </Button>
           </Tooltip>
         </div>

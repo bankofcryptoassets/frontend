@@ -1,4 +1,4 @@
-import { LoanAvailabilityType, LoanSummaryResponse } from '@/types'
+import { LoanSummaryResponse } from '@/types'
 import axios from '@/utils/axios'
 import {
   NumberInput,
@@ -14,25 +14,17 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import numeral from 'numeral'
 import { useMemo, useState } from 'react'
 import { useDebounceValue } from 'usehooks-ts'
-import { TIME_PERIOD_AND_INTEREST_RATES } from './data'
-import { LoanSummary } from './LoanSummary'
+import { TIME_PERIOD_AND_INTEREST_RATES } from '../borrow/data'
 import { LoanConditions } from './LoanConditions'
+import { Summary } from './Summary'
 
-export const ApplyLoan = () => {
-  const { data: btcAvailability } = useQuery({
-    queryKey: ['/initialisation/loanavailability'],
-    queryFn: () =>
-      axios.get<LoanAvailabilityType>(`/initialisation/loanavailability`),
-  })
-  const availableLoanAmountInBTC =
-    btcAvailability?.data?.data?.availableLoanAmountInBTC
-
-  const [btcAmount, setBtcAmount] = useState<number>()
+export const EarnInterest = () => {
+  const [usdcAmount, setUsdcAmount] = useState<number>()
   const [loanTerm, setLoanTerm] = useState<Selection>(new Set([]))
   const [interestRate, setInterestRate] = useState<string>()
   const [debouncedPayload] = useDebounceValue(
     {
-      amount: btcAmount?.toString(),
+      amount: usdcAmount?.toString(),
       term: Number(Array.from(loanTerm)[0]),
       interestRate: Number(interestRate),
     },
@@ -44,10 +36,11 @@ export const ApplyLoan = () => {
   )
   const { data, isLoading } = useQuery({
     queryKey: ['/initialisation/loansummary', debouncedPayload],
-    enabled:
-      !!debouncedPayload?.amount &&
-      !!debouncedPayload?.term &&
-      !!debouncedPayload?.interestRate,
+    enabled: false,
+    // enabled:
+    //   !!debouncedPayload?.amount &&
+    //   !!debouncedPayload?.term &&
+    //   !!debouncedPayload?.interestRate,
     queryFn: ({ signal }) =>
       axios.post<LoanSummaryResponse>(
         `/initialisation/loansummary`,
@@ -77,7 +70,7 @@ export const ApplyLoan = () => {
         '0,0.00[00]'
       ),
       totalPayable: numeral(loanSummaryData.totalPayment).format('0,0.00[00]'),
-      assetReceived: String(btcAmount || 0),
+      assetReceived: String(usdcAmount || 0),
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
@@ -121,37 +114,33 @@ export const ApplyLoan = () => {
           <NumberInput
             hideStepper
             isWheelDisabled
-            label="BTC To Be Borrowed"
-            name="btc"
+            label="USDC To Be Lent"
+            name="usdc"
             size="lg"
-            endContent="BTC"
+            endContent="USDC"
             fullWidth
             minValue={0}
-            value={btcAmount}
+            value={usdcAmount}
             formatOptions={{
               maximumFractionDigits: 8,
             }}
             onChange={(value) => {
-              if (typeof value === 'number') setBtcAmount(value)
+              if (typeof value === 'number') setUsdcAmount(value)
               else if (value?.target)
-                setBtcAmount(
+                setUsdcAmount(
                   numeral(value?.target?.value ?? 0).value() || undefined
                 )
             }}
             classNames={{
-              inputWrapper: 'bg-default/35 data-[hover=true]:bg-default/50',
+              inputWrapper:
+                'bg-default/35 data-[hover=true]:bg-default/50 text-secondary-600',
+              label: 'text-secondary-600',
             }}
-            color="primary"
-            description={
-              <span className="text-sm">
-                Available to be Borrowed:{' '}
-                <strong>{availableLoanAmountInBTC ?? 0} BTC</strong>
-              </span>
-            }
+            color="secondary"
           />
 
           <Select
-            color="primary"
+            color="secondary"
             label="Time Period"
             name="loanTerm"
             size="lg"
@@ -161,7 +150,10 @@ export const ApplyLoan = () => {
             disallowEmptySelection
             classNames={{
               trigger:
-                'bg-default/35 data-[hover=true]:bg-default/50 transition-colors data-[open=true]:bg-primary-50',
+                'bg-default/35 data-[hover=true]:bg-default/50 transition-colors data-[open=true]:bg-secondary-50',
+              innerWrapper: '[&>span]:text-secondary-600',
+              label: 'text-secondary-600',
+              selectorIcon: 'text-secondary-600',
             }}
           >
             {TIME_PERIOD_AND_INTEREST_RATES.map((term) => (
@@ -201,29 +193,12 @@ export const ApplyLoan = () => {
           </RadioGroup>
         </div>
 
-        <LoanSummary loanSummary={loanSummary} isLoading={isLoading} />
+        <Summary loanSummary={loanSummary} isLoading={isLoading} />
       </div>
 
       <div className="lg:col-span-2">
         <LoanConditions
           isLoading={isLoading}
-          interestOverTimeData={
-            numeral(loanSummary?.interestAmount).value() &&
-            numeral(loanSummary?.principalAmount).value()
-              ? [
-                  {
-                    type: 'interest',
-                    amount: numeral(loanSummary?.interestAmount).value() ?? 0,
-                    fill: 'hsl(var(--heroui-secondary))',
-                  },
-                  {
-                    type: 'principal',
-                    amount: numeral(loanSummary?.principalAmount).value() ?? 0,
-                    fill: 'hsl(var(--heroui-primary))',
-                  },
-                ]
-              : undefined
-          }
           unlockScheduleData={
             data?.data?.data?.loanSummary?.amortizationSchedule
           }
@@ -241,10 +216,10 @@ export const CustomRadio = (props: RadioProps) => {
       {...otherProps}
       className="group"
       classNames={{
-        base: 'm-0 rounded-lg bg-default/35 transition hover:bg-default/50 data-[selected=true]:bg-primary',
+        base: 'm-0 rounded-lg bg-default/35 transition hover:bg-default/50 data-[selected=true]:bg-secondary',
         wrapper: 'hidden',
         labelWrapper:
-          'ml-0 ms-0 px-3 [&>span]:group-data-[selected=true]:text-background [&>span]:font-medium [&>span]:group-data-[selected=true]:font-semibold',
+          'ml-0 ms-0 px-3 [&>span]:font-medium [&>span]:group-data-[selected=true]:font-semibold',
       }}
     >
       {children}
