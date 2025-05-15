@@ -5,6 +5,7 @@ import { fontMono, fontSans } from '@/config/fonts'
 import { Navbar } from '@/components/Navbar'
 import { Providers } from '@/Providers'
 import { cn } from '@heroui/react'
+import { ThemeProviders } from '@/ThemeProvider'
 
 export const metadata: Metadata = {
   title: {
@@ -39,7 +40,7 @@ export default async function RootLayout({
           fontMono.variable
         )}
       >
-        <Providers
+        <ThemeProviders
           themeProps={{
             attribute: 'class',
             defaultTheme: 'system',
@@ -47,11 +48,13 @@ export default async function RootLayout({
             enableColorScheme: true,
           }}
         >
-          <div className="relative flex min-h-screen flex-col">
-            <Navbar />
-            {children}
-          </div>
-        </Providers>
+          <Providers>
+            <div className="relative flex min-h-screen flex-col">
+              <Navbar />
+              {children}
+            </div>
+          </Providers>
+        </ThemeProviders>
       </body>
     </html>
   )

@@ -18,6 +18,7 @@ import { title } from './primitives'
 import { Button, Tab, Tabs } from '@heroui/react'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 export const Logo = () => {
   return (
@@ -93,6 +94,16 @@ export const Navbar = () => {
             onMenuItemClick={onMenuItemClick}
           />
         </NavbarItem>
+
+        {isMainApp && (
+          <NavbarItem className="hidden gap-2 sm:flex [&>div>button]:!font-sans [&>div>button]:!font-semibold">
+            <ConnectButton
+              accountStatus="avatar"
+              showBalance={false}
+              chainStatus="none"
+            />
+          </NavbarItem>
+        )}
       </NavbarContent>
 
       {/* Mobile menu */}

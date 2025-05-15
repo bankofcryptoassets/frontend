@@ -1,11 +1,15 @@
 'use client'
-import { HeroUIProvider } from '@heroui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import {
-  ThemeProvider as NextThemesProvider,
-  ThemeProviderProps,
-} from 'next-themes'
 import { useRouter } from 'next/navigation'
+import '@rainbow-me/rainbowkit/styles.css'
+import {
+  darkTheme,
+  lightTheme,
+  RainbowKitProvider,
+} from '@rainbow-me/rainbowkit'
+import { http, WagmiProvider, createConfig } from 'wagmi'
+import { baseSepolia } from 'wagmi/chains'
+import { useTheme } from 'next-themes'
 
 declare module '@react-types/shared' {
   interface RouterConfig {
@@ -14,6 +18,13 @@ declare module '@react-types/shared' {
     >
   }
 }
+
+const config = createConfig({
+  ssr: true,
+  // storage: createStorage({ storage: cookieStorage }),
+  chains: [baseSepolia],
+  transports: { [baseSepolia.id]: http() },
+})
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,17 +36,35 @@ const queryClient = new QueryClient({
   },
 })
 
-type ProvidersProps = {
+type Props = {
   children: React.ReactNode
-  themeProps?: ThemeProviderProps
 }
 
-export const Providers = ({ children, themeProps }: ProvidersProps) => {
+const themeOptions = {
+  accentColor: 'hsl(var(--heroui-primary))',
+  accentColorForeground: 'hsl(var(--heroui-primary-foreground))',
+  overlayBlur: 'small',
+} as const
+
+export const Providers = ({ children }: Props) => {
+  const { resolvedTheme } = useTheme()
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <HeroUIProvider>
-        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
-      </HeroUIProvider>
-    </QueryClientProvider>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider
+          coolMode
+          appInfo={{ appName: 'BitMore' }}
+          modalSize="compact"
+          theme={
+            resolvedTheme === 'dark'
+              ? darkTheme(themeOptions)
+              : lightTheme(themeOptions)
+          }
+        >
+          {children}
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   )
 }
