@@ -1,0 +1,82 @@
+import { createAuthenticationAdapter } from '@rainbow-me/rainbowkit'
+import { createSiweMessage } from 'viem/siwe'
+import { signInAction, signOutAction } from './actions'
+import axios from '@/utils/axios'
+import {
+  getTempAuthToken,
+  getWalletAddress,
+  setTempAuthToken,
+  setWalletAddress,
+} from './authStore'
+
+type NounceResponse = {
+  status: string
+  message: number
+  nonce: number
+  token: string
+}
+
+type VerifyResponse = {
+  status: string
+  token: string
+  user: unknown
+}
+
+export const authenticationAdapter = createAuthenticationAdapter({
+  getNonce: async () => {
+    // Get the wallet address from the store if available
+    const address = getWalletAddress()
+
+    if (!address) throw new Error('No wallet address found')
+
+    const response = await axios.get<NounceResponse>(
+      `/auth/nonce?address=${address}`
+    )
+
+    const data = response?.data
+    setTempAuthToken(data.token)
+    return new Promise((resolve) => resolve(data.nonce as unknown as string))
+  },
+  createMessage: ({ nonce, address, chainId }) => {
+    // Store the address for future use in getNonce
+    setWalletAddress(address)
+
+    return createSiweMessage({
+      domain: window.location.host,
+      uri: window.location.origin,
+      address,
+      // statement: 'Sign in with Base Sepolia to the app.',
+      version: '1',
+      chainId,
+      nonce,
+    })
+  },
+  verify: async ({ signature }) => {
+    try {
+      // Get the temp token from the store
+      const tempToken = getTempAuthToken()
+
+      if (!tempToken || !signature) throw new Error('Invalid signature')
+
+      const response = await axios.post<VerifyResponse>(
+        '/auth/verify',
+        { signature },
+        { headers: { authorization: `Bearer ${tempToken}` } }
+      )
+
+      const data = response.data
+      console.log('data', data)
+
+      await signInAction({ jwt: data.token })
+
+      return true
+    } catch {
+      // We're not using the error details here, but we could log it if needed
+      throw new Error('Failed to verify signature')
+    }
+  },
+  signOut: async () => {
+    // await fetch('/api/logout')
+    await signOutAction()
+  },
+})

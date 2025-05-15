@@ -110,11 +110,4 @@ export const MY_LENDINGS = [
     yieldEarned: 1000,
     principalReturned: 1000,
   },
-  {
-    id: 2,
-    approved: 2000,
-    utilised: 2000,
-    yieldEarned: 2000,
-    principalReturned: 2000,
-  },
 ]

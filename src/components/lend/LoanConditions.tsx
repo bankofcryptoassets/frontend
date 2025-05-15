@@ -190,7 +190,9 @@ export const LoanConditions = ({ isLoading, unlockScheduleData }: Props) => {
             </CardHeader>
 
             <CardBody className="bg-default-200/50 py-4">
-              <NoData />
+              <p className="m-auto max-w-60 text-balance text-center text-base font-medium">
+                Early Exit is Subjected to Available Liquidity
+              </p>
             </CardBody>
           </Card>
         </div>
@@ -212,7 +214,7 @@ export const LoanConditions = ({ isLoading, unlockScheduleData }: Props) => {
               size="lg"
               className="pointer-events-auto font-semibold"
               isDisabled={!isAccepted}
-              onClick={() => {
+              onPress={() => {
                 console.log('clicked...')
               }}
             >

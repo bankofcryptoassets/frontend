@@ -96,7 +96,7 @@ export const Navbar = () => {
         </NavbarItem>
 
         {isMainApp && (
-          <NavbarItem className="hidden gap-2 sm:flex [&>div>button]:!font-sans [&>div>button]:!font-semibold">
+          <NavbarItem className="hidden gap-2 sm:flex [&>div>button]:!font-sans [&>div>button]:!text-sm [&>div>button]:!font-semibold">
             <ConnectButton
               accountStatus="avatar"
               showBalance={false}
@@ -137,6 +137,20 @@ export const Navbar = () => {
               </Link>
             </NavbarMenuItem>
           ))}
+
+          {isMainApp && (
+            <Button
+              className="mt-6 p-0 [&>div>button]:!h-full [&>div>button]:!w-full [&>div>button]:!font-sans [&>div>button]:!text-sm [&>div>button]:!font-semibold [&>div]:!h-full [&>div]:!w-full [&_*]:!flex [&_*]:!items-center [&_*]:!justify-center [&_*]:!gap-2"
+              variant="shadow"
+              color="primary"
+            >
+              <ConnectButton
+                accountStatus="avatar"
+                showBalance={false}
+                chainStatus="none"
+              />
+            </Button>
+          )}
         </div>
       </NavbarMenu>
     </HeroUINavbar>
@@ -175,7 +189,7 @@ const NavbarMenuActions = ({
       color="primary"
       variant="shadow"
       className="font-medium"
-      onClick={onMenuItemClick}
+      onPress={onMenuItemClick}
       {...(isMobile && { size: 'sm' })}
     >
       Enter App

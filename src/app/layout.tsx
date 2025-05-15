@@ -1,11 +1,11 @@
 import '@/styles/globals.css'
+import '@rainbow-me/rainbowkit/styles.css'
 import { Metadata, Viewport } from 'next'
 import { siteConfig } from '@/config/site'
 import { fontMono, fontSans } from '@/config/fonts'
 import { Navbar } from '@/components/Navbar'
 import { Providers } from '@/Providers'
 import { cn } from '@heroui/react'
-import { ThemeProviders } from '@/ThemeProvider'
 
 export const metadata: Metadata = {
   title: {
@@ -40,21 +40,12 @@ export default async function RootLayout({
           fontMono.variable
         )}
       >
-        <ThemeProviders
-          themeProps={{
-            attribute: 'class',
-            defaultTheme: 'system',
-            enableSystem: true,
-            enableColorScheme: true,
-          }}
-        >
-          <Providers>
-            <div className="relative flex min-h-screen flex-col">
-              <Navbar />
-              {children}
-            </div>
-          </Providers>
-        </ThemeProviders>
+        <Providers>
+          <div className="relative flex min-h-screen flex-col">
+            <Navbar />
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   )

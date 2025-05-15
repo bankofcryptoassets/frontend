@@ -337,7 +337,7 @@ export const LoanConditions = ({
               size="lg"
               className="pointer-events-auto font-semibold"
               isDisabled={!isAccepted}
-              onClick={() => {
+              onPress={() => {
                 console.log('clicked...')
               }}
             >

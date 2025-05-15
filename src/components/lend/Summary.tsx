@@ -2,12 +2,10 @@ import { Card, CardBody, CardFooter, CardHeader, Spinner } from '@heroui/react'
 
 type Props = {
   loanSummary: {
-    minDownPayment: string
-    principalAmount: string
-    monthlyEMI: string
-    interestAmount: string
-    totalPayable: string
-    assetReceived: string
+    lendingAmount: string
+    maxTimePeriod: string
+    monthlyReceivable: string
+    maximumYeildRecieved: string
   }
   isLoading: boolean
 }
@@ -31,7 +29,7 @@ export const Summary = ({ loanSummary, isLoading }: Props) => {
             <div>Lending Amount</div>
             <div>
               <span className="font-mono font-bold">
-                {loanSummary?.minDownPayment}
+                {loanSummary?.lendingAmount}
               </span>{' '}
               USDC
             </div>
@@ -41,9 +39,9 @@ export const Summary = ({ loanSummary, isLoading }: Props) => {
             <div>Max Time Period</div>
             <div>
               <span className="font-mono font-bold">
-                {loanSummary?.principalAmount}
+                {loanSummary?.maxTimePeriod}
               </span>{' '}
-              USDC
+              Years
             </div>
           </div>
         </div>
@@ -55,17 +53,17 @@ export const Summary = ({ loanSummary, isLoading }: Props) => {
             <div>Monthly Recievable</div>
             <div>
               <span className="font-mono font-bold">
-                {loanSummary?.assetReceived}
+                {loanSummary?.monthlyReceivable}
               </span>{' '}
               USDC
             </div>
           </div>
 
           <div className="flex justify-between gap-2 rounded-lg px-2 py-1 text-sm font-medium transition hover:bg-default-200">
-            <div>Maximum Yeild Recd</div>
+            <div>Maximum Yeild Received</div>
             <div>
               <span className="font-mono font-bold">
-                {loanSummary?.monthlyEMI}
+                {loanSummary?.maximumYeildRecieved}
               </span>{' '}
               USDC
             </div>

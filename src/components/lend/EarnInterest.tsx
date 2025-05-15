@@ -53,26 +53,23 @@ export const EarnInterest = () => {
   const loanSummary = useMemo(() => {
     if (!data?.data?.data?.loanSummary)
       return {
-        minDownPayment: '0.00',
-        principalAmount: '0.00',
-        monthlyEMI: '0.00',
-        interestAmount: '0.00',
-        totalPayable: '0.00',
-        assetReceived: '0',
+        lendingAmount: '0.00',
+        maxTimePeriod: '0',
+        monthlyReceivable: '0.00',
+        maximumYeildRecieved: '0.00',
       }
 
     const loanSummaryData = data?.data?.data?.loanSummary
     return {
-      minDownPayment: numeral(loanSummaryData.downPayment).format('0,0.00[00]'),
-      principalAmount: numeral(loanSummaryData.principal).format('0,0.00[00]'),
-      monthlyEMI: numeral(loanSummaryData.monthlyPayment).format('0,0.00[00]'),
-      interestAmount: numeral(loanSummaryData.totalInterest).format(
+      lendingAmount: numeral(loanSummaryData.loanAmount).format('0,0.00[00]'),
+      maxTimePeriod: String(loanSummaryData.term),
+      monthlyReceivable: numeral(loanSummaryData.monthlyPayment).format(
         '0,0.00[00]'
       ),
-      totalPayable: numeral(loanSummaryData.totalPayment).format('0,0.00[00]'),
-      assetReceived: String(usdcAmount || 0),
+      maximumYeildRecieved: numeral(loanSummaryData.totalInterest).format(
+        '0,0.00[00]'
+      ),
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   console.log('isLoading, data', isLoading, data)
