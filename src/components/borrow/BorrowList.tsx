@@ -4,29 +4,17 @@ import {
   CardBody,
   CardFooter,
   Chip,
-  Select,
-  SelectItem,
   Tooltip,
 } from '@heroui/react'
-import { MY_BORROWINGS, SORTINGS } from './data'
+import { MY_BORROWINGS } from './data'
 import numeral from 'numeral'
 
 export const BorrowList = () => {
   return (
-    <div className="space-y-8">
-      <div className="text-right">
-        <Select className="max-w-xs" label="Sort by">
-          {SORTINGS.map((sorting) => (
-            <SelectItem key={sorting.key}>{sorting.label}</SelectItem>
-          ))}
-        </Select>
-      </div>
-
-      <div className="grid h-full w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {MY_BORROWINGS.map((borrowing) => (
-          <LoanCard key={borrowing.id} borrowing={borrowing} />
-        ))}
-      </div>
+    <div className="grid h-full w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {MY_BORROWINGS.map((borrowing) => (
+        <LoanCard key={borrowing.id} borrowing={borrowing} />
+      ))}
       {/* <NoData /> */}
     </div>
   )

@@ -55,7 +55,7 @@ export const Borrowers = () => {
             variant="shadow"
             size="lg"
             as={Link}
-            href="/borrow"
+            href="/borrow/apply"
             className="font-medium max-sm:w-full"
           >
             Start Borrowing

@@ -44,7 +44,7 @@ export const Hero = () => {
               variant="shadow"
               size="lg"
               as={Link}
-              href="/borrow"
+              href="/borrow/apply"
               className="font-medium max-sm:w-full"
             >
               Start Borrowing
@@ -54,7 +54,7 @@ export const Hero = () => {
               variant="shadow"
               size="lg"
               as={Link}
-              href="/lend"
+              href="/lend/earn"
               className="font-medium max-sm:w-full"
             >
               Start Earning

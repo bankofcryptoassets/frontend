@@ -1,3 +1,4 @@
+'use client'
 import { LoanAvailabilityType, LoanSummaryResponse } from '@/types'
 import axios from '@/utils/axios'
 import {

@@ -1,37 +1,37 @@
 'use client'
-import { BorrowList } from '@/components/borrow/BorrowList'
-import { Button } from '@heroui/react'
-import { LuPlus } from 'react-icons/lu'
+import { EarnInterest } from '@/components/lend/EarnInterest'
 import { subtitle, title } from '@/components/primitives'
+import { Button } from '@heroui/react'
 import Link from 'next/link'
+import { PiSquaresFour } from 'react-icons/pi'
 
-export default function BorrowPage() {
+export default function EarnInterestPage() {
   return (
     <div className="container mt-10 flex h-full w-full flex-col gap-4 pb-10">
       <div className="mb-8 flex items-center justify-between gap-4 max-lg:flex-col max-lg:text-center">
         <div>
-          <h1 className={title({ size: 'sm', className: 'text-primary' })}>
-            My Borrowings
+          <h1 className={title({ size: 'sm', className: 'text-secondary' })}>
+            Earn Interest on Your USDC
           </h1>
           <h2 className={subtitle({ className: '!text-lg' })}>
-            View and manage your Bitcoin loan portfolio
+            Lend your funds to Bitcoin borrowers and earn interest
           </h2>
         </div>
 
         <Button
-          startContent={<LuPlus />}
-          color="primary"
+          startContent={<PiSquaresFour />}
+          color="secondary"
           variant="shadow"
           size="lg"
           as={Link}
-          href="/borrow/apply"
+          href="/lend"
           className="font-medium"
         >
-          Apply New Loan
+          My Lendings
         </Button>
       </div>
 
-      <BorrowList />
+      <EarnInterest />
     </div>
   )
 }

@@ -1,37 +1,38 @@
 'use client'
-import { BorrowList } from '@/components/borrow/BorrowList'
-import { Button } from '@heroui/react'
-import { LuPlus } from 'react-icons/lu'
+import { ApplyLoan } from '@/components/borrow/ApplyLoan'
 import { subtitle, title } from '@/components/primitives'
+import { Button } from '@heroui/react'
 import Link from 'next/link'
+import { PiSquaresFour } from 'react-icons/pi'
 
-export default function BorrowPage() {
+export default function ApplyLoanPage() {
   return (
     <div className="container mt-10 flex h-full w-full flex-col gap-4 pb-10">
       <div className="mb-8 flex items-center justify-between gap-4 max-lg:flex-col max-lg:text-center">
         <div>
           <h1 className={title({ size: 'sm', className: 'text-primary' })}>
-            My Borrowings
+            Apply for a New Loan
           </h1>
           <h2 className={subtitle({ className: '!text-lg' })}>
-            View and manage your Bitcoin loan portfolio
+            Customize your loan parameters and get BTC with just 20% down
+            payment
           </h2>
         </div>
 
         <Button
-          startContent={<LuPlus />}
+          startContent={<PiSquaresFour />}
           color="primary"
           variant="shadow"
           size="lg"
           as={Link}
-          href="/borrow/apply"
+          href="/borrow"
           className="font-medium"
         >
-          Apply New Loan
+          My Borrowings
         </Button>
       </div>
 
-      <BorrowList />
+      <ApplyLoan />
     </div>
   )
 }

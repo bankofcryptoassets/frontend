@@ -1,3 +1,4 @@
+'use client'
 import {
   Button,
   Checkbox,
@@ -266,7 +267,7 @@ export const EarnInterest = () => {
               wrapper: 'before:!border-foreground/60',
             }}
           >
-            I understand and accept the conditions.
+            I understand and accept the conditions
           </Checkbox>
 
           <Tooltip
@@ -282,7 +283,7 @@ export const EarnInterest = () => {
               onPress={handleSupply}
               fullWidth
             >
-              Supply
+              Supply USDC and Start Earning
             </Button>
           </Tooltip>
         </div>

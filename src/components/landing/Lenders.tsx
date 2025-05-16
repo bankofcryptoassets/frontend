@@ -59,7 +59,7 @@ export const Lenders = () => {
             variant="shadow"
             size="lg"
             as={Link}
-            href="/lend"
+            href="/lend/earn"
             className="font-medium max-sm:w-full"
           >
             Start Lending

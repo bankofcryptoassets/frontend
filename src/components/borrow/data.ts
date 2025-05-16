@@ -87,6 +87,13 @@ export const SORTINGS = [
   { key: 'paid-low', label: 'Least Principal Paid' },
 ] as const
 
+export const STATUSES = [
+  { key: 'active', label: 'Active' },
+  { key: 'closed', label: 'Closed' },
+  { key: 'defaulted', label: 'Defaulted' },
+  { key: 'liquidated', label: 'Liquidated' },
+] as const
+
 export const TIME_PERIOD_AND_INTEREST_RATES = [
   {
     timePeriod: '6',

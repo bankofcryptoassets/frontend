@@ -303,7 +303,7 @@ export const LoanConditions = ({
               wrapper: 'before:!border-foreground/60',
             }}
           >
-            I understand and accept the conditions above for loans.
+            I understand and accept the conditions above for loans
           </Checkbox>
 
           <Tooltip
@@ -318,7 +318,7 @@ export const LoanConditions = ({
               isDisabled={!isAccepted}
               onPress={handleLoan}
             >
-              Get Loan
+              Confirm and Get Your Bitcoin
             </Button>
           </Tooltip>
         </div>
