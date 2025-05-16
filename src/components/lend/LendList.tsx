@@ -1,5 +1,6 @@
 import { Button, Card, CardBody, CardFooter, Tooltip } from '@heroui/react'
 import { MY_LENDINGS } from '../borrow/data'
+import numeral from 'numeral'
 
 export const LendList = () => {
   return (
@@ -13,9 +14,36 @@ export const LendList = () => {
 
 const LoanCard = ({ lending }: { lending: (typeof MY_LENDINGS)[number] }) => {
   return (
-    <Card className="px-1 py-2">
+    <Card className="px-3 py-4">
       <CardBody className="space-y-2">
-        <div className="flex justify-between gap-2 rounded-lg px-2 py-1 text-sm font-medium transition hover:bg-default-200">
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <div className="text-xs text-default-600">Approved Amount</div>
+            <div className="text-lg font-semibold">
+              {numeral(lending.approved).format('0,0.[00000000]')} USDC
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-default-600">Utilised Amount</div>
+            <div className="text-lg font-semibold">
+              {numeral(lending.utilised).format('0,0.[00000000]')} USDC
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-default-600">Yield Earned</div>
+            <div className="text-lg font-semibold">
+              {numeral(lending.yieldEarned).format('0,0.[00000000]')} USDC
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-default-600">Principal Returned</div>
+            <div className="text-lg font-semibold">
+              {numeral(lending.principalReturned).format('0,0.[00000000]')} USDC
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="flex justify-between gap-2 rounded-lg px-2 py-1 text-sm font-medium transition hover:bg-default-200">
           <div>Approved Amount</div>
           <div>
             <span className="font-mono font-bold">{lending.approved}</span> USDC
@@ -45,7 +73,7 @@ const LoanCard = ({ lending }: { lending: (typeof MY_LENDINGS)[number] }) => {
             </span>{' '}
             USDC
           </div>
-        </div>
+        </div> */}
       </CardBody>
 
       <CardFooter className="flex w-full items-center gap-4">

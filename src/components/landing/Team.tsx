@@ -7,6 +7,7 @@ import { MagicCard } from '../MagicCard'
 import { FaLinkedin, FaGithub, FaGlobe } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const SOCIAL_ICONS = {
   github: <FaGithub size={20} />,
@@ -25,7 +26,7 @@ const SOCIAL_COLORS = {
 
 const TEAM = [
   {
-    image: 'https://placehold.co/200?text=Jose+Paul',
+    image: '/team/jose.jpeg',
     name: 'Jose Paul',
     role: 'Product & BD',
     description:
@@ -123,13 +124,23 @@ export const Team = () => {
                     className="h-full p-0"
                   >
                     <div className="space-y-3 p-6 pb-4">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        width={200}
-                        height={200}
-                        className="h-full w-full rounded object-cover"
-                      />
+                      {item.image.startsWith('/') ? (
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          width={200}
+                          height={200}
+                          className="aspect-square h-full w-full rounded-md object-cover"
+                        />
+                      ) : (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          width={200}
+                          height={200}
+                          className="aspect-square h-full w-full rounded-md object-cover"
+                        />
+                      )}
 
                       <div>
                         <div className="text-xl font-semibold">{item.name}</div>

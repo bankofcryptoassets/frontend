@@ -65,10 +65,9 @@ export const authenticationAdapter = createAuthenticationAdapter({
       )
 
       const data = response.data
-      console.log('data', data)
+      if (!data.token) throw new Error('Failed to verify signature')
 
       await signInAction({ jwt: data.token })
-
       return true
     } catch {
       // We're not using the error details here, but we could log it if needed

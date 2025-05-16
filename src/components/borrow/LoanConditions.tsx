@@ -85,9 +85,9 @@ export const LoanConditions = ({
       <CardBody className="grid grid-cols-1 gap-4 p-4 text-sm xl:grid-cols-2">
         <Card className="h-full w-full">
           <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-            <span>Interest Over Time</span>
+            <span>Interest Schedule</span>
 
-            <Tooltip content="Interest Over Time">
+            <Tooltip content="Shows how interest accrues over time for the loan">
               <LuInfo />
             </Tooltip>
           </CardHeader>
@@ -125,9 +125,9 @@ export const LoanConditions = ({
 
         <Card className="h-full w-full">
           <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-            <span>Fees</span>
+            <span>Loan Fees</span>
 
-            <Tooltip content="Fees">
+            <Tooltip content="Various fees associated with the loan (e.g. origination, early closure)">
               <LuInfo />
             </Tooltip>
           </CardHeader>
@@ -135,22 +135,22 @@ export const LoanConditions = ({
           <CardBody className="bg-default-200/50 p-4">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <span>Loan Origination Fees (1%)</span>
-                <Tooltip content="Fees">
+                <span>Origination Fee (1%)</span>
+                <Tooltip content="A one-time fee charged for processing your loan">
                   <LuInfo />
                 </Tooltip>
               </div>
 
               <div className="flex items-center gap-2">
-                <span>Pre Closure Fees (1%)</span>
-                <Tooltip content="Fees">
+                <span>Early Repayment Fee (1%)</span>
+                <Tooltip content="A fee for repaying your loan before the term ends">
                   <LuInfo />
                 </Tooltip>
               </div>
 
               <div className="flex items-center gap-2">
                 <span>Non Repayment Fees</span>
-                <Tooltip content="Fees">
+                <Tooltip content="Charged if you default on the loan">
                   <LuInfo />
                 </Tooltip>
               </div>
@@ -162,7 +162,7 @@ export const LoanConditions = ({
           <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
             <span>Unlock Schedule</span>
 
-            <Tooltip content="Unlock Schedule">
+            <Tooltip content="Timeline when your collateral becomes available after repayment">
               <LuInfo />
             </Tooltip>
           </CardHeader>
@@ -213,9 +213,9 @@ export const LoanConditions = ({
 
         <Card className="h-full w-full">
           <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-            <span>Liquidation Threshold</span>
+            <span>BTC Liquidation Threshold</span>
 
-            <Tooltip content="Liquidation Threshold">
+            <Tooltip content="Price of BTC at which we have to sell off remaining BTC to cover unpaid loan">
               <LuInfo />
             </Tooltip>
           </CardHeader>
@@ -307,7 +307,7 @@ export const LoanConditions = ({
           </Checkbox>
 
           <Tooltip
-            content={!isAccepted && 'Please accept all the conditions above'}
+            content={!isAccepted && 'Please accept the conditions'}
             isDisabled={isAccepted}
           >
             <Button

@@ -3,12 +3,13 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Progress,
+  Chip,
   Select,
   SelectItem,
   Tooltip,
 } from '@heroui/react'
 import { MY_BORROWINGS, SORTINGS } from './data'
+import numeral from 'numeral'
 
 export const BorrowList = () => {
   return (
@@ -26,6 +27,7 @@ export const BorrowList = () => {
           <LoanCard key={borrowing.id} borrowing={borrowing} />
         ))}
       </div>
+      {/* <NoData /> */}
     </div>
   )
 }
@@ -36,19 +38,62 @@ const LoanCard = ({
   borrowing: (typeof MY_BORROWINGS)[number]
 }) => {
   return (
-    <Card className="px-1 py-2">
+    <Card className="px-3 py-4">
       <CardBody className="space-y-6">
-        <div className="text-center font-mono font-medium">
-          ID: {borrowing.id}
-        </div>
-
-        <div className="flex items-center justify-between gap-4 px-1">
-          <div className="whitespace-nowrap text-lg">
-            <span className="font-mono font-bold">{borrowing.loanAmount}</span>{' '}
-            BTC
+        <div className="flex items-center justify-between gap-2">
+          <div>
+            <div className="text-xs text-default-600">Loan ID</div>
+            <div className="text-lg font-semibold">#BTM-{borrowing.id}</div>
           </div>
 
-          <div className="relative z-0 w-full">
+          <Chip
+            color={
+              borrowing.loanStatus === 'Liquidated' ||
+              borrowing.loanStatus === 'Defaulted'
+                ? 'danger'
+                : borrowing.loanHealth >= 66 ||
+                    borrowing?.loanStatus === 'Closed'
+                  ? 'success'
+                  : borrowing.loanHealth >= 33
+                    ? 'warning'
+                    : 'danger'
+            }
+            size="sm"
+            classNames={{ content: 'font-medium' }}
+          >
+            Loan Status: {borrowing.loanStatus}
+          </Chip>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <div className="text-xs text-default-600">BTC Loaned</div>
+            <div className="text-lg font-semibold text-primary">
+              {numeral(borrowing.loanAmount).format('0,0.[00000000]')} BTC
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-default-600">Outstanding</div>
+            <div className="font-semibold">
+              {numeral(borrowing.outstandingAmount).format('0,0.[00000000]')}{' '}
+              USDC
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-default-600">BTC Recieved</div>
+            <div className="font-semibold">
+              {numeral(borrowing.btcReceived).format('0,0.[00000000]')} BTC
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-default-600">Principal Paid</div>
+            <div className="font-semibold">
+              {numeral(borrowing.principalPaid).format('0,0.[00000000]')} USDC
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="relative z-0 w-full">
             <div className="absolute inset-0 bottom-0.5 z-[1] grid place-items-center text-sm font-medium leading-none text-foreground">
               {borrowing?.loanStatus === 'Active'
                 ? `Loan Health: ${borrowing.loanHealth}%`
@@ -72,49 +117,7 @@ const LoanCard = ({
               }
             />
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <div className="flex justify-between gap-2 rounded-lg px-2 py-1 text-sm font-medium transition hover:bg-default-200">
-            <div>Outstanding Amount</div>
-            <div>
-              <span className="font-mono font-bold">
-                {borrowing.outstandingAmount}
-              </span>{' '}
-              USDC
-            </div>
-          </div>
-
-          <div className="flex justify-between gap-2 rounded-lg px-2 py-1 text-sm font-medium transition hover:bg-default-200">
-            <div>BTC Received</div>
-            <div>
-              <span className="font-mono font-bold">
-                {borrowing.btcReceived}
-              </span>{' '}
-              USDC
-            </div>
-          </div>
-
-          <div className="flex justify-between gap-2 rounded-lg px-2 py-1 text-sm font-medium transition hover:bg-default-200">
-            <div>Principal Paid</div>
-            <div>
-              <span className="font-mono font-bold">
-                {borrowing.principalPaid}
-              </span>{' '}
-              USDC
-            </div>
-          </div>
-
-          <div className="flex justify-between gap-2 rounded-lg px-2 py-1 text-sm font-medium transition hover:bg-default-200">
-            <div>Interest Paid</div>
-            <div>
-              <span className="font-mono font-bold">
-                {borrowing.interestPaid}
-              </span>{' '}
-              USDC
-            </div>
-          </div>
-        </div>
+        </div> */}
       </CardBody>
 
       <CardFooter className="flex w-full items-center gap-4">

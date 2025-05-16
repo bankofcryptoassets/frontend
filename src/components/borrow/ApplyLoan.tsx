@@ -1,6 +1,7 @@
 import { LoanAvailabilityType, LoanSummaryResponse } from '@/types'
 import axios from '@/utils/axios'
 import {
+  cn,
   NumberInput,
   Radio,
   RadioGroup,
@@ -17,6 +18,7 @@ import { useDebounceValue } from 'usehooks-ts'
 import { TIME_PERIOD_AND_INTEREST_RATES } from './data'
 import { LoanSummary } from './LoanSummary'
 import { LoanConditions } from './LoanConditions'
+import { LuInfo } from 'react-icons/lu'
 
 export const ApplyLoan = () => {
   const { data: btcAvailability } = useQuery({
@@ -82,8 +84,6 @@ export const ApplyLoan = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
-  console.log('isLoading, data', isLoading, data)
-
   // Function to handle time period selection and update interest rate accordingly
   const handleTimePeriodChange = (selection: Selection) => {
     setLoanTerm(selection)
@@ -128,7 +128,14 @@ export const ApplyLoan = () => {
           <NumberInput
             hideStepper
             isWheelDisabled
-            label="BTC To Be Borrowed"
+            label={
+              <span className="flex items-center gap-1.5">
+                <span>Amount to Borrow</span>
+                <Tooltip content="Enter how much Bitcoin (BTC) you want to borrow">
+                  <LuInfo className="pointer-events-auto outline-none" />
+                </Tooltip>
+              </span>
+            }
             name="btc"
             size="lg"
             endContent="BTC"
@@ -159,7 +166,14 @@ export const ApplyLoan = () => {
 
           <Select
             color="primary"
-            label="Time Period"
+            label={
+              <span className="flex items-center gap-1.5">
+                <span className="text-sm">Loan Duration</span>
+                <Tooltip content="Select how long you want to take to repay the loan">
+                  <LuInfo className="pointer-events-auto outline-none" />
+                </Tooltip>
+              </span>
+            }
             name="loanTerm"
             size="lg"
             fullWidth
@@ -182,7 +196,7 @@ export const ApplyLoan = () => {
           </Select>
 
           <RadioGroup
-            label="Rate of Interest"
+            label="Interest Rate"
             orientation="horizontal"
             value={interestRate}
             onValueChange={handleInterestRateChange}
@@ -196,13 +210,13 @@ export const ApplyLoan = () => {
               </CustomRadio>
             ))}
 
-            <Tooltip content="Coming Soon">
+            <Tooltip content="Interest rate may change based on market conditions">
               <CustomRadio
                 value="variable"
                 isDisabled
                 className="pointer-events-auto"
               >
-                Variable
+                Variable Rate (Coming Soon?)
               </CustomRadio>
             </Tooltip>
           </RadioGroup>
@@ -244,12 +258,12 @@ export const ApplyLoan = () => {
 }
 
 export const CustomRadio = (props: RadioProps) => {
-  const { children, ...otherProps } = props
+  const { children, className, ...otherProps } = props
 
   return (
     <Radio
       {...otherProps}
-      className="group"
+      className={cn('group', className)}
       classNames={{
         base: 'm-0 rounded-lg bg-default/35 transition hover:bg-default/50 data-[selected=true]:bg-primary',
         wrapper: 'hidden',

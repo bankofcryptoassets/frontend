@@ -1,4 +1,7 @@
 import {
+  Button,
+  Checkbox,
+  cn,
   NumberInput,
   Radio,
   RadioGroup,
@@ -11,9 +14,10 @@ import {
 import numeral from 'numeral'
 import { useMemo, useState } from 'react'
 import { TIME_PERIOD_AND_INTEREST_RATES } from '../borrow/data'
-import { LoanConditions } from './LoanConditions'
+// import { LoanConditions } from './LoanConditions'
 import { Summary } from './Summary'
-import { AmortizationSchedule } from '@/types'
+// import { AmortizationSchedule } from '@/types'
+import { LuInfo } from 'react-icons/lu'
 
 const isLoading = false
 
@@ -21,42 +25,43 @@ export const EarnInterest = () => {
   const [usdcAmount, setUsdcAmount] = useState<number>()
   const [loanTerm, setLoanTerm] = useState<Selection>(new Set([]))
   const [interestRate, setInterestRate] = useState<string>()
+  const [isAccepted, setIsAccepted] = useState(false)
 
   // Generate amortization schedule based on simple interest
-  const generateAmortizationSchedule = (
-    principal: number,
-    interestRatePercent: number,
-    termMonths: number
-  ): AmortizationSchedule[] => {
-    if (!principal || !interestRatePercent || !termMonths) return []
+  // const generateAmortizationSchedule = (
+  //   principal: number,
+  //   interestRatePercent: number,
+  //   termMonths: number
+  // ): AmortizationSchedule[] => {
+  //   if (!principal || !interestRatePercent || !termMonths) return []
 
-    const schedule: AmortizationSchedule[] = []
-    const monthlyPrincipalPayment = principal / termMonths
-    const annualInterestRate = interestRatePercent / 100
-    const monthlyInterestRate = annualInterestRate / 12
+  //   const schedule: AmortizationSchedule[] = []
+  //   const monthlyPrincipalPayment = principal / termMonths
+  //   const annualInterestRate = interestRatePercent / 100
+  //   const monthlyInterestRate = annualInterestRate / 12
 
-    let remainingBalance = principal
+  //   let remainingBalance = principal
 
-    for (let month = 1; month <= termMonths; month++) {
-      // For simple interest, interest is calculated on the original principal
-      const interestPayment = principal * monthlyInterestRate
+  //   for (let month = 1; month <= termMonths; month++) {
+  //     // For simple interest, interest is calculated on the original principal
+  //     const interestPayment = principal * monthlyInterestRate
 
-      // Principal payment is the same each month
-      const principalPayment = monthlyPrincipalPayment
+  //     // Principal payment is the same each month
+  //     const principalPayment = monthlyPrincipalPayment
 
-      // Update remaining balance
-      remainingBalance -= principalPayment
+  //     // Update remaining balance
+  //     remainingBalance -= principalPayment
 
-      schedule.push({
-        month,
-        interestPayment: interestPayment.toFixed(2),
-        principalPayment: principalPayment.toFixed(2),
-        remainingBalance: remainingBalance.toFixed(2),
-      })
-    }
+  //     schedule.push({
+  //       month,
+  //       interestPayment: interestPayment.toFixed(2),
+  //       principalPayment: principalPayment.toFixed(2),
+  //       remainingBalance: remainingBalance.toFixed(2),
+  //     })
+  //   }
 
-    return schedule
-  }
+  //   return schedule
+  // }
 
   // Calculate loan summary based on user inputs
   const loanSummary = useMemo(() => {
@@ -96,18 +101,16 @@ export const EarnInterest = () => {
   }, [usdcAmount, interestRate, loanTerm])
 
   // Calculate amortization schedule for the loan conditions component
-  const amortizationSchedule = useMemo(() => {
-    if (!usdcAmount || !interestRate || !Array.from(loanTerm).length) {
-      return []
-    }
+  // const amortizationSchedule = useMemo(() => {
+  //   if (!usdcAmount || !interestRate || !Array.from(loanTerm).length) {
+  //     return []
+  //   }
 
-    const termMonths = parseInt(Array.from(loanTerm)[0] as string)
-    const interestRateNum = parseFloat(interestRate)
+  //   const termMonths = parseInt(Array.from(loanTerm)[0] as string)
+  //   const interestRateNum = parseFloat(interestRate)
 
-    return generateAmortizationSchedule(usdcAmount, interestRateNum, termMonths)
-  }, [usdcAmount, interestRate, loanTerm])
-
-  console.log('Loan summary:', loanSummary)
+  //   return generateAmortizationSchedule(usdcAmount, interestRateNum, termMonths)
+  // }, [usdcAmount, interestRate, loanTerm])
 
   // Function to handle time period selection and update interest rate accordingly
   const handleTimePeriodChange = (selection: Selection) => {
@@ -151,7 +154,14 @@ export const EarnInterest = () => {
           <NumberInput
             hideStepper
             isWheelDisabled
-            label="USDC To Be Lent"
+            label={
+              <span className="flex items-center gap-1.5">
+                <span>Amount to Lend</span>
+                <Tooltip content="Enter how much USDC you want to lend and earn interest on">
+                  <LuInfo className="pointer-events-auto outline-none" />
+                </Tooltip>
+              </span>
+            }
             name="usdc"
             size="lg"
             endContent="USDC"
@@ -178,7 +188,14 @@ export const EarnInterest = () => {
 
           <Select
             color="secondary"
-            label="Time Period"
+            label={
+              <span className="flex items-center gap-1.5">
+                <span className="text-sm">Lending Duration</span>
+                <Tooltip content="Select how long you want to keep your funds locked to earn interest">
+                  <LuInfo className="pointer-events-auto outline-none" />
+                </Tooltip>
+              </span>
+            }
             name="loanTerm"
             size="lg"
             fullWidth
@@ -204,7 +221,14 @@ export const EarnInterest = () => {
           </Select>
 
           <RadioGroup
-            label="Rate of Interest"
+            label={
+              <span className="flex items-center gap-1.5">
+                <span className="text-sm">Expected Interest Rate</span>
+                <Tooltip content="Choose the fixed annual rate at which you'll earn interest on your funds">
+                  <LuInfo className="pointer-events-auto outline-none" />
+                </Tooltip>
+              </span>
+            }
             orientation="horizontal"
             value={interestRate}
             onValueChange={handleInterestRateChange}
@@ -218,39 +242,70 @@ export const EarnInterest = () => {
               </CustomRadio>
             ))}
 
-            <Tooltip content="Coming Soon">
+            <Tooltip content="Interest rate that can fluctuate based on market demand and supply">
               <CustomRadio
                 value="variable"
                 isDisabled
                 className="pointer-events-auto"
               >
-                Variable
+                Variable Rate (Coming Soon?)
               </CustomRadio>
             </Tooltip>
           </RadioGroup>
         </div>
 
         <Summary loanSummary={loanSummary} isLoading={isLoading} />
+
+        <div className="flex w-full flex-col items-center justify-between gap-3">
+          <Checkbox
+            color="secondary"
+            checked={isAccepted}
+            onValueChange={(value) => setIsAccepted(value)}
+            classNames={{
+              label: 'text-bold',
+              wrapper: 'before:!border-foreground/60',
+            }}
+          >
+            I understand and accept the conditions.
+          </Checkbox>
+
+          <Tooltip
+            content={!isAccepted && 'Please accept the conditions'}
+            isDisabled={isAccepted}
+          >
+            <Button
+              variant="shadow"
+              color="secondary"
+              size="lg"
+              className="pointer-events-auto font-semibold"
+              isDisabled={!isAccepted}
+              onPress={handleSupply}
+              fullWidth
+            >
+              Supply
+            </Button>
+          </Tooltip>
+        </div>
       </div>
 
-      <div className="lg:col-span-2">
+      {/* <div className="lg:col-span-2">
         <LoanConditions
           isLoading={isLoading}
           unlockScheduleData={amortizationSchedule}
           handleSupply={handleSupply}
         />
-      </div>
+      </div> */}
     </div>
   )
 }
 
 export const CustomRadio = (props: RadioProps) => {
-  const { children, ...otherProps } = props
+  const { children, className, ...otherProps } = props
 
   return (
     <Radio
       {...otherProps}
-      className="group"
+      className={cn('group', className)}
       classNames={{
         base: 'm-0 rounded-lg bg-default/35 transition hover:bg-default/50 data-[selected=true]:bg-secondary',
         wrapper: 'hidden',
