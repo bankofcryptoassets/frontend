@@ -1,4 +1,4 @@
-export const NoData = () => {
+export const NoData = ({ message }: { message?: string }) => {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-4">
       <svg
@@ -25,7 +25,9 @@ export const NoData = () => {
           </g>
         </g>
       </svg>
-      <div className="text-center text-sm text-default-600">No Data</div>
+      <div className="text-center text-sm text-default-600">
+        {message ?? 'No Data'}
+      </div>
     </div>
   )
 }

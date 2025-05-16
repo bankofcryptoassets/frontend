@@ -25,6 +25,7 @@
     "react-slot-counter": "3.3.1",
     "recharts": "2.15.3",
     "server-only": "0.0.1",
+    "sonner": "2.0.3",
     "usehooks-ts": "3.1.1",
     "viem": "2.x",
     "wagmi": "2.15.3"
