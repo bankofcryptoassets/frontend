@@ -1,5 +1,3 @@
-import { LoanSummaryResponse } from '@/types'
-import axios from '@/utils/axios'
 import {
   NumberInput,
   Radio,
@@ -10,69 +8,106 @@ import {
   SelectItem,
   Tooltip,
 } from '@heroui/react'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import numeral from 'numeral'
 import { useMemo, useState } from 'react'
-import { useDebounceValue } from 'usehooks-ts'
 import { TIME_PERIOD_AND_INTEREST_RATES } from '../borrow/data'
 import { LoanConditions } from './LoanConditions'
 import { Summary } from './Summary'
+import { AmortizationSchedule } from '@/types'
+
+const isLoading = false
 
 export const EarnInterest = () => {
   const [usdcAmount, setUsdcAmount] = useState<number>()
   const [loanTerm, setLoanTerm] = useState<Selection>(new Set([]))
   const [interestRate, setInterestRate] = useState<string>()
-  const [debouncedPayload] = useDebounceValue(
-    {
-      amount: usdcAmount?.toString(),
-      term: Number(Array.from(loanTerm)[0]),
-      interestRate: Number(interestRate),
-    },
-    500,
-    {
-      equalityFn: (left, right) =>
-        JSON.stringify(left) === JSON.stringify(right),
-    }
-  )
-  const { data, isLoading } = useQuery({
-    queryKey: ['/initialisation/loansummary', debouncedPayload],
-    enabled: false,
-    // enabled:
-    //   !!debouncedPayload?.amount &&
-    //   !!debouncedPayload?.term &&
-    //   !!debouncedPayload?.interestRate,
-    queryFn: ({ signal }) =>
-      axios.post<LoanSummaryResponse>(
-        `/initialisation/loansummary`,
-        debouncedPayload,
-        { headers: { 'Content-Type': 'application/json' }, signal }
-      ),
-    placeholderData: keepPreviousData,
-  })
 
+  // Generate amortization schedule based on simple interest
+  const generateAmortizationSchedule = (
+    principal: number,
+    interestRatePercent: number,
+    termMonths: number
+  ): AmortizationSchedule[] => {
+    if (!principal || !interestRatePercent || !termMonths) return []
+
+    const schedule: AmortizationSchedule[] = []
+    const monthlyPrincipalPayment = principal / termMonths
+    const annualInterestRate = interestRatePercent / 100
+    const monthlyInterestRate = annualInterestRate / 12
+
+    let remainingBalance = principal
+
+    for (let month = 1; month <= termMonths; month++) {
+      // For simple interest, interest is calculated on the original principal
+      const interestPayment = principal * monthlyInterestRate
+
+      // Principal payment is the same each month
+      const principalPayment = monthlyPrincipalPayment
+
+      // Update remaining balance
+      remainingBalance -= principalPayment
+
+      schedule.push({
+        month,
+        interestPayment: interestPayment.toFixed(2),
+        principalPayment: principalPayment.toFixed(2),
+        remainingBalance: remainingBalance.toFixed(2),
+      })
+    }
+
+    return schedule
+  }
+
+  // Calculate loan summary based on user inputs
   const loanSummary = useMemo(() => {
-    if (!data?.data?.data?.loanSummary)
+    // Default values if inputs are missing
+    if (!usdcAmount || !interestRate || !Array.from(loanTerm).length) {
       return {
         lendingAmount: '0.00',
         maxTimePeriod: '0',
         monthlyReceivable: '0.00',
-        maximumYeildRecieved: '0.00',
+        maximumYieldRecieved: '0.00',
       }
-
-    const loanSummaryData = data?.data?.data?.loanSummary
-    return {
-      lendingAmount: numeral(loanSummaryData.loanAmount).format('0,0.00[00]'),
-      maxTimePeriod: String(loanSummaryData.term),
-      monthlyReceivable: numeral(loanSummaryData.monthlyPayment).format(
-        '0,0.00[00]'
-      ),
-      maximumYeildRecieved: numeral(loanSummaryData.totalInterest).format(
-        '0,0.00[00]'
-      ),
     }
-  }, [data])
 
-  console.log('isLoading, data', isLoading, data)
+    // Get loan term in months
+    const termMonths = parseInt(Array.from(loanTerm)[0] as string)
+
+    // Convert interest rate to a number
+    const interestRateNum = parseFloat(interestRate)
+
+    // Calculate simple interest
+    // Simple Interest = Principal × Rate × Time (in years)
+    const annualInterestRate = interestRateNum / 100
+    const termYears = termMonths / 12
+    const totalInterest = usdcAmount * annualInterestRate * termYears
+
+    // Calculate monthly payment (principal + interest)
+    const monthlyPrincipal = usdcAmount / termMonths
+    const monthlyInterest = totalInterest / termMonths
+    const monthlyPayment = monthlyPrincipal + monthlyInterest
+
+    return {
+      lendingAmount: numeral(usdcAmount).format('0,0.00[00]'),
+      maxTimePeriod: String(termMonths), // Keep as months
+      monthlyReceivable: numeral(monthlyPayment).format('0,0.00[00]'),
+      maximumYieldRecieved: numeral(totalInterest).format('0,0.00[00]'),
+    }
+  }, [usdcAmount, interestRate, loanTerm])
+
+  // Calculate amortization schedule for the loan conditions component
+  const amortizationSchedule = useMemo(() => {
+    if (!usdcAmount || !interestRate || !Array.from(loanTerm).length) {
+      return []
+    }
+
+    const termMonths = parseInt(Array.from(loanTerm)[0] as string)
+    const interestRateNum = parseFloat(interestRate)
+
+    return generateAmortizationSchedule(usdcAmount, interestRateNum, termMonths)
+  }, [usdcAmount, interestRate, loanTerm])
+
+  console.log('Loan summary:', loanSummary)
 
   // Function to handle time period selection and update interest rate accordingly
   const handleTimePeriodChange = (selection: Selection) => {
@@ -102,6 +137,11 @@ export const EarnInterest = () => {
       )
       if (matchingTerm) setLoanTerm(new Set([matchingTerm.timePeriod]))
     }
+  }
+
+  const handleSupply = () => {
+    console.log('supply clicked...')
+    // get approval for usdcAmount
   }
 
   return (
@@ -196,9 +236,8 @@ export const EarnInterest = () => {
       <div className="lg:col-span-2">
         <LoanConditions
           isLoading={isLoading}
-          unlockScheduleData={
-            data?.data?.data?.loanSummary?.amortizationSchedule
-          }
+          unlockScheduleData={amortizationSchedule}
+          handleSupply={handleSupply}
         />
       </div>
     </div>

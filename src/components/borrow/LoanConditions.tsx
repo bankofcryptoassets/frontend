@@ -45,21 +45,30 @@ type Props = {
     fill: string
   }[]
   unlockScheduleData?: AmortizationSchedule[]
+  liquidationData?: {
+    months: number[]
+    liquidationPrices: number[]
+  }
+  currentBtcPrice?: string
+  handleLoan: () => void
 }
 
 export const LoanConditions = ({
   isLoading,
   interestOverTimeData,
   unlockScheduleData,
+  liquidationData,
+  currentBtcPrice,
+  handleLoan,
 }: Props) => {
-  const [conditions, setConditions] = useState({
-    interestOverTime: false,
-    fees: false,
-    unlockSchedule: false,
-    liquidationThreshold: false,
-  })
+  const [isAccepted, setIsAccepted] = useState(false)
 
-  const isAccepted = Object.values(conditions).every((value) => value)
+  const liquidationChartData = liquidationData?.liquidationPrices.map(
+    (price, index) => ({
+      month: index,
+      threshhold: price,
+    })
+  )
 
   return (
     <Card className="relative w-full">
@@ -73,259 +82,229 @@ export const LoanConditions = ({
         Loan Conditions
       </CardHeader>
 
-      <CardBody className="grid grid-cols-1 gap-6 p-4 text-sm xl:grid-cols-2">
-        <div className="flex w-full items-start gap-1">
-          <div className="mt-1">
-            <Checkbox
-              checked={conditions.interestOverTime}
-              onValueChange={(value) =>
-                setConditions((prev) => ({ ...prev, interestOverTime: value }))
-              }
-            />
-          </div>
+      <CardBody className="grid grid-cols-1 gap-4 p-4 text-sm xl:grid-cols-2">
+        <Card className="h-full w-full">
+          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
+            <span>Interest Over Time</span>
 
-          <Card className="h-full w-full">
-            <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-              <span>Interest Over Time</span>
+            <Tooltip content="Interest Over Time">
+              <LuInfo />
+            </Tooltip>
+          </CardHeader>
 
-              <Tooltip content="Interest Over Time">
-                <LuInfo />
-              </Tooltip>
-            </CardHeader>
+          <CardBody className="bg-default-200/50">
+            {interestOverTimeData ? (
+              <ChartContainer
+                config={{
+                  amount: { label: 'Amount' },
+                  interest: { label: 'Interest' },
+                  principal: { label: 'Principal ' },
+                }}
+              >
+                <PieChart>
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
+                  />
+                  <Pie
+                    data={interestOverTimeData}
+                    dataKey="amount"
+                    nameKey="type"
+                  />
+                  <ChartLegend
+                    content={<ChartLegendContent nameKey="type" />}
+                    className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+                  />
+                </PieChart>
+              </ChartContainer>
+            ) : (
+              <NoData />
+            )}
+          </CardBody>
+        </Card>
 
-            <CardBody className="bg-default-200/50">
-              {interestOverTimeData ? (
-                <ChartContainer
-                  config={{
-                    amount: { label: 'Amount' },
-                    interest: { label: 'Interest' },
-                    principal: { label: 'Principal ' },
-                  }}
-                >
-                  <PieChart>
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Pie
-                      data={interestOverTimeData}
-                      dataKey="amount"
-                      nameKey="type"
-                    />
-                    <ChartLegend
-                      content={<ChartLegendContent nameKey="type" />}
-                      className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
-                    />
-                  </PieChart>
-                </ChartContainer>
-              ) : (
-                <NoData />
-              )}
-            </CardBody>
-          </Card>
-        </div>
+        <Card className="h-full w-full">
+          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
+            <span>Fees</span>
 
-        <div className="flex w-full items-start gap-1">
-          <div className="mt-1">
-            <Checkbox
-              checked={conditions.fees}
-              onValueChange={(value) =>
-                setConditions((prev) => ({ ...prev, fees: value }))
-              }
-            />
-          </div>
+            <Tooltip content="Fees">
+              <LuInfo />
+            </Tooltip>
+          </CardHeader>
 
-          <Card className="h-full w-full">
-            <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-              <span>Fees</span>
-
-              <Tooltip content="Fees">
-                <LuInfo />
-              </Tooltip>
-            </CardHeader>
-
-            <CardBody className="bg-default-200/50 p-4">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <span>Loan Origination Fees (1%)</span>
-                  <Tooltip content="Fees">
-                    <LuInfo />
-                  </Tooltip>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span>Pre Closure Fees (1%)</span>
-                  <Tooltip content="Fees">
-                    <LuInfo />
-                  </Tooltip>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span>Non Repayment Fees</span>
-                  <Tooltip content="Fees">
-                    <LuInfo />
-                  </Tooltip>
-                </div>
+          <CardBody className="bg-default-200/50 p-4">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <span>Loan Origination Fees (1%)</span>
+                <Tooltip content="Fees">
+                  <LuInfo />
+                </Tooltip>
               </div>
-            </CardBody>
-          </Card>
-        </div>
 
-        <div className="flex w-full items-start gap-1">
-          <div className="mt-1">
-            <Checkbox
-              checked={conditions.unlockSchedule}
-              onValueChange={(value) =>
-                setConditions((prev) => ({ ...prev, unlockSchedule: value }))
-              }
-            />
-          </div>
+              <div className="flex items-center gap-2">
+                <span>Pre Closure Fees (1%)</span>
+                <Tooltip content="Fees">
+                  <LuInfo />
+                </Tooltip>
+              </div>
 
-          <Card className="h-full w-full">
-            <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-              <span>Unlock Schedule</span>
+              <div className="flex items-center gap-2">
+                <span>Non Repayment Fees</span>
+                <Tooltip content="Fees">
+                  <LuInfo />
+                </Tooltip>
+              </div>
+            </div>
+          </CardBody>
+        </Card>
 
-              <Tooltip content="Unlock Schedule">
-                <LuInfo />
-              </Tooltip>
-            </CardHeader>
+        <Card className="h-full w-full">
+          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
+            <span>Unlock Schedule</span>
 
-            <CardBody className="h-full bg-default-200/50">
-              {!!unlockScheduleData?.length ? (
-                <Table
-                  removeWrapper
-                  maxTableHeight={240}
-                  isHeaderSticky
-                  classNames={{
-                    base: 'max-h-[240px]',
-                  }}
+            <Tooltip content="Unlock Schedule">
+              <LuInfo />
+            </Tooltip>
+          </CardHeader>
+
+          <CardBody className="h-full bg-default-200/50">
+            {!!unlockScheduleData?.length ? (
+              <Table
+                removeWrapper
+                maxTableHeight={240}
+                isHeaderSticky
+                classNames={{
+                  base: 'max-h-[240px]',
+                }}
+              >
+                <TableHeader>
+                  <TableColumn align="end">Month</TableColumn>
+                  <TableColumn align="end">Interest</TableColumn>
+                  <TableColumn align="end">Principal</TableColumn>
+                  <TableColumn align="end">Remaining</TableColumn>
+                </TableHeader>
+                <TableBody>
+                  {unlockScheduleData?.map((item) => (
+                    <TableRow
+                      key={item.month}
+                      className="transition hover:bg-default-200"
+                    >
+                      <TableCell className="font-mono text-xs">
+                        {item.month}
+                      </TableCell>
+                      <TableCell className="font-mono text-xs">
+                        {numeral(item.interestPayment).format('0,0.00')}
+                      </TableCell>
+                      <TableCell className="font-mono text-xs">
+                        {numeral(item.principalPayment).format('0,0.00')}
+                      </TableCell>
+                      <TableCell className="font-mono text-xs">
+                        {numeral(item.remainingBalance).format('0,0.00')}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <NoData />
+            )}
+          </CardBody>
+        </Card>
+
+        <Card className="h-full w-full">
+          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
+            <span>Liquidation Threshold</span>
+
+            <Tooltip content="Liquidation Threshold">
+              <LuInfo />
+            </Tooltip>
+          </CardHeader>
+
+          <CardBody className="bg-default-200/50 py-4">
+            {!!currentBtcPrice && (
+              <div className="mb-6 ml-4">
+                Current BTC Price:{' '}
+                <span className="font-mono font-bold text-primary">
+                  {numeral(currentBtcPrice).format('0,0.00')}
+                </span>
+                <span> USDC</span>
+              </div>
+            )}
+
+            {!!unlockScheduleData?.length ? (
+              <ChartContainer
+                config={{
+                  threshhold: {
+                    label: 'Threshhold',
+                    color: 'hsl(var(--heroui-primary))',
+                  },
+                }}
+                className="my-auto overflow-hidden"
+              >
+                <LineChart
+                  accessibilityLayer
+                  data={liquidationChartData}
+                  margin={{ left: 16, bottom: 12, right: 12 }}
                 >
-                  <TableHeader>
-                    <TableColumn align="end">Month</TableColumn>
-                    <TableColumn align="end">Interest</TableColumn>
-                    <TableColumn align="end">Principal</TableColumn>
-                    <TableColumn align="end">Remaining</TableColumn>
-                  </TableHeader>
-                  <TableBody>
-                    {unlockScheduleData?.map((item) => (
-                      <TableRow
-                        key={item.month}
-                        className="transition hover:bg-default-200"
-                      >
-                        <TableCell className="font-mono text-xs">
-                          {item.month}
-                        </TableCell>
-                        <TableCell className="font-mono text-xs">
-                          {numeral(item.interestPayment).format('0,0.00')}
-                        </TableCell>
-                        <TableCell className="font-mono text-xs">
-                          {numeral(item.principalPayment).format('0,0.00')}
-                        </TableCell>
-                        <TableCell className="font-mono text-xs">
-                          {numeral(item.remainingBalance).format('0,0.00')}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              ) : (
-                <NoData />
-              )}
-            </CardBody>
-          </Card>
-        </div>
-
-        <div className="flex w-full items-start gap-1">
-          <div className="mt-1">
-            <Checkbox
-              checked={conditions.liquidationThreshold}
-              onValueChange={(value) =>
-                setConditions((prev) => ({
-                  ...prev,
-                  liquidationThreshold: value,
-                }))
-              }
-            />
-          </div>
-
-          <Card className="h-full w-full">
-            <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-              <span>Liquidation Threshold</span>
-
-              <Tooltip content="Liquidation Threshold">
-                <LuInfo />
-              </Tooltip>
-            </CardHeader>
-
-            <CardBody className="bg-default-200/50 py-4">
-              {!!unlockScheduleData?.length ? (
-                <ChartContainer
-                  config={{
-                    threshhold: {
-                      label: 'Threshhold',
-                      color: 'hsl(var(--heroui-primary))',
-                    },
-                  }}
-                  className="my-auto"
-                >
-                  <LineChart
-                    accessibilityLayer
-                    data={[
-                      { month: '1', threshhold: 186 },
-                      { month: '2', threshhold: 305 },
-                      { month: '3', threshhold: 237 },
-                      { month: '4', threshhold: 73 },
-                      { month: '5', threshhold: 209 },
-                      { month: '6', threshhold: 214 },
-                    ]}
-                  >
-                    <CartesianGrid vertical={false} />
-                    <XAxis
-                      dataKey="month"
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={8}
-                      tickFormatter={(value) => value.slice(0, 3)}
-                    />
-                    <YAxis
-                      dataKey="threshhold"
-                      tickLine={false}
-                      axisLine={false}
-                      label={{
-                        value: `Liquidation Threshold`,
-                        style: { textAnchor: 'middle' },
-                        angle: -90,
-                        position: 'left',
-                        offset: 0,
-                      }}
-                      tickMargin={8}
-                    />
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Line
-                      dataKey="threshhold"
-                      type="linear"
-                      stroke="var(--color-threshhold)"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  </LineChart>
-                </ChartContainer>
-              ) : (
-                <NoData />
-              )}
-            </CardBody>
-          </Card>
-        </div>
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                    dataKey="month"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    label={{
+                      value: `Months`,
+                      position: 'bottom',
+                      offset: 0,
+                    }}
+                  />
+                  <YAxis
+                    dataKey="threshhold"
+                    tickLine={false}
+                    axisLine={false}
+                    label={{
+                      value: `Liquidation Threshold`,
+                      style: { textAnchor: 'middle' },
+                      angle: -90,
+                      position: 'left',
+                      offset: 8,
+                    }}
+                    tickMargin={8}
+                    tickFormatter={(value) => numeral(value).format('0,0')}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
+                  />
+                  <Line
+                    dataKey="threshhold"
+                    type="linear"
+                    stroke="var(--color-threshhold)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </LineChart>
+              </ChartContainer>
+            ) : (
+              <NoData />
+            )}
+          </CardBody>
+        </Card>
       </CardBody>
 
       <CardFooter className="flex w-full gap-4 p-0">
-        <div className="flex w-full flex-col items-center justify-between gap-3 bg-default-300 p-4">
-          <div className="text-bold">
-            I understand and Accept the conditions above for loans.
-          </div>
+        <div className="before: flex w-full flex-col items-center justify-between gap-3 bg-default-300 p-4">
+          <Checkbox
+            color="primary"
+            checked={isAccepted}
+            onValueChange={(value) => setIsAccepted(value)}
+            classNames={{
+              label: 'text-bold',
+              wrapper: 'before:!border-foreground/60',
+            }}
+          >
+            I understand and accept the conditions above for loans.
+          </Checkbox>
 
           <Tooltip
             content={!isAccepted && 'Please accept all the conditions above'}
@@ -337,9 +316,7 @@ export const LoanConditions = ({
               size="lg"
               className="pointer-events-auto font-semibold"
               isDisabled={!isAccepted}
-              onPress={() => {
-                console.log('clicked...')
-              }}
+              onPress={handleLoan}
             >
               Get Loan
             </Button>

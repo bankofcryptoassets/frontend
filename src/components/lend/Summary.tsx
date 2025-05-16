@@ -5,7 +5,7 @@ type Props = {
     lendingAmount: string
     maxTimePeriod: string
     monthlyReceivable: string
-    maximumYeildRecieved: string
+    maximumYieldRecieved: string
   }
   isLoading: boolean
 }
@@ -41,7 +41,7 @@ export const Summary = ({ loanSummary, isLoading }: Props) => {
               <span className="font-mono font-bold">
                 {loanSummary?.maxTimePeriod}
               </span>{' '}
-              Years
+              Months
             </div>
           </div>
         </div>
@@ -60,10 +60,10 @@ export const Summary = ({ loanSummary, isLoading }: Props) => {
           </div>
 
           <div className="flex justify-between gap-2 rounded-lg px-2 py-1 text-sm font-medium transition hover:bg-default-200">
-            <div>Maximum Yeild Received</div>
+            <div>Maximum Yield Received</div>
             <div>
               <span className="font-mono font-bold">
-                {loanSummary?.maximumYeildRecieved}
+                {loanSummary?.maximumYieldRecieved}
               </span>{' '}
               USDC
             </div>

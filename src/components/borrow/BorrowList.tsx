@@ -122,18 +122,27 @@ const LoanCard = ({
           <Button
             variant="ghost"
             color="primary"
-            isDisabled
             fullWidth
-            className="pointer-events-auto data-[disabled=true]:cursor-not-allowed"
             size="sm"
+            isDisabled
+            className="pointer-events-auto data-[disabled=true]:cursor-not-allowed"
           >
             Set Up Alerts
           </Button>
         </Tooltip>
 
-        <Button variant="shadow" color="primary" fullWidth size="sm">
-          Close The Loan
-        </Button>
+        <Tooltip content="Coming Soon">
+          <Button
+            variant="shadow"
+            color="primary"
+            fullWidth
+            size="sm"
+            isDisabled
+            className="pointer-events-auto data-[disabled=true]:cursor-not-allowed"
+          >
+            Close The Loan
+          </Button>
+        </Tooltip>
       </CardFooter>
     </Card>
   )

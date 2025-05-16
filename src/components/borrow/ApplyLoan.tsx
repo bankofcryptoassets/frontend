@@ -32,7 +32,7 @@ export const ApplyLoan = () => {
   const [interestRate, setInterestRate] = useState<string>()
   const [debouncedPayload] = useDebounceValue(
     {
-      amount: btcAmount?.toString(),
+      amount: btcAmount,
       term: Number(Array.from(loanTerm)[0]),
       interestRate: Number(interestRate),
     },
@@ -112,6 +112,13 @@ export const ApplyLoan = () => {
       )
       if (matchingTerm) setLoanTerm(new Set([matchingTerm.timePeriod]))
     }
+  }
+
+  const handleLoan = () => {
+    console.log('loan clicked...')
+    // get approval for minDownPayment + totalPayable
+    // call /match with loanSummary
+    // call loan contract
   }
 
   return (
@@ -227,6 +234,9 @@ export const ApplyLoan = () => {
           unlockScheduleData={
             data?.data?.data?.loanSummary?.amortizationSchedule
           }
+          liquidationData={data?.data?.data?.loanSummary?.liquidationChart}
+          currentBtcPrice={data?.data?.data?.loanSummary?.currentBtcPrice}
+          handleLoan={handleLoan}
         />
       </div>
     </div>

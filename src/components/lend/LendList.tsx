@@ -53,18 +53,27 @@ const LoanCard = ({ lending }: { lending: (typeof MY_LENDINGS)[number] }) => {
           <Button
             variant="ghost"
             color="secondary"
-            isDisabled
             fullWidth
-            className="pointer-events-auto data-[disabled=true]:cursor-not-allowed"
             size="sm"
+            isDisabled
+            className="pointer-events-auto data-[disabled=true]:cursor-not-allowed"
           >
             Set Up Alerts
           </Button>
         </Tooltip>
 
-        <Button variant="shadow" color="secondary" fullWidth size="sm">
-          Withdraw
-        </Button>
+        {/* <Tooltip content="Coming Soon">
+          <Button
+            variant="shadow"
+            color="secondary"
+            fullWidth
+            size="sm"
+            isDisabled
+            className="pointer-events-auto data-[disabled=true]:cursor-not-allowed"
+          >
+            Withdraw
+          </Button>
+        </Tooltip> */}
       </CardFooter>
     </Card>
   )

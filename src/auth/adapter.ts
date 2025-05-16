@@ -45,13 +45,13 @@ export const authenticationAdapter = createAuthenticationAdapter({
       domain: window.location.host,
       uri: window.location.origin,
       address,
-      // statement: 'Sign in with Base Sepolia to the app.',
+      statement: 'Sign in with Base to authenticate with our service.',
       version: '1',
       chainId,
       nonce,
     })
   },
-  verify: async ({ signature }) => {
+  verify: async ({ signature, message }) => {
     try {
       // Get the temp token from the store
       const tempToken = getTempAuthToken()
@@ -59,8 +59,8 @@ export const authenticationAdapter = createAuthenticationAdapter({
       if (!tempToken || !signature) throw new Error('Invalid signature')
 
       const response = await axios.post<VerifyResponse>(
-        '/auth/verify',
-        { signature },
+        `/auth/verify`,
+        { message, signature },
         { headers: { authorization: `Bearer ${tempToken}` } }
       )
 

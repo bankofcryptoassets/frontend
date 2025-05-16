@@ -32,6 +32,11 @@ export type LoanSummary = {
   term: number
   amortizationSchedule: AmortizationSchedule[]
   firstTransaction: FirstTransaction
+  currentBtcPrice: string
+  liquidationChart: {
+    months: number[]
+    liquidationPrices: number[]
+  }
 }
 
 export type AmortizationSchedule = {
