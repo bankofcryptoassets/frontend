@@ -25,6 +25,7 @@ import { useAuth } from '@/auth/useAuth'
 import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { useLendingPoolLoan } from '@/hooks/useLendingPoolLoan'
 import { toast } from 'sonner'
+import { publicClient } from '@/auth/client'
 
 type LoanMatchResponse = {
   success: boolean
@@ -134,6 +135,7 @@ export const ApplyLoan = () => {
     }
   }
 
+  const [waiting, setWaiting] = useState(false)
   const { address } = useAccount()
   const { userId, isAuth } = useAuth()
   const { approveUSDC, approvalQuery } = useUSDCApproval()
@@ -164,7 +166,7 @@ export const ApplyLoan = () => {
   })
   const { loanQuery, takeLoan } = useLendingPoolLoan()
   const isPending =
-    isPendingMatch || approvalQuery.isPending || loanQuery.isPending
+    isPendingMatch || approvalQuery.isPending || loanQuery.isPending || waiting
 
   const handleLoan = async () => {
     const loanAmount = numeral(loanSummary?.principalAmount).value()
@@ -180,8 +182,15 @@ export const ApplyLoan = () => {
       return
     console.log('loan clicked...')
     // get approval for minDownPayment + totalPayable
-    approveUSDC(btcAmount?.toString()).then((data) => {
-      console.log('approveUSDC', data)
+    approveUSDC(btcAmount?.toString()).then(async (hash) => {
+      setWaiting(true)
+      const data = await publicClient.waitForTransactionReceipt({ hash })
+      setWaiting(false)
+
+      if (data?.status === 'reverted') {
+        toast.error('Failed to approve USDC')
+        return
+      }
       // call /match with loanSummary
       mutate(
         {

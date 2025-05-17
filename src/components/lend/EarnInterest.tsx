@@ -25,6 +25,7 @@ import axios from '@/utils/axios'
 import { useAccount } from 'wagmi'
 import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { toast } from 'sonner'
+import { publicClient } from '@/auth/client'
 
 type LendingPostData = {
   message: string
@@ -169,6 +170,7 @@ export const EarnInterest = () => {
     }
   }
 
+  const [loading, setLoading] = useState(false)
   const { address } = useAccount()
   const { userId } = useAuth()
   const { approveUSDC, approvalQuery } = useUSDCApproval()
@@ -194,7 +196,7 @@ export const EarnInterest = () => {
     },
   })
 
-  const isLoading = isPending || approvalQuery.isPending
+  const isLoading = isPending || approvalQuery.isPending || loading
 
   const handleSupply = async () => {
     if (!isAuth || !address || !usdcAmount || !term || !interestRate || !userId)
@@ -209,8 +211,18 @@ export const EarnInterest = () => {
     })
 
     // get approval for usdcAmount
-    approveUSDC(usdcAmount?.toString()).then((data) => {
-      console.log('approveUSDC', data)
+    approveUSDC(usdcAmount?.toString()).then(async (hash) => {
+      console.log('approveUSDC', hash)
+
+      setLoading(true)
+      const data = await publicClient.waitForTransactionReceipt({ hash })
+      setLoading(false)
+
+      if (data?.status === 'reverted') {
+        toast.error('Failed to approve USDC')
+        return
+      }
+
       // call lending api
       mutate(
         {
