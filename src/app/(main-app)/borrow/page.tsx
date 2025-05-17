@@ -11,10 +11,35 @@ import {
   Tooltip,
 } from '@heroui/react'
 import numeral from 'numeral'
-import { MY_BORROWINGS } from '@/components/borrow/data'
 import { NoData } from '@/components/NoData'
+import { useAuth } from '@/auth/useAuth'
+import { useAccount } from 'wagmi'
+import { useQuery } from '@tanstack/react-query'
+import axios from '@/utils/axios'
+import { LoanRequestPayload } from '@/types'
+
+type BorrowingData = {
+  loans: LoanRequestPayload[]
+}
+
+// import { MY_BORROWINGS } from '@/components/borrow/data'
+// const data = {
+//   loans: MY_BORROWINGS,
+// }
 
 export default function BorrowPage() {
+  const { isAuth } = useAuth()
+  const { address } = useAccount()
+
+  const { data } = useQuery({
+    queryKey: ['loan', address, isAuth],
+    queryFn: async ({ signal }) => {
+      const response = await axios.get<BorrowingData>('/loan', { signal })
+      return response.data
+    },
+    enabled: !!address && !!isAuth,
+  })
+
   return (
     <div className="container mt-10 flex h-full w-full flex-col gap-4 pb-10">
       <div className="mb-8 flex items-center justify-between gap-4 max-lg:flex-col max-lg:text-center">
@@ -40,11 +65,9 @@ export default function BorrowPage() {
         </Button>
       </div>
 
-      {MY_BORROWINGS?.length ? (
+      {data?.loans?.length ? (
         <div className="grid h-full w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {MY_BORROWINGS?.map((borrowing) => (
-            <LoanCard key={borrowing.id} borrowing={borrowing} />
-          ))}
+          {data?.loans?.map((loan) => <LoanCard key={loan._id} loan={loan} />)}
         </div>
       ) : (
         <div className="space-y-2 text-center">
@@ -67,36 +90,39 @@ export default function BorrowPage() {
   )
 }
 
-const LoanCard = ({
-  borrowing,
-}: {
-  borrowing: (typeof MY_BORROWINGS)[number]
-}) => {
+const LoanCard = ({ loan }: { loan: LoanRequestPayload }) => {
   return (
     <Card className="px-3 py-4">
       <CardBody className="space-y-6">
         <div className="flex items-center justify-between gap-2">
           <div>
             <div className="text-xs text-default-600">Loan ID</div>
-            <div className="text-lg font-semibold">#BTM-{borrowing.id}</div>
+            <div className="text-lg font-semibold">#{loan.loan_id}</div>
           </div>
 
           <Chip
             color={
-              borrowing.loanStatus === 'Liquidated' ||
-              borrowing.loanStatus === 'Defaulted'
+              loan.is_liquidated || loan.is_defaulted
                 ? 'danger'
-                : borrowing.loanHealth >= 66 ||
-                    borrowing?.loanStatus === 'Closed'
+                : loan.is_repaid
                   ? 'success'
-                  : borrowing.loanHealth >= 33
-                    ? 'warning'
+                  : loan.is_active
+                    ? 'success'
                     : 'danger'
             }
             size="sm"
             classNames={{ content: 'font-medium' }}
           >
-            Loan Status: {borrowing.loanStatus}
+            Loan Status:{' '}
+            {loan.is_liquidated
+              ? 'Liquidated'
+              : loan.is_defaulted
+                ? 'Defaulted'
+                : loan.is_repaid
+                  ? 'Closed'
+                  : loan.is_active
+                    ? 'Active'
+                    : 'Unknown'}
           </Chip>
         </div>
 
@@ -104,26 +130,31 @@ const LoanCard = ({
           <div>
             <div className="text-xs text-default-600">BTC Loaned</div>
             <div className="text-lg font-semibold text-primary">
-              {numeral(borrowing.loanAmount).format('0,0.[00000000]')} BTC
+              {numeral(loan.asset_borrowed).format('0,0.[00000000]')} BTC
             </div>
           </div>
           <div>
             <div className="text-xs text-default-600">Outstanding</div>
             <div className="font-semibold">
-              {numeral(borrowing.outstandingAmount).format('0,0.[00000000]')}{' '}
-              USDC
+              {numeral(loan.remaining_amount).format('0,0.[00000000]')} USDC
             </div>
           </div>
           <div>
             <div className="text-xs text-default-600">BTC Recieved</div>
             <div className="font-semibold">
-              {numeral(borrowing.btcReceived).format('0,0.[00000000]')} BTC
+              {numeral(loan.asset_borrowed - loan.asset_remaining).format(
+                '0,0.[00000000]'
+              )}{' '}
+              BTC
             </div>
           </div>
           <div>
             <div className="text-xs text-default-600">Principal Paid</div>
             <div className="font-semibold">
-              {numeral(borrowing.principalPaid).format('0,0.[00000000]')} USDC
+              {numeral(
+                loan.total_amount_payable - loan.remaining_amount
+              ).format('0,0.[00000000]')}{' '}
+              USDC
             </div>
           </div>
         </div>

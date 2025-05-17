@@ -12,7 +12,7 @@ import {
   SelectItem,
   Tooltip,
 } from '@heroui/react'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
 import numeral from 'numeral'
 import { useMemo, useState } from 'react'
 import { useDebounceValue } from 'usehooks-ts'
@@ -20,6 +20,24 @@ import { TIME_PERIOD_AND_INTEREST_RATES } from './data'
 import { LoanSummary } from './LoanSummary'
 import { LoanConditions } from './LoanConditions'
 import { LuInfo } from 'react-icons/lu'
+import { useAccount } from 'wagmi'
+import { useAuth } from '@/auth/useAuth'
+import { useUSDCApproval } from '@/hooks/useUSDCApproval'
+import { useLendingPoolLoan } from '@/hooks/useLendingPoolLoan'
+import { toast } from 'sonner'
+
+type LoanMatchResponse = {
+  success: boolean
+  message: string
+  data?: {
+    matched_lenders?: {
+      lender_id: string
+      user_address: string
+      amount: number
+    }[]
+    total_amount_matched?: number
+  }
+}
 
 export const ApplyLoan = () => {
   const { data: btcAvailability } = useQuery({
@@ -32,6 +50,7 @@ export const ApplyLoan = () => {
 
   const [btcAmount, setBtcAmount] = useState<number>()
   const [loanTerm, setLoanTerm] = useState<Selection>(new Set([]))
+  const term = Array.from(loanTerm)[0]
   const [interestRate, setInterestRate] = useState<string>()
   const [debouncedPayload] = useDebounceValue(
     {
@@ -115,11 +134,100 @@ export const ApplyLoan = () => {
     }
   }
 
-  const handleLoan = () => {
+  const { address } = useAccount()
+  const { userId, isAuth } = useAuth()
+  const { approveUSDC, approvalQuery } = useUSDCApproval()
+  const { mutate, isPending: isPendingMatch } = useMutation({
+    mutationFn: async ({
+      borrower_address,
+      interest_rate,
+      duration_months,
+      loan_amount,
+    }: {
+      borrower_address: string
+      interest_rate: number
+      duration_months: number
+      loan_amount: number
+    }) => {
+      const response = await axios.post<LoanMatchResponse>(
+        '/loan/match',
+        {
+          borrower_address,
+          interest_rate,
+          duration_months,
+          loan_amount,
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+      )
+      return response.data
+    },
+  })
+  const { loanQuery, takeLoan } = useLendingPoolLoan()
+  const isPending =
+    isPendingMatch || approvalQuery.isPending || loanQuery.isPending
+
+  const handleLoan = async () => {
+    const loanAmount = numeral(loanSummary?.principalAmount).value()
+    if (
+      !isAuth ||
+      !address ||
+      !btcAmount ||
+      !term ||
+      !interestRate ||
+      !userId ||
+      !loanAmount
+    )
+      return
     console.log('loan clicked...')
     // get approval for minDownPayment + totalPayable
-    // call /match with loanSummary
-    // call loan contract
+    approveUSDC(btcAmount?.toString()).then((data) => {
+      console.log('approveUSDC', data)
+      // call /match with loanSummary
+      mutate(
+        {
+          borrower_address: address,
+          interest_rate: Number(interestRate),
+          duration_months: Number(term),
+          loan_amount: loanAmount,
+        },
+        {
+          onError: () => {
+            toast.error('Failed to match loan')
+          },
+          onSuccess: (data) => {
+            toast.success(data?.message || 'Successfully matched loan')
+
+            const totalAmount =
+              (numeral(loanSummary?.principalAmount)?.value() ?? 0) +
+              (numeral(loanSummary?.minDownPayment)?.value() ?? 0)
+            const lenderAddresses = data?.data?.matched_lenders?.map(
+              (lender) => lender.user_address as `0x${string}`
+            )
+            const lenderAmounts = data?.data?.matched_lenders?.map(
+              (lender) => lender.amount
+            )
+
+            if (
+              !lenderAddresses?.length ||
+              !lenderAmounts?.length ||
+              !totalAmount
+            ) {
+              toast.error('Failed to match loan')
+              return
+            }
+
+            // call loan contract
+            takeLoan(
+              totalAmount,
+              Number(term || 0),
+              Number(interestRate),
+              lenderAddresses,
+              lenderAmounts
+            )
+          },
+        }
+      )
+    })
   }
 
   return (
@@ -252,6 +360,8 @@ export const ApplyLoan = () => {
           liquidationData={data?.data?.data?.loanSummary?.liquidationChart}
           currentBtcPrice={data?.data?.data?.loanSummary?.currentBtcPrice}
           handleLoan={handleLoan}
+          invalidInputs={!btcAmount || !term || !interestRate}
+          isPending={isPending}
         />
       </div>
     </div>

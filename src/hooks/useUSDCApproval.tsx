@@ -6,12 +6,10 @@ import { useWriteContract } from 'wagmi'
 export const useUSDCApproval = () => {
   const approvalQuery = useWriteContract({
     mutation: {
-      onError: (error) => {
-        console.log('error', error)
+      onError: () => {
         toast.error('Failed to approve USDC')
       },
-      onSuccess: (data) => {
-        console.log('success', data)
+      onSuccess: () => {
         toast.success('Successfully approved USDC')
       },
     },

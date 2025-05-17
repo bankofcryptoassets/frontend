@@ -36,6 +36,7 @@ import {
 import { NoData } from '../NoData'
 import { AmortizationSchedule } from '@/types'
 import numeral from 'numeral'
+import { useAuth } from '@/auth/useAuth'
 
 type Props = {
   isLoading: boolean
@@ -51,6 +52,8 @@ type Props = {
   }
   currentBtcPrice?: string
   handleLoan: () => void
+  invalidInputs: boolean
+  isPending: boolean
 }
 
 export const LoanConditions = ({
@@ -60,8 +63,21 @@ export const LoanConditions = ({
   liquidationData,
   currentBtcPrice,
   handleLoan,
+  invalidInputs,
+  isPending,
 }: Props) => {
+  const { isAuth } = useAuth()
   const [isAccepted, setIsAccepted] = useState(false)
+
+  // const invalidInputs = !usdcAmount || !interestRate || !term
+  const isDisabled = !isAuth || invalidInputs || !isAccepted
+  const message = !isAuth
+    ? 'Please connect your wallet to continue'
+    : invalidInputs
+      ? 'Please fill in all the fields'
+      : !isAccepted
+        ? 'Please accept the conditions'
+        : ''
 
   const liquidationChartData = liquidationData?.liquidationPrices.map(
     (price, index) => ({
@@ -306,17 +322,15 @@ export const LoanConditions = ({
             I understand and accept the conditions above for loans
           </Checkbox>
 
-          <Tooltip
-            content={!isAccepted && 'Please accept the conditions'}
-            isDisabled={isAccepted}
-          >
+          <Tooltip content={message} isDisabled={!isDisabled}>
             <Button
               variant="shadow"
               color="primary"
               size="lg"
               className="pointer-events-auto font-semibold"
-              isDisabled={!isAccepted}
+              isDisabled={isDisabled}
               onPress={handleLoan}
+              isLoading={isPending}
             >
               Confirm and Get Your Bitcoin
             </Button>

@@ -1,4 +1,5 @@
 import { CONTRACT_ADDRESSES } from '@/utils/constants'
+import { toast } from 'sonner'
 import { parseAbi, parseUnits } from 'viem'
 import { useWriteContract } from 'wagmi'
 
@@ -13,7 +14,16 @@ import { useWriteContract } from 'wagmi'
  * @returns Functions and state for calling the loan function
  */
 export const useLendingPoolLoan = () => {
-  const loanQuery = useWriteContract()
+  const loanQuery = useWriteContract({
+    mutation: {
+      onError: () => {
+        toast.error('Failed to apply loan')
+      },
+      onSuccess: () => {
+        toast.success('Successfully applied loan')
+      },
+    },
+  })
 
   /**
    * Function to call the loan method on the lending pool contract
@@ -77,12 +87,5 @@ export const useLendingPoolLoan = () => {
     })
   }
 
-  return {
-    loanQuery,
-    takeLoan,
-    isPending: loanQuery.isPending,
-    isSuccess: loanQuery.isSuccess,
-    error: loanQuery.error,
-    data: loanQuery.data,
-  }
+  return { loanQuery, takeLoan }
 }

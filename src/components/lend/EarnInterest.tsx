@@ -26,8 +26,6 @@ import { useAccount } from 'wagmi'
 import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { toast } from 'sonner'
 
-const isLoading = false
-
 type LendingPostData = {
   message: string
   allowance: {
@@ -173,21 +171,34 @@ export const EarnInterest = () => {
 
   const { address } = useAccount()
   const { userId } = useAuth()
-  const { approveUSDC } = useUSDCApproval()
-  const { mutateAsync } = useMutation({
-    mutationFn: async () => {
+  const { approveUSDC, approvalQuery } = useUSDCApproval()
+  const { mutate, isPending } = useMutation({
+    mutationFn: async ({
+      user_id,
+      user_address,
+      allowance_amount,
+      duration_preference,
+    }: {
+      user_id: string
+      user_address: string
+      allowance_amount: string
+      duration_preference: string
+    }) => {
       const response = await axios.post<LendingPostData>('/lending', {
-        user_id: userId,
-        user_address: address,
-        allowance_amount: usdcAmount?.toString(),
-        duration_preference: term,
+        user_id,
+        user_address,
+        allowance_amount,
+        duration_preference,
       })
       return response.data
     },
   })
 
+  const isLoading = isPending || approvalQuery.isPending
+
   const handleSupply = async () => {
-    if (!isAuth || !address || !usdcAmount || !term || !interestRate) return
+    if (!isAuth || !address || !usdcAmount || !term || !interestRate || !userId)
+      return
     console.log('supply clicked...', {
       userId,
       address,
@@ -198,17 +209,25 @@ export const EarnInterest = () => {
     })
 
     // get approval for usdcAmount
-    await approveUSDC(usdcAmount?.toString())
-    // call lending api
-    await mutateAsync(undefined, {
-      onError: (error) => {
-        console.log('error', error)
-        toast.error('Failed to supply USDC')
-      },
-      onSuccess: (data) => {
-        console.log('success', data)
-        toast.success('Successfully supplied USDC')
-      },
+    approveUSDC(usdcAmount?.toString()).then((data) => {
+      console.log('approveUSDC', data)
+      // call lending api
+      mutate(
+        {
+          user_id: userId,
+          user_address: address,
+          allowance_amount: usdcAmount?.toString(),
+          duration_preference: term as string,
+        },
+        {
+          onError: () => {
+            toast.error('Failed to supply USDC')
+          },
+          onSuccess: (data) => {
+            toast.success(data?.message || 'Successfully supplied USDC')
+          },
+        }
+      )
     })
   }
 
@@ -319,7 +338,7 @@ export const EarnInterest = () => {
           </RadioGroup>
         </div>
 
-        <Summary loanSummary={loanSummary} isLoading={isLoading} />
+        <Summary loanSummary={loanSummary} isLoading={false} />
 
         <div className="flex w-full flex-col items-center justify-between gap-3">
           <Checkbox
@@ -343,6 +362,7 @@ export const EarnInterest = () => {
               isDisabled={isDisabled}
               onPress={handleSupply}
               fullWidth
+              isLoading={isLoading}
             >
               Supply USDC and Start Earning
             </Button>
