@@ -4,7 +4,13 @@
 
 ::selection {
   background: hsl(var(--heroui-primary));
-  color: hsl(var(--heroui-background));
+  color: hsl(var(--heroui-primary-foreground));
+}
+
+#lend-page *::selection,
+#lenders *::selection {
+  background: hsl(var(--heroui-secondary));
+  color: hsl(var(--heroui-secondary-foreground));
 }
 
 ::-webkit-scrollbar {

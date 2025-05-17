@@ -111,10 +111,11 @@ export const TIME_PERIOD_AND_INTEREST_RATES = [
 
 export const MY_LENDINGS = [
   {
-    id: 1,
-    approved: 1000,
-    utilised: 1000,
-    yieldEarned: 1000,
-    principalReturned: 1000,
+    _id: '1',
+    user_id: '1',
+    loan_id: '1',
+    amount: 1000,
+    received_interest: 1000,
+    total_received: 1000,
   },
 ]

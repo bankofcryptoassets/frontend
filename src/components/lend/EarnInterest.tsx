@@ -146,6 +146,7 @@ export const EarnInterest = () => {
   const handleSupply = () => {
     console.log('supply clicked...')
     // get approval for usdcAmount
+    // call lending api
   }
 
   return (

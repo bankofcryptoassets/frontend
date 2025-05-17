@@ -7,7 +7,10 @@ import { PiSquaresFour } from 'react-icons/pi'
 
 export default function EarnInterestPage() {
   return (
-    <div className="container mt-10 flex h-full w-full flex-col gap-4 pb-10">
+    <div
+      className="container mt-10 flex h-full w-full flex-col gap-4 pb-10"
+      id="lend-page"
+    >
       <div className="mb-8 flex items-center justify-between gap-4 max-lg:flex-col max-lg:text-center">
         <div>
           <h1 className={title({ size: 'sm', className: 'text-secondary' })}>

@@ -1,15 +1,49 @@
 'use client'
-import { MY_LENDINGS } from '@/components/borrow/data'
 import { subtitle, title } from '@/components/primitives'
 import Link from 'next/link'
 import { LuPlus } from 'react-icons/lu'
 import { Button, Card, CardBody, CardFooter, Tooltip } from '@heroui/react'
 import numeral from 'numeral'
 import { NoData } from '@/components/NoData'
+import { useQuery } from '@tanstack/react-query'
+import axios from '@/utils/axios'
+import { useAccount } from 'wagmi'
+import { useAuth } from '@/auth/useAuth'
+
+type LendingData = {
+  lendings: {
+    _id: string
+    user_id: string
+    loan_id: string
+    amount: number
+    received_interest: number
+    total_received: number
+  }[]
+}
+
+// import { MY_LENDINGS } from '@/components/borrow/data'
+// const data = {
+//   lendings: MY_LENDINGS,
+// }
 
 export default function LendPage() {
+  const { isAuth } = useAuth()
+  const { address } = useAccount()
+
+  const { data } = useQuery({
+    queryKey: ['lending', address, isAuth],
+    queryFn: async ({ signal }) => {
+      const response = await axios.get<LendingData>('/lending', { signal })
+      return response.data
+    },
+    enabled: !!address && !!isAuth,
+  })
+
   return (
-    <div className="container mt-10 flex h-full w-full flex-col gap-4 pb-10">
+    <div
+      className="container mt-10 flex h-full w-full flex-col gap-4 pb-10"
+      id="lend-page"
+    >
       <div className="mb-8 flex items-center justify-between gap-4 max-lg:flex-col max-lg:text-center">
         <div>
           <h1 className={title({ size: 'sm', className: 'text-secondary' })}>
@@ -33,10 +67,10 @@ export default function LendPage() {
         </Button>
       </div>
 
-      {MY_LENDINGS?.length ? (
+      {data?.lendings?.length ? (
         <div className="grid h-full w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {MY_LENDINGS.map((lending) => (
-            <LendingCard key={lending.id} lending={lending} />
+          {data?.lendings?.map((lending) => (
+            <LendingCard key={lending._id} lending={lending} />
           ))}
         </div>
       ) : (
@@ -63,7 +97,7 @@ export default function LendPage() {
 const LendingCard = ({
   lending,
 }: {
-  lending: (typeof MY_LENDINGS)[number]
+  lending: LendingData['lendings'][number]
 }) => {
   return (
     <Card className="px-3 py-4">
@@ -72,25 +106,25 @@ const LendingCard = ({
           <div>
             <div className="text-xs text-default-600">Approved Amount</div>
             <div className="text-lg font-semibold text-secondary">
-              {numeral(lending.approved).format('0,0.[00000000]')} USDC
+              {numeral(lending.amount).format('0,0.[00000000]')} USDC
             </div>
           </div>
           <div>
             <div className="text-xs text-default-600">Utilised Amount</div>
             <div className="text-lg font-semibold">
-              {numeral(lending.utilised).format('0,0.[00000000]')} USDC
+              {numeral(lending.amount).format('0,0.[00000000]')} USDC
             </div>
           </div>
           <div>
             <div className="text-xs text-default-600">Yield Earned</div>
             <div className="text-lg font-semibold">
-              {numeral(lending.yieldEarned).format('0,0.[00000000]')} USDC
+              {numeral(lending.received_interest).format('0,0.[00000000]')} USDC
             </div>
           </div>
           <div>
             <div className="text-xs text-default-600">Principal Returned</div>
             <div className="text-lg font-semibold">
-              {numeral(lending.principalReturned).format('0,0.[00000000]')} USDC
+              {numeral(lending.total_received).format('0,0.[00000000]')} USDC
             </div>
           </div>
         </div>
