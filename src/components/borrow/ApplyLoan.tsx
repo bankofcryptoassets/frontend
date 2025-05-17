@@ -26,6 +26,7 @@ import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { useLendingPoolLoan } from '@/hooks/useLendingPoolLoan'
 import { toast } from 'sonner'
 import { publicClient } from '@/auth/client'
+import { useRouter } from 'next/navigation'
 
 type LoanMatchResponse = {
   success: boolean
@@ -33,7 +34,7 @@ type LoanMatchResponse = {
   data?: {
     matched_lenders?: {
       lender_id: string
-      lender_address: string
+      lender_address: `0x${string}`
       amount: number
     }[]
     total_amount_matched?: number
@@ -41,6 +42,7 @@ type LoanMatchResponse = {
 }
 
 export const ApplyLoan = () => {
+  const router = useRouter()
   const { data: btcAvailability } = useQuery({
     queryKey: ['/initialisation/loanavailability'],
     queryFn: () =>
@@ -170,7 +172,10 @@ export const ApplyLoan = () => {
 
   const handleLoan = async () => {
     const loanAmount = numeral(loanSummary?.principalAmount).value()
-    const totalPayable = numeral(loanSummary?.totalPayable).value()
+    const totalAmount =
+      (numeral(loanSummary?.principalAmount)?.value() ?? 0) +
+      (numeral(loanSummary?.minDownPayment)?.value() ?? 0)
+
     if (
       !isAuth ||
       !address ||
@@ -179,17 +184,13 @@ export const ApplyLoan = () => {
       !interestRate ||
       !userId ||
       !loanAmount ||
-      !totalPayable
+      !totalAmount
     )
       return
+
     console.log('loan clicked...')
 
     // get approval for minDownPayment + totalPayable
-
-    const totalAmount = 
-    (numeral(loanSummary?.principalAmount)?.value() ?? 0) +
-    (numeral(loanSummary?.minDownPayment)?.value() ?? 0)
-
     approveUSDC(totalAmount?.toString()).then(async (hash) => {
       setWaiting(true)
       const data = await publicClient.waitForTransactionReceipt({ hash })
@@ -214,21 +215,14 @@ export const ApplyLoan = () => {
           onSuccess: (data) => {
             toast.success(data?.message || 'Successfully matched loan')
 
-            console.log('matched lenders:', data?.data?.matched_lenders)
-            console.log("Loan summary:", loanSummary)
-
             const lenderAddresses = data?.data?.matched_lenders?.map(
-              (lender) => lender.lender_address as `0x${string}`
+              (lender) => lender.lender_address
             )
             const lenderAmounts = data?.data?.matched_lenders?.map(
               (lender) => lender.amount
             )
 
-            console.log('lenderAddresses:', lenderAddresses)
-            console.log('lenderAmounts:', lenderAmounts)
-            console.log('totalAmount:', totalAmount)
             // check if all values are present
-
             if (
               !lenderAddresses?.length ||
               !lenderAmounts?.length ||
@@ -245,7 +239,32 @@ export const ApplyLoan = () => {
               Number(interestRate),
               lenderAddresses,
               lenderAmounts
-            )
+            ).then(async (hash) => {
+              setWaiting(true)
+              toast.promise(
+                // Wait for transaction receipt
+                publicClient.waitForTransactionReceipt({
+                  hash,
+                }),
+                {
+                  dismissible: false,
+                  loading: 'Waiting for loan transaction to be confirmed...',
+                  success: (data) => {
+                    if (data?.status === 'reverted')
+                      throw new Error('Loan transaction failed')
+
+                    router.push('/borrow')
+                    return `Loan approved successfully!`
+                  },
+                  error: (err: Error) => {
+                    return err.message || 'Loan transaction failed'
+                  },
+                  finally: () => {
+                    setWaiting(false)
+                  },
+                }
+              )
+            })
           },
         }
       )

@@ -15,9 +15,7 @@ import {
 import numeral from 'numeral'
 import { useMemo, useState } from 'react'
 import { TIME_PERIOD_AND_INTEREST_RATES } from '../borrow/data'
-// import { LoanConditions } from './LoanConditions'
 import { Summary } from './Summary'
-// import { AmortizationSchedule } from '@/types'
 import { LuInfo } from 'react-icons/lu'
 import { useAuth } from '@/auth/useAuth'
 import { useMutation } from '@tanstack/react-query'
@@ -26,6 +24,7 @@ import { useAccount } from 'wagmi'
 import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { toast } from 'sonner'
 import { publicClient } from '@/auth/client'
+import { useRouter } from 'next/navigation'
 
 type LendingPostData = {
   message: string
@@ -39,6 +38,7 @@ type LendingPostData = {
 
 export const EarnInterest = () => {
   const { isAuth } = useAuth()
+  const router = useRouter()
   const [usdcAmount, setUsdcAmount] = useState<number>()
   const [loanTerm, setLoanTerm] = useState<Selection>(new Set([]))
   const term = Array.from(loanTerm)[0]
@@ -237,6 +237,7 @@ export const EarnInterest = () => {
           },
           onSuccess: (data) => {
             toast.success(data?.message || 'Successfully supplied USDC')
+            router.push('/lend')
           },
         }
       )

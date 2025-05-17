@@ -13,11 +13,12 @@ import { useAuth } from '@/auth/useAuth'
 type LendingData = {
   lendings: {
     _id: string
-    user_id: string
-    loan_id: string
-    amount: number
-    received_interest: number
-    total_received: number
+    user_address: string
+    lending_amount_approved: number
+    available_amount: number
+    openedOn: string
+    duration_preference: string
+    updated_at: string
   }[]
 }
 
@@ -106,25 +107,31 @@ const LendingCard = ({
           <div>
             <div className="text-xs text-default-600">Approved Amount</div>
             <div className="text-lg font-semibold text-secondary">
-              {numeral(lending.amount).format('0,0.[00000000]')} USDC
+              {numeral(lending.lending_amount_approved).format(
+                '0,0.[00000000]'
+              )}{' '}
+              USDC
             </div>
           </div>
           <div>
             <div className="text-xs text-default-600">Utilised Amount</div>
             <div className="text-lg font-semibold">
-              {numeral(lending.amount).format('0,0.[00000000]')} USDC
+              {numeral(
+                lending.lending_amount_approved - lending.available_amount
+              ).format('0,0.[00000000]')}{' '}
+              USDC
             </div>
           </div>
           <div>
             <div className="text-xs text-default-600">Yield Earned</div>
             <div className="text-lg font-semibold">
-              {numeral(lending.received_interest).format('0,0.[00000000]')} USDC
+              {numeral(0).format('0,0.[00000000]')} USDC
             </div>
           </div>
           <div>
             <div className="text-xs text-default-600">Principal Returned</div>
             <div className="text-lg font-semibold">
-              {numeral(lending.total_received).format('0,0.[00000000]')} USDC
+              {numeral(0).format('0,0.[00000000]')} USDC
             </div>
           </div>
         </div>

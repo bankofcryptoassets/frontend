@@ -71,13 +71,7 @@ export const useLendingPoolLoan = () => {
         : parseUnits(amount.toString(), 6)
     )
 
-    console.log('Parsed Amount:', parsedAmount)
-    console.log('Parsed Lender Amounts:', parsedLenderAmounts)
-    console.log('Lender Addresses:', lenderAddresses)
-    console.log('Duration Months:', durationMonths)
-    console.log('Annual Interest Rate:', annualInterestRate)
-
-    loanQuery.writeContract({
+    return loanQuery.writeContractAsync({
       abi: parseAbi([
         'function loan(uint256 totalAmount, uint256 durationMonths, uint256 annualInterestRate, address[] calldata lenderAddresses, uint256[] calldata lenderAmounts) returns (uint256)',
       ]),
