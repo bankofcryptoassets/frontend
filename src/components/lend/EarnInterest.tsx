@@ -19,14 +19,42 @@ import { TIME_PERIOD_AND_INTEREST_RATES } from '../borrow/data'
 import { Summary } from './Summary'
 // import { AmortizationSchedule } from '@/types'
 import { LuInfo } from 'react-icons/lu'
+import { useAuth } from '@/auth/useAuth'
+import { useMutation } from '@tanstack/react-query'
+import axios from '@/utils/axios'
+import { useAccount } from 'wagmi'
+import { useUSDCApproval } from '@/hooks/useUSDCApproval'
+import { toast } from 'sonner'
 
 const isLoading = false
 
+type LendingPostData = {
+  message: string
+  allowance: {
+    user_id: string
+    user_address: string
+    allowance_amount: string
+    duration_preference: string
+  }
+}
+
 export const EarnInterest = () => {
+  const { isAuth } = useAuth()
   const [usdcAmount, setUsdcAmount] = useState<number>()
   const [loanTerm, setLoanTerm] = useState<Selection>(new Set([]))
+  const term = Array.from(loanTerm)[0]
   const [interestRate, setInterestRate] = useState<string>()
   const [isAccepted, setIsAccepted] = useState(false)
+
+  const invalidInputs = !usdcAmount || !interestRate || !term
+  const isDisabled = !isAuth || invalidInputs || !isAccepted
+  const message = !isAuth
+    ? 'Please connect your wallet to continue'
+    : invalidInputs
+      ? 'Please fill in all the fields'
+      : !isAccepted
+        ? 'Please accept the conditions'
+        : ''
 
   // Generate amortization schedule based on simple interest
   // const generateAmortizationSchedule = (
@@ -143,10 +171,45 @@ export const EarnInterest = () => {
     }
   }
 
-  const handleSupply = () => {
-    console.log('supply clicked...')
+  const { address } = useAccount()
+  const { userId } = useAuth()
+  const { approveUSDC } = useUSDCApproval()
+  const { mutateAsync } = useMutation({
+    mutationFn: async () => {
+      const response = await axios.post<LendingPostData>('/lending', {
+        user_id: userId,
+        user_address: address,
+        allowance_amount: usdcAmount?.toString(),
+        duration_preference: term,
+      })
+      return response.data
+    },
+  })
+
+  const handleSupply = async () => {
+    if (!isAuth || !address || !usdcAmount || !term || !interestRate) return
+    console.log('supply clicked...', {
+      userId,
+      address,
+      usdcAmount,
+      term,
+      interestRate,
+      isAuth,
+    })
+
     // get approval for usdcAmount
+    await approveUSDC(usdcAmount?.toString())
     // call lending api
+    await mutateAsync(undefined, {
+      onError: (error) => {
+        console.log('error', error)
+        toast.error('Failed to supply USDC')
+      },
+      onSuccess: (data) => {
+        console.log('success', data)
+        toast.success('Successfully supplied USDC')
+      },
+    })
   }
 
   return (
@@ -271,16 +334,13 @@ export const EarnInterest = () => {
             I understand and accept the conditions
           </Checkbox>
 
-          <Tooltip
-            content={!isAccepted && 'Please accept the conditions'}
-            isDisabled={isAccepted}
-          >
+          <Tooltip content={message} isDisabled={!isDisabled}>
             <Button
               variant="shadow"
               color="secondary"
               size="lg"
               className="pointer-events-auto font-semibold"
-              isDisabled={!isAccepted}
+              isDisabled={isDisabled}
               onPress={handleSupply}
               fullWidth
             >

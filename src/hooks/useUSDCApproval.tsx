@@ -1,9 +1,21 @@
 import { CONTRACT_ADDRESSES } from '@/utils/constants'
+import { toast } from 'sonner'
 import { parseAbi, parseUnits } from 'viem'
 import { useWriteContract } from 'wagmi'
 
-export const useContractApproval = () => {
-  const approvalQuery = useWriteContract()
+export const useUSDCApproval = () => {
+  const approvalQuery = useWriteContract({
+    mutation: {
+      onError: (error) => {
+        console.log('error', error)
+        toast.error('Failed to approve USDC')
+      },
+      onSuccess: (data) => {
+        console.log('success', data)
+        toast.success('Successfully approved USDC')
+      },
+    },
+  })
 
   const approveUSDC = async (usdcAmount: string, options?: any) =>
     approvalQuery.writeContractAsync(
