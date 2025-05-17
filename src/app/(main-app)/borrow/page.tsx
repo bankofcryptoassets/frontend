@@ -82,7 +82,7 @@ export default function BorrowPage() {
             href="/borrow/apply"
             className="font-medium"
           >
-            Get Yout Bitcoin
+            Start Getting Your Bitcoin
           </Button>
         </div>
       )}
