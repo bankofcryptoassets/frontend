@@ -23,7 +23,7 @@ export const useUSDCApproval = () => {
         ]),
         address: CONTRACT_ADDRESSES.USDC,
         functionName: 'approve',
-        args: [CONTRACT_ADDRESSES.ZEISTAL, parseUnits(usdcAmount, 6)],
+        args: [CONTRACT_ADDRESSES.LENDING_POOL, parseUnits(usdcAmount, 6)],
       },
       options
     )

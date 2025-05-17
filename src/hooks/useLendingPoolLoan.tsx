@@ -75,7 +75,7 @@ export const useLendingPoolLoan = () => {
       abi: parseAbi([
         'function loan(uint256 totalAmount, uint256 durationMonths, uint256 annualInterestRate, address[] calldata lenderAddresses, uint256[] calldata lenderAmounts) returns (uint256)',
       ]),
-      address: CONTRACT_ADDRESSES.ZEISTAL as `0x${string}`,
+      address: CONTRACT_ADDRESSES.LENDING_POOL,
       functionName: 'loan',
       args: [
         parsedAmount,
