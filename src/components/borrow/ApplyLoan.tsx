@@ -232,6 +232,11 @@ export const ApplyLoan = () => {
               return
             }
 
+
+                console.log('Total Amount:', totalAmount)
+                console.log('Lender Addresses:', lenderAddresses)
+                console.log('Lender Amounts:', lenderAmounts)
+
             // call loan contract
             takeLoan(
               totalAmount,
