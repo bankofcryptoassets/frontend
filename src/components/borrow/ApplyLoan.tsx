@@ -33,7 +33,7 @@ type LoanMatchResponse = {
   data?: {
     matched_lenders?: {
       lender_id: string
-      user_address: string
+      lender_address: string
       amount: number
     }[]
     total_amount_matched?: number
@@ -170,6 +170,7 @@ export const ApplyLoan = () => {
 
   const handleLoan = async () => {
     const loanAmount = numeral(loanSummary?.principalAmount).value()
+    const totalPayable = numeral(loanSummary?.totalPayable).value()
     if (
       !isAuth ||
       !address ||
@@ -177,12 +178,19 @@ export const ApplyLoan = () => {
       !term ||
       !interestRate ||
       !userId ||
-      !loanAmount
+      !loanAmount ||
+      !totalPayable
     )
       return
     console.log('loan clicked...')
+
     // get approval for minDownPayment + totalPayable
-    approveUSDC(btcAmount?.toString()).then(async (hash) => {
+
+    const totalAmount = 
+    (numeral(loanSummary?.principalAmount)?.value() ?? 0) +
+    (numeral(loanSummary?.minDownPayment)?.value() ?? 0)
+
+    approveUSDC(totalAmount?.toString()).then(async (hash) => {
       setWaiting(true)
       const data = await publicClient.waitForTransactionReceipt({ hash })
       setWaiting(false)
@@ -206,15 +214,20 @@ export const ApplyLoan = () => {
           onSuccess: (data) => {
             toast.success(data?.message || 'Successfully matched loan')
 
-            const totalAmount =
-              (numeral(loanSummary?.principalAmount)?.value() ?? 0) +
-              (numeral(loanSummary?.minDownPayment)?.value() ?? 0)
+            console.log('matched lenders:', data?.data?.matched_lenders)
+            console.log("Loan summary:", loanSummary)
+
             const lenderAddresses = data?.data?.matched_lenders?.map(
-              (lender) => lender.user_address as `0x${string}`
+              (lender) => lender.lender_address as `0x${string}`
             )
             const lenderAmounts = data?.data?.matched_lenders?.map(
               (lender) => lender.amount
             )
+
+            console.log('lenderAddresses:', lenderAddresses)
+            console.log('lenderAmounts:', lenderAmounts)
+            console.log('totalAmount:', totalAmount)
+            // check if all values are present
 
             if (
               !lenderAddresses?.length ||
