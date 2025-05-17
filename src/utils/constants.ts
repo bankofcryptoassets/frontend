@@ -1,4 +1,5 @@
-export const API_BASE_URL = 'http://localhost:5001/api'
+export const API_BASE_URL = 'http://ec2-13-51-56-120.eu-north-1.compute.amazonaws.com:5001/api'
+
 
 export const COOKIE_KEYS = {
   JWT: 'auth:jwt',

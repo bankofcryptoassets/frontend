@@ -190,6 +190,8 @@ export const ApplyLoan = () => {
 
     console.log('loan clicked...')
 
+    console.log("Approval Amount:", totalAmount)
+
     // get approval for minDownPayment + totalPayable
     approveUSDC(totalAmount?.toString()).then(async (hash) => {
       setWaiting(true)
