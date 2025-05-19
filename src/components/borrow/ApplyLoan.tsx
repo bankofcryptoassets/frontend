@@ -27,6 +27,7 @@ import { useLendingPoolLoan } from '@/hooks/useLendingPoolLoan'
 import { toast } from 'sonner'
 import { publicClient } from '@/auth/client'
 import { useRouter } from 'next/navigation'
+import { sleep } from '@/utils/sleep'
 
 type LoanMatchResponse = {
   success: boolean
@@ -188,14 +189,11 @@ export const ApplyLoan = () => {
     )
       return
 
-    console.log('loan clicked...')
-
-    console.log("Approval Amount:", totalAmount)
-
     // get approval for minDownPayment + totalPayable
     approveUSDC(totalAmount?.toString()).then(async (hash) => {
       setWaiting(true)
       const data = await publicClient.waitForTransactionReceipt({ hash })
+      await sleep(10000)
       setWaiting(false)
 
       if (data?.status === 'reverted') {
@@ -233,11 +231,6 @@ export const ApplyLoan = () => {
               toast.error('Failed to match loan')
               return
             }
-
-
-                console.log('Total Amount:', totalAmount)
-                console.log('Lender Addresses:', lenderAddresses)
-                console.log('Lender Amounts:', lenderAmounts)
 
             // call loan contract
             takeLoan(

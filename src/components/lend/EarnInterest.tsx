@@ -25,6 +25,7 @@ import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { toast } from 'sonner'
 import { publicClient } from '@/auth/client'
 import { useRouter } from 'next/navigation'
+import { sleep } from '@/utils/sleep'
 
 type LendingPostData = {
   message: string
@@ -201,21 +202,12 @@ export const EarnInterest = () => {
   const handleSupply = async () => {
     if (!isAuth || !address || !usdcAmount || !term || !interestRate || !userId)
       return
-    console.log('supply clicked...', {
-      userId,
-      address,
-      usdcAmount,
-      term,
-      interestRate,
-      isAuth,
-    })
 
     // get approval for usdcAmount
     approveUSDC(usdcAmount?.toString()).then(async (hash) => {
-      console.log('approveUSDC', hash)
-
       setLoading(true)
       const data = await publicClient.waitForTransactionReceipt({ hash })
+      await sleep(10000)
       setLoading(false)
 
       if (data?.status === 'reverted') {

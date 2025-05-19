@@ -90,6 +90,14 @@ export default function BorrowPage() {
   )
 }
 
+const truncateLoanId = (loanId: string) => {
+  if (!loanId) return ''
+  if (loanId.length <= 14) return loanId
+  const first6 = loanId.substring(0, 6)
+  const last6 = loanId.substring(loanId.length - 6)
+  return `${first6}...${last6}`
+}
+
 const LoanCard = ({ loan }: { loan: LoanRequestPayload }) => {
   return (
     <Card className="px-3 py-4">
@@ -97,7 +105,9 @@ const LoanCard = ({ loan }: { loan: LoanRequestPayload }) => {
         <div className="flex items-center justify-between gap-2">
           <div>
             <div className="text-xs text-default-600">Loan ID</div>
-            <div className="text-lg font-semibold">#{loan.loan_id}</div>
+            <div className="text-lg font-semibold">
+              #{truncateLoanId(loan.loan_id)}
+            </div>
           </div>
 
           <Chip
