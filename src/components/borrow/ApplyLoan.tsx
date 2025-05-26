@@ -20,7 +20,7 @@ import { TIME_PERIOD_AND_INTEREST_RATES } from './data'
 import { LoanSummary } from './LoanSummary'
 import { LoanConditions } from './LoanConditions'
 import { LuInfo } from 'react-icons/lu'
-import { useAccount } from 'wagmi'
+import { useAccount, useBalance } from 'wagmi'
 import { useAuth } from '@/auth/useAuth'
 import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { useLendingPoolLoan } from '@/hooks/useLendingPoolLoan'
@@ -28,6 +28,8 @@ import { toast } from 'sonner'
 import { publicClient } from '@/auth/client'
 import { useRouter } from 'next/navigation'
 import { sleep } from '@/utils/sleep'
+import { CONTRACT_ADDRESSES } from '@/utils/constants'
+import { formatUnits } from 'viem'
 
 type LoanMatchResponse = {
   success: boolean
@@ -271,6 +273,12 @@ export const ApplyLoan = () => {
     })
   }
 
+  const { data: usdcBalance } = useBalance({
+    address,
+    token: CONTRACT_ADDRESSES.USDC,
+    query: { enabled: !!address },
+  })
+
   return (
     <div className="grid h-full w-full grid-cols-1 gap-8 lg:grid-cols-3">
       <div className="w-full space-y-8 lg:col-span-1">
@@ -307,9 +315,24 @@ export const ApplyLoan = () => {
             }}
             color="primary"
             description={
-              <span className="text-sm">
-                Available to be Borrowed:{' '}
-                <strong>{availableLoanAmountInBTC ?? 0} BTC</strong>
+              <span className="flex flex-col gap-1">
+                <span className="text-sm">
+                  Available to be Borrowed:{' '}
+                  <strong>{availableLoanAmountInBTC ?? 0} BTC</strong>
+                </span>
+
+                <span className="text-sm text-foreground">
+                  Available Balance:{' '}
+                  <strong>
+                    {numeral(
+                      formatUnits(
+                        usdcBalance?.value || BigInt(0),
+                        usdcBalance?.decimals || 6
+                      )
+                    )?.format('0,0.00[00]')}{' '}
+                    USCD
+                  </strong>
+                </span>
               </span>
             }
           />

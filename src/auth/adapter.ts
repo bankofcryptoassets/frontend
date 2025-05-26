@@ -8,6 +8,7 @@ import {
   setTempAuthToken,
   setWalletAddress,
 } from './authStore'
+import { toast } from 'sonner'
 
 type NounceResponse = {
   status: string
@@ -20,6 +21,7 @@ type VerifyResponse = {
   status: string
   token: string
   user: unknown
+  walletIsVirgin?: boolean
 }
 
 export const authenticationAdapter = createAuthenticationAdapter({
@@ -68,6 +70,11 @@ export const authenticationAdapter = createAuthenticationAdapter({
       if (!data.token) throw new Error('Failed to verify signature')
 
       await signInAction({ jwt: data.token })
+      if (data?.walletIsVirgin)
+        toast.success(`GO CRAZY!!`, {
+          description: `We've funded your wallet with test usdc from our faucet for you to test out the platform.`,
+        })
+
       return true
     } catch {
       // We're not using the error details here, but we could log it if needed

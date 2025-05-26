@@ -20,12 +20,14 @@ import { LuInfo } from 'react-icons/lu'
 import { useAuth } from '@/auth/useAuth'
 import { useMutation } from '@tanstack/react-query'
 import axios from '@/utils/axios'
-import { useAccount } from 'wagmi'
+import { useAccount, useBalance } from 'wagmi'
 import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { toast } from 'sonner'
 import { publicClient } from '@/auth/client'
 import { useRouter } from 'next/navigation'
 import { sleep } from '@/utils/sleep'
+import { CONTRACT_ADDRESSES } from '@/utils/constants'
+import { formatUnits } from 'viem'
 
 type LendingPostData = {
   message: string
@@ -236,6 +238,12 @@ export const EarnInterest = () => {
     })
   }
 
+  const { data: usdcBalance } = useBalance({
+    address,
+    token: CONTRACT_ADDRESSES.USDC,
+    query: { enabled: !!address },
+  })
+
   return (
     <div className="grid h-full w-full grid-cols-1 gap-8 lg:grid-cols-3">
       <div className="w-full space-y-8 lg:col-span-1">
@@ -273,6 +281,20 @@ export const EarnInterest = () => {
               label: 'text-secondary-600',
             }}
             color="secondary"
+            description={
+              <span className="text-sm text-foreground">
+                Available Balance:{' '}
+                <strong>
+                  {numeral(
+                    formatUnits(
+                      usdcBalance?.value || BigInt(0),
+                      usdcBalance?.decimals || 6
+                    )
+                  )?.format('0,0.00[00]')}{' '}
+                  USCD
+                </strong>
+              </span>
+            }
           />
 
           <Select
