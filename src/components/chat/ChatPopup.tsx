@@ -1,8 +1,6 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { useXmtp } from '@/hooks/useXmtp'
-import { useAccount } from 'wagmi'
 import { Button, Input } from '@heroui/react'
 
 interface Message {
@@ -13,13 +11,8 @@ interface Message {
   status?: 'sending' | 'sent' | 'failed'
 }
 
-const SUPPORT_ADDRESS = '0xe4a783ef079427dda18dbb0290502aa0d52a1500'
-
+const isLoading = false
 export function ChatPopup() {
-  const { address } = useAccount()
-  const { client, isLoading, error, sendMessage, getMessages } = useXmtp({
-    address,
-  })
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState('')
@@ -31,10 +24,10 @@ export function ChatPopup() {
   }, [])
 
   useEffect(() => {
-    if (client && isOpen && isClient) {
+    if (isOpen && isClient) {
       loadMessages()
     }
-  }, [client, isOpen, isClient])
+  }, [isOpen, isClient])
 
   useEffect(() => {
     if (isOpen && messagesEndRef.current) {
@@ -44,25 +37,21 @@ export function ChatPopup() {
 
   const loadMessages = async () => {
     try {
-      const xmtpMessages = await getMessages(SUPPORT_ADDRESS)
-      const formattedMessages = xmtpMessages.map((msg) => ({
-        id: msg.id,
-        content: msg.content as string,
-        sender:
-          (msg as any).senderAddress?.toLowerCase() === address?.toLowerCase()
-            ? ('user' as const)
-            : ('other' as const),
-        timestamp: new Date(Number(msg.sentAtNs)),
-        status: 'sent' as const,
-      }))
-      setMessages(formattedMessages)
+      setMessages([
+        {
+          id: '1',
+          content: 'Hello, how can I help you today?',
+          sender: 'other',
+          timestamp: new Date(),
+        },
+      ])
     } catch (err) {
       console.error('Error loading messages:', err)
     }
   }
 
   const handleSendMessage = async () => {
-    if (!newMessage.trim() || !client) return
+    if (!newMessage.trim()) return
 
     const tempId = Date.now().toString()
     const optimisticMessage: Message = {
@@ -70,63 +59,16 @@ export function ChatPopup() {
       content: newMessage,
       sender: 'user',
       timestamp: new Date(),
-      status: 'sending',
+      status: 'sent',
     }
 
     // Optimistically add message to UI
     setMessages((prev) => [...prev, optimisticMessage])
     setNewMessage('')
-
-    try {
-      await sendMessage(SUPPORT_ADDRESS, newMessage)
-      // Update message status to sent
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === tempId ? { ...msg, status: 'sent' } : msg
-        )
-      )
-    } catch (err) {
-      console.error('Error sending message:', err)
-      // Update message status to failed
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === tempId ? { ...msg, status: 'failed' } : msg
-        )
-      )
-    }
   }
 
   if (!isClient) {
     return null
-  }
-
-  if (error) {
-    return (
-      <div className="fixed bottom-4 right-4 z-50">
-        <Button
-          isIconOnly
-          color="danger"
-          variant="shadow"
-          size="lg"
-          onClick={() => setIsOpen(true)}
-          title={error}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-        </Button>
-      </div>
-    )
   }
 
   return (
