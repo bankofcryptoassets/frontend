@@ -40,6 +40,7 @@ export const MessageList: React.FC<MessageListProps> = ({ messages }) => {
       components={{ List }}
       initialTopMostItemIndex={messages.length - 1}
       data={messages}
+      overscan={300}
       itemContent={(_, message) => (
         <Message
           key={message.id}

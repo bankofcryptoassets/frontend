@@ -1,14 +1,20 @@
 'use client'
-import { useState } from 'react'
 import { Button } from '@heroui/react'
 import { CHAT_AGENT_ENV, useXMTP } from '@/Providers/XMTPContext'
 import { useAccount, useConnect, useSignMessage } from 'wagmi'
 import { createEOASigner } from '@/utils/createSigner'
 import { LoadChatConversation } from './LoadChatConversation'
 
-export const ChatPopup = () => {
+export const ChatPopup = ({
+  isOpen,
+  setIsOpen,
+  loanHash,
+}: {
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
+  loanHash: string | null
+}) => {
   const { initializing, client, initialize } = useXMTP()
-  const [isOpen, setIsOpen] = useState(false)
   const { address } = useAccount()
   const { signMessageAsync } = useSignMessage()
   const { status } = useConnect()
@@ -91,11 +97,11 @@ export const ChatPopup = () => {
                 isLoading={isLoading}
                 onPress={initializeXMTP}
               >
-                Connect to our decentralized <br /> chat agent to continue
+                Connect to our Decentralized <br /> Insurance Agent to Continue
               </Button>
             </div>
           ) : (
-            <LoadChatConversation isOpen={isOpen} />
+            <LoadChatConversation isOpen={isOpen} loanHash={loanHash} />
           )}
         </div>
       )}
