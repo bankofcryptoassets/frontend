@@ -1,75 +1,33 @@
 'use client'
+import { useState } from 'react'
+import { Button } from '@heroui/react'
+import { CHAT_AGENT_ENV, useXMTP } from '@/Providers/XMTPContext'
+import { useAccount, useConnect, useSignMessage } from 'wagmi'
+import { createEOASigner } from '@/utils/createSigner'
+import { LoadChatConversation } from './LoadChatConversation'
 
-import { useState, useEffect, useRef } from 'react'
-import { Button, Input } from '@heroui/react'
-
-interface Message {
-  id: string
-  content: string
-  sender: 'user' | 'other'
-  timestamp: Date
-  status?: 'sending' | 'sent' | 'failed'
-}
-
-const isLoading = false
-export function ChatPopup() {
+export const ChatPopup = () => {
+  const { initializing, client, initialize } = useXMTP()
   const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([])
-  const [newMessage, setNewMessage] = useState('')
-  const [isClient, setIsClient] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const { address } = useAccount()
+  const { signMessageAsync } = useSignMessage()
+  const { status } = useConnect()
 
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
+  const initializeXMTP = async () => {
+    if (!address) return
 
-  useEffect(() => {
-    if (isOpen && isClient) {
-      loadMessages()
-    }
-  }, [isOpen, isClient])
-
-  useEffect(() => {
-    if (isOpen && messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [messages, isOpen])
-
-  const loadMessages = async () => {
-    try {
-      setMessages([
-        {
-          id: '1',
-          content: 'Hello, how can I help you today?',
-          sender: 'other',
-          timestamp: new Date(),
-        },
-      ])
-    } catch (err) {
-      console.error('Error loading messages:', err)
-    }
+    // initialize xmtp client
+    const client = await initialize({
+      env: CHAT_AGENT_ENV,
+      loggingLevel: 'error',
+      signer: createEOASigner(address, (message: string) =>
+        signMessageAsync({ message })
+      ),
+    })
+    if (!client) return
   }
 
-  const handleSendMessage = async () => {
-    if (!newMessage.trim()) return
-
-    const tempId = Date.now().toString()
-    const optimisticMessage: Message = {
-      id: tempId,
-      content: newMessage,
-      sender: 'user',
-      timestamp: new Date(),
-      status: 'sent',
-    }
-
-    // Optimistically add message to UI
-    setMessages((prev) => [...prev, optimisticMessage])
-    setNewMessage('')
-  }
-
-  if (!isClient) {
-    return null
-  }
+  const isLoading = status === 'pending' || initializing
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
@@ -123,54 +81,22 @@ export function ChatPopup() {
             </Button>
           </div>
 
-          <div className="flex-1 space-y-4 overflow-y-auto p-4">
-            {messages.map((message) => {
-              const isUser = message.sender === 'user'
-              const isSending = message.status === 'sending'
-              return (
-                <div
-                  key={message.id}
-                  className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-lg p-3 ${
-                      isUser
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-content2 text-foreground'
-                    } ${isSending ? 'opacity-60' : ''}`}
-                  >
-                    <span>{message.content}</span>
-                  </div>
-                </div>
-              )
-            })}
-            <div ref={messagesEndRef} />
-          </div>
-
-          <div className="border-t border-default-200 p-4">
-            <div className="flex gap-2">
-              <Input
-                type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type your message..."
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                isDisabled={isLoading}
-                classNames={{
-                  inputWrapper: 'bg-content1',
-                }}
-                variant="bordered"
-              />
+          {!client ? (
+            <div className="m-auto h-auto w-full p-4 text-center">
               <Button
                 color="primary"
                 variant="shadow"
-                onClick={handleSendMessage}
-                isDisabled={isLoading}
+                className="mb-16 py-8 font-medium"
+                size="lg"
+                isLoading={isLoading}
+                onPress={initializeXMTP}
               >
-                Send
+                Connect to our decentralized <br /> chat agent to continue
               </Button>
             </div>
-          </div>
+          ) : (
+            <LoadChatConversation isOpen={isOpen} />
+          )}
         </div>
       )}
     </div>

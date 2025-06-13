@@ -1,17 +1,10 @@
 'use client'
 import { ApplyLoan } from '@/components/borrow/ApplyLoan'
+import { ChatPopupWithProvider } from '@/components/chat/ChatPopupWithProvider'
 import { subtitle, title } from '@/components/primitives'
 import { Button } from '@heroui/react'
 import Link from 'next/link'
 import { PiSquaresFour } from 'react-icons/pi'
-import dynamic from 'next/dynamic'
-
-const ChatPopup = dynamic(
-  () => import('@/components/chat/ChatPopup').then((mod) => mod.ChatPopup),
-  {
-    ssr: false,
-  }
-)
 
 export default function ApplyLoanPage() {
   return (
@@ -41,7 +34,7 @@ export default function ApplyLoanPage() {
       </div>
 
       <ApplyLoan />
-      <ChatPopup />
+      <ChatPopupWithProvider />
     </div>
   )
 }
