@@ -26,7 +26,6 @@ import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { useLendingPoolLoan } from '@/hooks/useLendingPoolLoan'
 import { toast } from 'sonner'
 import { publicClient } from '@/auth/client'
-import { useRouter } from 'next/navigation'
 import { sleep } from '@/utils/sleep'
 import { CONTRACT_ADDRESSES } from '@/utils/constants'
 import { formatUnits } from 'viem'
@@ -44,8 +43,19 @@ type LoanMatchResponse = {
   }
 }
 
-export const ApplyLoan = () => {
-  const router = useRouter()
+const getLoanIdFromLog = (log: any) => {
+  const loanId = log?.logs?.[log?.logs?.length - 1]?.data?.slice(0, 66) // 0x + 64 characters
+  if (!loanId || loanId?.length !== 66 || !loanId?.startsWith('0x'))
+    return undefined
+  return loanId
+}
+
+export const ApplyLoan = ({
+  handleShowInsuranceModal,
+}: {
+  handleShowInsuranceModal: (loanId: string) => void
+}) => {
+  // const router = useRouter()
   const { data: btcAvailability } = useQuery({
     queryKey: ['/initialisation/loanavailability'],
     queryFn: () =>
@@ -174,6 +184,10 @@ export const ApplyLoan = () => {
     isPendingMatch || approvalQuery.isPending || loanQuery.isPending || waiting
 
   const handleLoan = async () => {
+    // return handleShowInsuranceModal(
+    //   '0x819d4a05ae370afb5d5743feaaa535fd32c8f6ef3c831dbf7f56c7b06cca2606'
+    // )
+
     const loanAmount = numeral(loanSummary?.principalAmount).value()
     const totalAmount =
       (numeral(loanSummary?.principalAmount)?.value() ?? 0) +
@@ -251,11 +265,14 @@ export const ApplyLoan = () => {
                 {
                   dismissible: false,
                   loading: 'Waiting for loan transaction to be confirmed...',
-                  success: (data) => {
+                  success: async (data) => {
                     if (data?.status === 'reverted')
                       throw new Error('Loan transaction failed')
 
-                    router.push('/borrow')
+                    // Get the loan ID from the transaction receipt
+                    const loanId = getLoanIdFromLog(data)
+                    if (loanId) handleShowInsuranceModal(loanId)
+
                     return `Loan approved successfully!`
                   },
                   error: (err: Error) => {
