@@ -43,11 +43,37 @@ type LoanMatchResponse = {
   }
 }
 
-const getLoanIdFromLog = (log: any) => {
-  const loanId = log?.logs?.[log?.logs?.length - 1]?.data?.slice(0, 66) // 0x + 64 characters
-  if (!loanId || loanId?.length !== 66 || !loanId?.startsWith('0x'))
+const getLoanObjectIdFromLog = async (log: any) => {
+  try {
+    const maxRetries = 3
+    const retryInterval = 10000 // 10 seconds in milliseconds
+
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        const loanId = log?.logs?.[log?.logs?.length - 1]?.data?.slice(0, 66) // 0x + 64 characters
+        if (!loanId || loanId?.length !== 66 || !loanId?.startsWith('0x'))
+          return undefined
+
+        const loanById = await axios.get(`/loan/${loanId}`)
+        const loanObjectId = loanById?.data?.loan?._id
+
+        if (loanObjectId) return loanObjectId
+
+        // If we didn't get a result and this isn't the last attempt, wait before retrying
+        if (attempt < maxRetries - 1) {
+          await sleep(retryInterval)
+        }
+      } catch (error) {
+        // If this is the last attempt, throw the error
+        if (attempt === maxRetries - 1) throw error
+        // Otherwise wait and retry
+        await sleep(retryInterval)
+      }
+    }
     return undefined
-  return loanId
+  } catch {
+    return undefined
+  }
 }
 
 export const ApplyLoan = ({
@@ -270,7 +296,7 @@ export const ApplyLoan = ({
                       throw new Error('Loan transaction failed')
 
                     // Get the loan ID from the transaction receipt
-                    const loanId = getLoanIdFromLog(data)
+                    const loanId = await getLoanObjectIdFromLog(data)
                     if (loanId) handleShowInsuranceModal(loanId)
 
                     return `Loan approved successfully!`
