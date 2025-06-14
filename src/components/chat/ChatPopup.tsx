@@ -63,7 +63,7 @@ export const ChatPopup = ({
       ) : (
         <div className="flex h-[500px] w-96 flex-col rounded-lg border border-default-200 bg-content1 text-foreground shadow-lg">
           <div className="flex items-center justify-between border-b border-default-200 p-4">
-            <h3 className="font-semibold">Chat Support</h3>
+            <h3 className="font-semibold">Clara Insurance Cover</h3>
             <Button
               isIconOnly
               variant="light"
