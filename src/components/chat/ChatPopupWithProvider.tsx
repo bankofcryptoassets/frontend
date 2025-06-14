@@ -4,15 +4,15 @@ import { ChatPopup } from './ChatPopup'
 export const ChatPopupWithProvider = ({
   isOpen,
   setIsOpen,
-  loanHash,
+  loanId,
 }: {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
-  loanHash: string | null
+  loanId: string | null
 }) => {
   return (
     <XMTPProvider>
-      <ChatPopup isOpen={isOpen} setIsOpen={setIsOpen} loanHash={loanHash} />
+      <ChatPopup isOpen={isOpen} setIsOpen={setIsOpen} loanId={loanId} />
     </XMTPProvider>
   )
 }

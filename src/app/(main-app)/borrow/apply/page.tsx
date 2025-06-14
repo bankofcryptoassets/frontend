@@ -22,10 +22,10 @@ export default function ApplyLoanPage() {
   const [isInsuranceModalOpen, setIsInsuranceModalOpen] = useState(false)
   const [showInsuranceChat, setShowInsuranceChat] = useState(false)
   const [isInsuranceChatOpen, setIsInsuranceChatOpen] = useState(false)
-  const [loanHash, setLoanHash] = useState<string | null>(null)
+  const [loanId, setLoanId] = useState<string | null>(null)
 
-  const handleShowInsuranceModal = (hash: string) => {
-    setLoanHash(hash)
+  const handleShowInsuranceModal = (loanId: string) => {
+    setLoanId(loanId)
     setIsInsuranceModalOpen(true)
   }
 
@@ -73,7 +73,7 @@ export default function ApplyLoanPage() {
         <ChatPopupWithProvider
           isOpen={isInsuranceChatOpen}
           setIsOpen={setIsInsuranceChatOpen}
-          loanHash={loanHash}
+          loanId={loanId}
         />
       )}
 

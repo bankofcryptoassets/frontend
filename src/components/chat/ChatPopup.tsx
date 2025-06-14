@@ -8,11 +8,11 @@ import { LoadChatConversation } from './LoadChatConversation'
 export const ChatPopup = ({
   isOpen,
   setIsOpen,
-  loanHash,
+  loanId,
 }: {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
-  loanHash: string | null
+  loanId: string | null
 }) => {
   const { initializing, client, initialize } = useXMTP()
   const { address } = useAccount()
@@ -101,7 +101,7 @@ export const ChatPopup = ({
               </Button>
             </div>
           ) : (
-            <LoadChatConversation isOpen={isOpen} loanHash={loanHash} />
+            <LoadChatConversation isOpen={isOpen} loanId={loanId} />
           )}
         </div>
       )}

@@ -43,10 +43,17 @@ type LoanMatchResponse = {
   }
 }
 
+const getLoanIdFromLog = (log: any) => {
+  const loanId = log?.logs?.[log?.logs?.length - 1]?.data?.slice(0, 66) // 0x + 64 characters
+  if (!loanId || loanId?.length !== 66 || !loanId?.startsWith('0x'))
+    return undefined
+  return loanId
+}
+
 export const ApplyLoan = ({
   handleShowInsuranceModal,
 }: {
-  handleShowInsuranceModal: (hash: string) => void
+  handleShowInsuranceModal: (loanId: string) => void
 }) => {
   // const router = useRouter()
   const { data: btcAvailability } = useQuery({
@@ -258,12 +265,14 @@ export const ApplyLoan = ({
                 {
                   dismissible: false,
                   loading: 'Waiting for loan transaction to be confirmed...',
-                  success: (data) => {
+                  success: async (data) => {
                     if (data?.status === 'reverted')
                       throw new Error('Loan transaction failed')
 
-                    // router.push('/borrow')
-                    handleShowInsuranceModal(hash)
+                    // Get the loan ID from the transaction receipt
+                    const loanId = getLoanIdFromLog(data)
+                    if (loanId) handleShowInsuranceModal(loanId)
+
                     return `Loan approved successfully!`
                   },
                   error: (err: Error) => {

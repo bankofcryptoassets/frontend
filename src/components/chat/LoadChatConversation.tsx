@@ -12,12 +12,12 @@ import { Spinner } from '@heroui/react'
 
 type LoadChatConversationProps = {
   isOpen: boolean
-  loanHash: string | null
+  loanId: string | null
 }
 
 export const LoadChatConversation = ({
   isOpen,
-  loanHash,
+  loanId,
 }: LoadChatConversationProps) => {
   const { client } = useXMTP()
   const { getConversationById } = useConversations()
@@ -52,7 +52,7 @@ export const LoadChatConversation = ({
       if (!conversation) return
       if (isNewDM) {
         await conversation?.send(
-          `I'm looking for an insurance for loan Id ${loanHash}`
+          `I'm looking for an insurance for loan Id ${loanId}`
         )
       }
       setConversation(conversation)
