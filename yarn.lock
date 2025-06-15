@@ -6919,10 +6919,22 @@ react-dom@19.1.0:
   dependencies:
     scheduler "^0.26.0"
 
+react-from-dom@^0.7.5:
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.7.5.tgz#2d2d2bf6d80149c053bcf71bb6615e5e7f6d23db"
+  integrity sha512-CO92PmMKo/23uYPm6OFvh5CtZbMgHs/Xn+o095Lz/TZj9t8DSDhGdSOMLxBxwWI4sr0MF17KUn9yJWc5Q00R/w==
+
 react-icons@5.5.0:
   version "5.5.0"
   resolved "https://registry.npmjs.org/react-icons/-/react-icons-5.5.0.tgz"
   integrity sha512-MEFcXdkP3dLo8uumGI5xN3lDFNsRtrjbOEKDLD7yv76v4wpnEq2Lt2qeHaQOr34I/wPN3s3+N08WkQ+CW37Xiw==
+
+react-inlinesvg@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-4.2.0.tgz#79e41579459a0a535d0f7674050a252085cdf157"
+  integrity sha512-V59P6sFU7NACIbvoay9ikYKVFWyIIZFGd7w6YT1m+H7Ues0fOI6B6IftE6NPSYXXv7RHVmrncIyJeYurs3OJcA==
+  dependencies:
+    react-from-dom "^0.7.5"
 
 react-is@^16.13.1, react-is@^16.7.0, react-is@^18.3.1, react-is@^19.0.0-rc-69d4b800-20241021:
   version "19.1.0"

@@ -26,4 +26,22 @@ export const siteConfig = {
       href: '/#faqs',
     },
   ],
+  navItemMainApp: [
+    {
+      label: 'Borrow $BTC',
+      href: '/borrow',
+    },
+    {
+      label: 'Invest',
+      href: '/invest',
+    },
+    {
+      label: 'My Portfolio',
+      href: '/portfolio',
+    },
+    {
+      label: 'Analytics',
+      href: '/analytics',
+    },
+  ],
 }
