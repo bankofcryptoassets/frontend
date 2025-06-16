@@ -32,7 +32,7 @@ export const Hero = () => {
             </h1>
 
             <p className={subtitle({ class: 'mt-10' })}>
-              BitMore lets you own BTC with a small upfront payment. Or earn
+              Bitmor lets you own BTC with a small upfront payment. Or earn
               stable yield by lending to Bitcoin buyers. All secured by smart
               contracts.
             </p>

@@ -7,7 +7,7 @@ import {
   Lenders,
   Stats,
   Team,
-  WhyBitMore,
+  WhyBitmor,
 } from '@/components/landing'
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
       <Stats />
       <Borrowers />
       <Lenders />
-      <WhyBitMore />
+      <WhyBitmor />
       <Team />
       <FAQs />
       <CTABanner />

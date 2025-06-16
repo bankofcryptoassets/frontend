@@ -85,7 +85,7 @@ export const RainbowKitProvider = ({
           <NextRainbowKitProvider
             coolMode
             modalSize="compact"
-            appInfo={{ appName: 'BitMore' }}
+            appInfo={{ appName: 'Bitmor' }}
             theme={theme}
           >
             <WalletAddressTracker />

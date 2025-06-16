@@ -126,7 +126,7 @@ export const Footer = () => {
         </div>
 
         <div className="mt-8 flex flex-col justify-between gap-4 border-t border-default pt-6 text-sm md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} BitMore. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Bitmor. All rights reserved.</p>
           <ul className="flex gap-4">
             {BOTTOM_LINKS.map((link, linkIdx) => (
               <li key={linkIdx}>

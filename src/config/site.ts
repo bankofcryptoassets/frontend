@@ -1,7 +1,7 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: 'BitMore',
+  name: 'Bitmor',
   description:
     'Buy Bitcoin with 80% Financing. Earn Yield Backed by Real Demand.',
   navItems: [
@@ -14,7 +14,7 @@ export const siteConfig = {
       href: '/#lenders',
     },
     {
-      label: 'Why BitMore',
+      label: 'Why Bitmor',
       href: '/#why',
     },
     {

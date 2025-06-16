@@ -33,7 +33,7 @@ export const CTABanner = () => {
             </h1>
 
             <p className={subtitle({ class: 'mt-4' })}>
-              Join BitMore today and tranform how you own Bitcoin or earn yield.
+              Join Bitmor today and tranform how you own Bitcoin or earn yield.
             </p>
           </div>
 

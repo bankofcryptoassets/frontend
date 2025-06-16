@@ -74,7 +74,7 @@ const FEATURES = [
   },
 ]
 
-export const WhyBitMore = () => {
+export const WhyBitmor = () => {
   const { resolvedTheme: theme } = useTheme()
 
   return (
@@ -82,7 +82,7 @@ export const WhyBitMore = () => {
       <div className="flex w-full flex-col items-center justify-center gap-6">
         <div className="flex w-full flex-col items-center justify-center gap-3 text-center">
           <Chip color="primary" classNames={{ content: 'font-semibold' }}>
-            WHY BITMORE
+            WHY BITMOR
           </Chip>
 
           <h2 className={title({ size: 'xs' })}>Better Way to BTC</h2>

@@ -52,7 +52,7 @@ export const FAQs = () => {
           <h2 className={title({ size: 'xs' })}>Common Questions</h2>
 
           <p className={subtitle()}>
-            Everything you need to know about BitMore&apos;s lending and
+            Everything you need to know about Bitmor&apos;s lending and
             borrowing services.
           </p>
         </div>
