@@ -25,7 +25,7 @@ export const useLendingPoolLoan = () => {
     },
   })
 
-  /**
+    /**
    * Function to call the loan method on the lending pool contract
    *
    * @param totalAmount - Total loan amount including borrower deposit (in USDC)
@@ -45,31 +45,38 @@ export const useLendingPoolLoan = () => {
    * )
    */
   const takeLoan = (
-    totalAmount: number | string,
+    totalAmount: bigint,
     durationMonths: number,
     annualInterestRate: number,
     lenderAddresses: `0x${string}`[],
     lenderAmounts: (number | string)[]
   ) => {
-    // Validate inputs
+
+    console.log("Total Amount:", totalAmount)
+    console.log("Lender Addresses:", lenderAddresses)
+    console.log("Lender Amounts:", lenderAmounts)
+    
     if (lenderAddresses.length !== lenderAmounts.length) {
       throw new Error(
         'Lender addresses and amounts arrays must have the same length'
       )
     }
 
-    // Convert amount to proper units (USDC has 6 decimals)
-    const parsedAmount =
-      typeof totalAmount === 'string'
-        ? parseUnits(totalAmount, 6)
-        : parseUnits(totalAmount.toString(), 6)
+    const parsedLenderAmounts = lenderAmounts.map((amount) => {
+      // Convert to string without scientific notation
+      const amountStr = typeof amount === 'string' 
+        ? amount 
+        : amount.toFixed(6).replace(/\.?0+$/, '') // Remove trailing zeros
+      
+      console.log(`Converting lender amount: ${amount} -> ${amountStr}`)
+      return parseUnits(amountStr, 6)
+    })
 
-    // Convert lenderAmounts to proper units
-    const parsedLenderAmounts = lenderAmounts.map((amount) =>
-      typeof amount === 'string'
-        ? parseUnits(amount, 6)
-        : parseUnits(amount.toString(), 6)
-    )
+    console.log('Parsed Amount:', totalAmount)
+    console.log('Parsed Lender Amounts:', parsedLenderAmounts)
+    console.log('Lender Addresses:', lenderAddresses)
+    console.log('Duration Months:', durationMonths)
+    console.log('Annual Interest Rate:', annualInterestRate)
 
     return loanQuery.writeContractAsync({
       abi: parseAbi([
@@ -78,7 +85,7 @@ export const useLendingPoolLoan = () => {
       address: CONTRACT_ADDRESSES.LENDING_POOL,
       functionName: 'loan',
       args: [
-        parsedAmount,
+        totalAmount,
         BigInt(durationMonths),
         BigInt(annualInterestRate),
         lenderAddresses,

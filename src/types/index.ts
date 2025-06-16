@@ -36,7 +36,12 @@ export type LoanSummary = {
   liquidationChart: {
     months: number[]
     liquidationPrices: number[]
-  }
+  },
+   contract: {
+                totalLoanAmount: string,
+                borrowerDeposit: string,
+                lenderPrincipal: string
+            }
 }
 
 export type AmortizationSchedule = {

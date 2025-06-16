@@ -209,74 +209,81 @@ export const ApplyLoan = ({
   const isPending =
     isPendingMatch || approvalQuery.isPending || loanQuery.isPending || waiting
 
-  const handleLoan = async () => {
-    // return handleShowInsuranceModal(
-    //   '0x819d4a05ae370afb5d5743feaaa535fd32c8f6ef3c831dbf7f56c7b06cca2606'
-    // )
+const handleLoan = async () => {
+  // Get the original string values from the API response instead of using numeral
+  const loanAmountString = data?.data?.data?.loanSummary?.principal?.toString() || '0'
+  const totalAmountString = data?.data?.data?.loanSummary?.totalPayment?.toString() || '0'
 
-    const loanAmount = numeral(loanSummary?.principalAmount).value()
-    const totalAmount =
-      (numeral(loanSummary?.principalAmount)?.value() ?? 0) +
-      (numeral(loanSummary?.minDownPayment)?.value() ?? 0)
+  // For validation, you can still convert to numbers
+  const loanAmountNumber = Number(loanAmountString)
+  const totalAmountNumber = Number(totalAmountString)
 
-    if (
-      !isAuth ||
-      !address ||
-      !btcAmount ||
-      !term ||
-      !interestRate ||
-      !userId ||
-      !loanAmount ||
-      !totalAmount
-    )
+  const totalAmountParsed = BigInt(data?.data?.data?.loanSummary?.contract?.totalLoanAmount as string)
+  const parsedBorrowerDeposit = BigInt(data?.data?.data?.loanSummary?.contract?.borrowerDeposit as string) 
+
+  console.log('Loan Amount String:', loanAmountString)
+  console.log('Total Amount String:', totalAmountString)
+
+  if (
+    !isAuth ||
+    !address ||
+    !btcAmount ||
+    !term ||
+    !interestRate ||
+    !userId ||
+    !loanAmountNumber ||
+    !totalAmountNumber
+  )
+    return
+
+  // Use string values for the contract call
+  approveUSDC(totalAmountString).then(async (hash) => {
+    setWaiting(true)
+    const data = await publicClient.waitForTransactionReceipt({ hash })
+    await sleep(10000)
+    setWaiting(false)
+
+    if (data?.status === 'reverted') {
+      toast.error('Failed to approve USDC')
       return
+    }
 
-    // get approval for minDownPayment + totalPayable
-    approveUSDC(totalAmount?.toString()).then(async (hash) => {
-      setWaiting(true)
-      const data = await publicClient.waitForTransactionReceipt({ hash })
-      await sleep(10000)
-      setWaiting(false)
-
-      if (data?.status === 'reverted') {
-        toast.error('Failed to approve USDC')
-        return
-      }
-      // call /match with loanSummary
-      mutate(
-        {
-          borrower_address: address,
-          interest_rate: Number(interestRate),
-          duration_months: Number(term),
-          loan_amount: loanAmount,
+    // For the API call, still use numbers as expected by your backend
+    mutate(
+      {
+        borrower_address: address,
+        interest_rate: Number(interestRate),
+        duration_months: Number(term),
+        loan_amount: loanAmountNumber, // Use number for API
+      },
+      {
+        onError: () => {
+          toast.error('Failed to match loan')
         },
-        {
-          onError: () => {
+        onSuccess: (matchData) => {
+          toast.success(matchData?.message || 'Successfully matched loan')
+
+          const lenderAddresses = matchData?.data?.matched_lenders?.map(
+            (lender) => lender.lender_address
+          )
+          
+          // IMPORTANT: Keep these as strings to preserve precision
+          const lenderAmounts = matchData?.data?.matched_lenders?.map(
+            (lender) => lender.amount.toString() // Convert to string immediately
+          )
+
+          if (
+            !lenderAddresses?.length ||
+            !lenderAmounts?.length ||
+            !totalAmountString
+          ) {
             toast.error('Failed to match loan')
-          },
-          onSuccess: (data) => {
-            toast.success(data?.message || 'Successfully matched loan')
-
-            const lenderAddresses = data?.data?.matched_lenders?.map(
-              (lender) => lender.lender_address
-            )
-            const lenderAmounts = data?.data?.matched_lenders?.map(
-              (lender) => lender.amount
-            )
-
-            // check if all values are present
-            if (
-              !lenderAddresses?.length ||
-              !lenderAmounts?.length ||
-              !totalAmount
-            ) {
-              toast.error('Failed to match loan')
-              return
-            }
+            return
+          }
 
             // call loan contract
             takeLoan(
-              totalAmount,
+              totalAmountParsed,
               Number(term || 0),
               Number(interestRate),
               lenderAddresses,
