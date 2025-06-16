@@ -16,6 +16,13 @@ import NextLink from 'next/link'
 import { LuCircleDollarSign, LuInfo, LuTrendingUp } from 'react-icons/lu'
 import { useMemo, useState } from 'react'
 import numeral from 'numeral'
+import { StyledModal } from '@/components/StyledModal'
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/Chart'
+import { Bar, BarChart, LabelList, XAxis, YAxis } from 'recharts'
 
 const USER_USDC_BALANCE = 12932
 
@@ -36,11 +43,14 @@ export default function InvestUSDCPage() {
     return usdcAmount > USER_USDC_BALANCE
   }, [usdcAmount])
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   return (
     <div
       className="container mt-10 grid h-full min-h-[calc(100vh-7rem)] w-full grid-cols-[280px_1fr] gap-5 pb-[60px] max-lg:grid-cols-1"
       id="invest-page"
     >
+      <StyledModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
       <div className="flex h-full w-full flex-col gap-4">
         <Card className="min-h-fit w-full space-y-6 rounded-2xl border border-default-200/40 bg-default-100/80 p-7 pb-[30px]">
           <div>
@@ -127,8 +137,8 @@ export default function InvestUSDCPage() {
           Investment
         </div>
 
-        <div className="flex h-full w-full justify-between gap-5">
-          <div className="h-full w-full space-y-8 px-2 sm:w-[400px]">
+        <div className="flex w-full justify-between gap-16 max-xl:flex-col">
+          <div className="h-full w-full space-y-8 px-2 sm:min-w-[400px]">
             <div className="rounded-xl border border-default-300/50 bg-[#e0e0e0] p-5 pb-4 pt-[18px] dark:bg-[#1F1F1F] max-sm:w-full">
               <div className="mb-16 pb-3.5 pl-1 text-base font-medium text-default-d">
                 How Much USDC?
@@ -254,7 +264,7 @@ export default function InvestUSDCPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 text-xs text-default-a">
                   Base APR (6%){' '}
@@ -309,17 +319,87 @@ export default function InvestUSDCPage() {
               className="w-full font-bold text-white"
               size="lg"
               color="secondary"
+              onPress={() => setIsModalOpen(true)}
             >
               Continue with the Invesment
             </Button>
           </div>
 
-          <div className="h-full w-full rounded-xl border border-default-200 bg-[#e8e8e8] p-5 dark:bg-[#181818] sm:w-[360px]">
+          <div className="w-full rounded-xl border border-default-200 bg-[#e8e8e8] p-5 dark:bg-[#181818] sm:min-w-[360px]">
             <div className="text-base font-medium text-default-d">
               Annualized Yield Comparison across Lending Scenarios
             </div>
 
-            <div>graph here</div>
+            <div className="mt-7">
+              <ChartContainer
+                config={{
+                  apy: {
+                    label: 'APY (%)',
+                    color: 'hsl(var(--heroui-secondary))',
+                  },
+                }}
+                className="min-h-[430px] w-full [&_*]:outline-none"
+              >
+                <BarChart
+                  accessibilityLayer
+                  data={[
+                    { category: 'Maximum Earning by Reinvesting', apy: 29 },
+                    { category: 'Higher Earnings by Reinvesting', apy: 17 },
+                    { category: 'Average Bitmor Earnings', apy: 8 },
+                    { category: 'Average DeFi Earnings', apy: 3 },
+                  ]}
+                  barCategoryGap={10}
+                >
+                  <Bar
+                    dataKey="apy"
+                    fill="var(--color-apy)"
+                    radius={[8, 8, 0, 0]}
+                  >
+                    <LabelList
+                      position="top"
+                      offset={12}
+                      className="fill-default-d"
+                      formatter={(value: number) => `${value}%`}
+                      fontSize={14}
+                      fontWeight={500}
+                    />
+                  </Bar>
+                  <XAxis
+                    dataKey="category"
+                    tickLine={false}
+                    tickMargin={10}
+                    axisLine={true}
+                    tickFormatter={(value) => value.slice(0, 3)}
+                  />
+                  <YAxis
+                    dataKey="apy"
+                    tickLine={true}
+                    tickMargin={10}
+                    axisLine={true}
+                    label={{
+                      value: `APY (%)`,
+                      style: { textAnchor: 'middle' },
+                      angle: -90,
+                      position: 'left',
+                      offset: -16,
+                    }}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={
+                      <ChartTooltipContent
+                        formatter={(value) => (
+                          <div className="flex items-center gap-2">
+                            <div className="">APY</div>
+                            <div className="">{value}%</div>
+                          </div>
+                        )}
+                      />
+                    }
+                  />
+                </BarChart>
+              </ChartContainer>
+            </div>
           </div>
         </div>
       </Card>
