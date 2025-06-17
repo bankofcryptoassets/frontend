@@ -22,6 +22,8 @@
     "@xmtp/content-type-transaction-reference": "2.0.2",
     "@xmtp/content-type-wallet-send-calls": "2.0.0",
     "axios": "1.9.0",
+    "embla-carousel-autoplay": "8.6.0",
+    "embla-carousel-react": "8.6.0",
     "framer-motion": "12.9.2",
     "jose": "6.0.11",
     "js-cookie": "3.0.5",

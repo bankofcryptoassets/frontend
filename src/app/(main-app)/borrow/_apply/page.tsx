@@ -1,5 +1,5 @@
 'use client'
-import { ApplyLoan } from '@/components/borrow/ApplyLoan'
+import { ApplyLoan } from '@/components/_borrow/ApplyLoan'
 import { subtitle, title } from '@/components/primitives'
 import { Button } from '@heroui/react'
 import Link from 'next/link'

@@ -14,7 +14,7 @@ import {
 } from '@heroui/react'
 import numeral from 'numeral'
 import { useMemo, useState } from 'react'
-import { TIME_PERIOD_AND_INTEREST_RATES } from '../borrow/data'
+import { TIME_PERIOD_AND_INTEREST_RATES } from '../_borrow/data'
 import { Summary } from './Summary'
 import { LuInfo } from 'react-icons/lu'
 import { useAuth } from '@/auth/useAuth'

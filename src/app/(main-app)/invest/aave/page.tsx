@@ -136,7 +136,7 @@ export default function InvestAavePage() {
         </div>
 
         <div className="w-full space-y-8 px-2 sm:w-[456px]">
-          <div className="rounded-xl border border-default-300/50 bg-[#e0e0e0] p-5 pb-4 pt-[18px] dark:bg-[#1F1F1F] max-sm:w-full">
+          <div className="rounded-xl border border-default-300/50 bg-[#eaeaee] p-5 pb-4 pt-[18px] dark:bg-[#1F1F1F] max-sm:w-full">
             <div className="mb-16 pb-3.5 pl-1 text-base font-medium text-default-d">
               How Much BTC?
             </div>
@@ -172,7 +172,7 @@ export default function InvestAavePage() {
                     formatOptions={{ maximumFractionDigits: 8 }}
                     classNames={{
                       inputWrapper: cn(
-                        'bg-[#e9e9e7] dark:bg-[#161618] dark:data-[hover=true]:bg-[#161618]/50 data-[hover=true]:bg-[#e9e9e7]/50',
+                        'bg-default-50',
                         sliderInputInsufficient && 'border border-danger'
                       ),
                       input: 'text-2xl font-bold',

@@ -1,342 +1,210 @@
-'use client'
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Checkbox,
-  Spinner,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-  Tooltip,
-} from '@heroui/react'
-import { useState } from 'react'
-import { LuInfo } from 'react-icons/lu'
-import {
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '../Chart'
-import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-  XAxis,
-  YAxis,
-} from 'recharts'
-import { NoData } from '../NoData'
-import { AmortizationSchedule } from '@/types'
-import numeral from 'numeral'
-import { useAuth } from '@/auth/useAuth'
+import { Button, Card, Checkbox } from '@heroui/react'
+import { LuArrowLeft } from 'react-icons/lu'
+import { BsCaretDownFill } from 'react-icons/bs'
 
-type Props = {
-  isLoading: boolean
-  interestOverTimeData?: {
-    type: 'interest' | 'principal'
-    amount: number
-    fill: string
-  }[]
-  unlockScheduleData?: AmortizationSchedule[]
-  liquidationData?: {
-    months: number[]
-    liquidationPrices: number[]
-  }
-  currentBtcPrice?: string
-  handleLoan: () => void
-  invalidInputs: boolean
-  isPending: boolean
+type LoanConditionsProps = {
+  setStep: (step: number) => void
+  setIsModalOpen: (isOpen: boolean) => void
 }
 
 export const LoanConditions = ({
-  isLoading,
-  interestOverTimeData,
-  unlockScheduleData,
-  liquidationData,
-  currentBtcPrice,
-  handleLoan,
-  invalidInputs,
-  isPending,
-}: Props) => {
-  const { isAuth } = useAuth()
-  const [isAccepted, setIsAccepted] = useState(false)
-
-  // const invalidInputs = !usdcAmount || !interestRate || !term
-  const isDisabled = !isAuth || invalidInputs || !isAccepted
-  const message = !isAuth
-    ? 'Please connect your wallet to continue'
-    : invalidInputs
-      ? 'Please fill in all the fields'
-      : !isAccepted
-        ? 'Please accept the conditions'
-        : ''
-
-  const liquidationChartData = liquidationData?.liquidationPrices.map(
-    (price, index) => ({
-      month: index,
-      threshhold: price,
-    })
-  )
-
+  setStep,
+  setIsModalOpen,
+}: LoanConditionsProps) => {
   return (
-    <Card className="relative w-full">
-      {isLoading && (
-        <div className="absolute inset-0 z-[1] grid place-items-center bg-default/50 p-4 backdrop-blur-sm">
-          <Spinner color="primary" />
-        </div>
-      )}
-
-      <CardHeader className="bg-default-300 px-4 py-3 font-bold">
+    <Card className="rounded-2xl border border-default-200 bg-default-100 px-7 pb-5 pt-[18px]">
+      <div className="mb-7 border-b border-default-200 pb-4 pl-1 text-base font-medium text-default-d">
         Loan Conditions
-      </CardHeader>
+      </div>
 
-      <CardBody className="grid grid-cols-1 gap-4 p-4 text-sm xl:grid-cols-2">
-        <Card className="h-full w-full">
-          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-            <span>Interest Schedule</span>
+      <div className="mb-8 flex w-full justify-between gap-16 max-xl:flex-col">
+        <div className="w-full sm:min-w-[360px]">
+          <div className="w-full rounded-xl border border-default-200 bg-[#eaeaee] p-5 dark:bg-[#1F1F22]">
+            <div className="mb-5 border-b border-default-300 px-1 pb-3.5 text-base font-medium text-default-d">
+              Loan Summary
+            </div>
 
-            <Tooltip content="Shows how interest accrues over time for the loan">
-              <LuInfo />
-            </Tooltip>
-          </CardHeader>
-
-          <CardBody className="bg-default-200/50">
-            {interestOverTimeData ? (
-              <ChartContainer
-                config={{
-                  amount: { label: 'Amount' },
-                  interest: { label: 'Interest' },
-                  principal: { label: 'Principal ' },
-                }}
-              >
-                <PieChart>
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel />}
-                  />
-                  <Pie
-                    data={interestOverTimeData}
-                    dataKey="amount"
-                    nameKey="type"
-                  />
-                  <ChartLegend
-                    content={<ChartLegendContent nameKey="type" />}
-                    className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
-                  />
-                </PieChart>
-              </ChartContainer>
-            ) : (
-              <NoData />
-            )}
-          </CardBody>
-        </Card>
-
-        <Card className="h-full w-full">
-          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-            <span>Loan Fees</span>
-
-            <Tooltip content="Various fees associated with the loan (e.g. origination, early closure)">
-              <LuInfo />
-            </Tooltip>
-          </CardHeader>
-
-          <CardBody className="bg-default-200/50 p-4">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <span>Origination Fee (1%)</span>
-                <Tooltip content="A one-time fee charged for processing your loan">
-                  <LuInfo />
-                </Tooltip>
+            <div className="mb-5 flex items-center gap-12 border-b border-default-300 px-1 pb-4">
+              <div className="flex flex-col gap-0.5">
+                <div className="text-xs leading-tight text-default-d">
+                  Borrowed Amount
+                </div>
+                <div className="text-[32px] font-bold leading-tight text-primary">
+                  1.22 BTC
+                </div>
               </div>
-
-              <div className="flex items-center gap-2">
-                <span>Early Repayment Fee (1%)</span>
-                <Tooltip content="A fee for repaying your loan before the term ends">
-                  <LuInfo />
-                </Tooltip>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span>Non Repayment Fees</span>
-                <Tooltip content="Charged if you default on the loan">
-                  <LuInfo />
-                </Tooltip>
+              <div className="flex flex-col gap-0.5">
+                <div className="text-xs leading-tight text-default-d">
+                  Loan Duration
+                </div>
+                <div className="text-[32px] font-bold leading-tight text-default-d">
+                  7Y
+                </div>
               </div>
             </div>
-          </CardBody>
-        </Card>
 
-        <Card className="h-full w-full">
-          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-            <span>Unlock Schedule</span>
-
-            <Tooltip content="Timeline when your collateral becomes available after repayment">
-              <LuInfo />
-            </Tooltip>
-          </CardHeader>
-
-          <CardBody className="h-full bg-default-200/50">
-            {!!unlockScheduleData?.length ? (
-              <Table
-                removeWrapper
-                maxTableHeight={240}
-                isHeaderSticky
-                classNames={{
-                  base: 'max-h-[240px]',
-                }}
-              >
-                <TableHeader>
-                  <TableColumn align="end">Month</TableColumn>
-                  <TableColumn align="end">Interest</TableColumn>
-                  <TableColumn align="end">Principal</TableColumn>
-                  <TableColumn align="end">Remaining</TableColumn>
-                </TableHeader>
-                <TableBody>
-                  {unlockScheduleData?.map((item) => (
-                    <TableRow
-                      key={item.month}
-                      className="transition hover:bg-default-200"
-                    >
-                      <TableCell className="font-mono text-xs">
-                        {item.month}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs">
-                        {numeral(item.interestPayment).format('0,0.00')}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs">
-                        {numeral(item.principalPayment).format('0,0.00')}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs">
-                        {numeral(item.remainingBalance).format('0,0.00')}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            ) : (
-              <NoData />
-            )}
-          </CardBody>
-        </Card>
-
-        <Card className="h-full w-full">
-          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
-            <span>BTC Liquidation Threshold</span>
-
-            <Tooltip content="Price of BTC at which we have to sell off remaining BTC to cover unpaid loan">
-              <LuInfo />
-            </Tooltip>
-          </CardHeader>
-
-          <CardBody className="bg-default-200/50 py-4">
-            {!!currentBtcPrice && (
-              <div className="mb-6 ml-4">
-                Current BTC Price:{' '}
-                <span className="font-mono font-bold text-primary">
-                  {numeral(currentBtcPrice).format('0,0.00')}
+            <div className="space-y-3 px-1 text-sm text-default-a">
+              <div className="flex items-center justify-between gap-2">
+                <span>Total Paid</span>
+                <span className="text-right font-bold text-default-d">
+                  20,000 USDC
                 </span>
-                <span> USDC</span>
               </div>
-            )}
+              <div className="relative ml-7 flex items-center justify-between gap-2">
+                <span className="absolute -left-6 -top-2.5 size-5 border-b border-l border-default-300" />
+                <span>Principal</span>
+                <span className="text-right">5,000 USDC</span>
+              </div>
+              <div className="relative ml-7 flex items-center justify-between gap-2">
+                <span className="absolute -left-6 -top-6 size-5 h-9 border-b border-l border-default-300" />
+                <span>Interest (11%)</span>
+                <span className="text-right">2,200 USDC</span>
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <span>Loan Origination Fees (1%)</span>
+                <span className="text-right font-bold text-default-d">
+                  100 USDC
+                </span>
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <span>Down Payment + Fees</span>
+                <span className="text-right font-bold text-default-d">
+                  1,000 USDC
+                </span>
+              </div>
+            </div>
 
-            {!!unlockScheduleData?.length ? (
-              <ChartContainer
-                config={{
-                  threshhold: {
-                    label: 'Threshhold',
-                    color: 'hsl(var(--heroui-primary))',
-                  },
-                }}
-                className="my-auto overflow-hidden"
-              >
-                <LineChart
-                  accessibilityLayer
-                  data={liquidationChartData}
-                  margin={{ left: 16, bottom: 12, right: 12 }}
-                >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    label={{
-                      value: `Months`,
-                      position: 'bottom',
-                      offset: 0,
-                    }}
-                  />
-                  <YAxis
-                    dataKey="threshhold"
-                    tickLine={false}
-                    axisLine={false}
-                    label={{
-                      value: `Liquidation Threshold`,
-                      style: { textAnchor: 'middle' },
-                      angle: -90,
-                      position: 'left',
-                      offset: 8,
-                    }}
-                    tickMargin={8}
-                    tickFormatter={(value) => numeral(value).format('0,0')}
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel />}
-                  />
-                  <Line
-                    dataKey="threshhold"
-                    type="linear"
-                    stroke="var(--color-threshhold)"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ChartContainer>
-            ) : (
-              <NoData />
-            )}
-          </CardBody>
-        </Card>
-      </CardBody>
-
-      <CardFooter className="flex w-full gap-4 p-0">
-        <div className="before: flex w-full flex-col items-center justify-between gap-3 bg-default-300 p-4">
-          <Checkbox
-            color="primary"
-            checked={isAccepted}
-            onValueChange={(value) => setIsAccepted(value)}
-            classNames={{
-              label: 'text-bold',
-              wrapper: 'before:!border-foreground/60',
-            }}
-          >
-            I understand and accept the conditions above for loans
-          </Checkbox>
-
-          <Tooltip content={message} isDisabled={!isDisabled}>
-            <Button
-              variant="shadow"
-              color="primary"
-              size="lg"
-              className="pointer-events-auto font-semibold"
-              isDisabled={isDisabled}
-              onPress={handleLoan}
-              isLoading={isPending}
-            >
-              Confirm and Get Your Bitcoin
-            </Button>
-          </Tooltip>
+            <div className="mt-7 flex items-center justify-between border-t border-default-300 px-1 pt-4 text-base font-medium text-default-d">
+              <span>Monthly Payment</span>
+              <span className="text-right text-xl font-bold text-primary">
+                27,300 USDC
+              </span>
+            </div>
+            <div className="mt-1 px-1 text-xs text-default-a">
+              starting 10th May 2025
+            </div>
+          </div>
         </div>
-      </CardFooter>
+
+        <div className="h-full w-full px-2 sm:min-w-[400px]">
+          <div className="mb-4 border-b border-default-300 px-1 pb-3.5 text-base font-medium text-default-d">
+            Loan Conditions
+          </div>
+
+          <div className="flex rounded-[10px] px-3.5 py-2.5 pr-2.5 transition hover:bg-default-200/70">
+            <Checkbox
+              color="primary"
+              className="!m-0 p-0"
+              classNames={{
+                base: 'items-start',
+                wrapper: 'mr-3 mt-0.5',
+                label: 'text-default-d text-sm',
+              }}
+            >
+              If I Fail to Pay for a Month, a portion of my Bitcoin will be sold
+              to cover monthly payments.
+            </Checkbox>
+
+            <span className="mt-0.5 p-1 text-default-a" role="button">
+              <BsCaretDownFill />
+            </span>
+          </div>
+
+          <div className="flex rounded-[10px] px-3.5 py-2.5 pr-2.5 transition hover:bg-default-200/70">
+            <Checkbox
+              color="primary"
+              className="!m-0 p-0"
+              classNames={{
+                base: 'items-start',
+                wrapper: 'mr-3 mt-0.5',
+                label: 'text-default-d text-sm',
+              }}
+            >
+              I understand that if i pay regularly on time, my interest rates
+              will come down. If I miss, the interest rate discounts will
+              disappear.
+            </Checkbox>
+
+            <span className="mt-0.5 p-1 text-default-a" role="button">
+              <BsCaretDownFill />
+            </span>
+          </div>
+
+          <div className="flex rounded-[10px] px-3.5 py-2.5 pr-2.5 transition hover:bg-default-200/70">
+            <Checkbox
+              color="primary"
+              className="!m-0 p-0"
+              classNames={{
+                base: 'items-start',
+                wrapper: 'mr-3 mt-0.5',
+                label: 'text-default-d text-sm',
+              }}
+            >
+              I understand that based on an unlock schedule, every month, I will
+              be able to transfer a portion of my Bitcoin to any wallet.
+            </Checkbox>
+
+            <span className="mt-0.5 p-1 text-default-a" role="button">
+              <BsCaretDownFill />
+            </span>
+          </div>
+
+          <div className="flex rounded-[10px] px-3.5 py-2.5 pr-2.5 transition hover:bg-default-200/70">
+            <Checkbox
+              color="primary"
+              className="!m-0 p-0"
+              classNames={{
+                base: 'items-start',
+                wrapper: 'mr-3 mt-0.5',
+                label: 'text-default-d text-sm',
+              }}
+            >
+              I understand that at any point in the loan’s term, I will be able
+              to close the loan early by selling sufficient amount of my Bitcoin
+              to pay lenders. All profits will be mine.
+            </Checkbox>
+
+            <span className="mt-0.5 p-1 text-default-a" role="button">
+              <BsCaretDownFill />
+            </span>
+          </div>
+
+          <div className="mt-4 border-t border-default-300 pl-3.5 pt-5">
+            <Checkbox
+              color="primary"
+              className="!m-0 p-0"
+              classNames={{
+                base: 'items-start',
+                wrapper: 'mr-3 mt-0 before:border-primary',
+                label: 'text-primary text-sm',
+              }}
+            >
+              Accept all loan conditions
+            </Checkbox>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-auto flex items-center justify-between gap-2.5">
+        <Button
+          size="lg"
+          startContent={<LuArrowLeft />}
+          variant="light"
+          className="px-0 text-[#777777] hover:!bg-transparent hover:text-default-d"
+          onPress={() => setStep(0)}
+        >
+          Go Back
+        </Button>
+
+        <Button
+          className="font-bold"
+          color="primary"
+          size="lg"
+          onPress={() => setIsModalOpen(true)}
+        >
+          Continue
+        </Button>
+      </div>
     </Card>
   )
 }

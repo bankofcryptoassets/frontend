@@ -35,7 +35,7 @@ module.exports = {
               50: '#fafafa',
               100: '#f2f2f3',
               200: '#ebebec',
-              300: '#e3e3e6',
+              300: '#c6c6cd',
               400: '#dcdcdf',
               500: '#d4d4d8',
               600: '#afafb2',
