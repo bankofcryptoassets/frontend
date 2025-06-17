@@ -219,7 +219,7 @@ const handleLoan = async () => {
   const totalAmountNumber = Number(totalAmountString)
 
   const totalAmountParsed = BigInt(data?.data?.data?.loanSummary?.contract?.totalLoanAmount as string)
-  const parsedBorrowerDeposit = BigInt(data?.data?.data?.loanSummary?.contract?.borrowerDeposit as string) 
+  // const parsedBorrowerDeposit = BigInt(data?.data?.data?.loanSummary?.contract?.borrowerDeposit as string) 
 
   console.log('Loan Amount String:', loanAmountString)
   console.log('Total Amount String:', totalAmountString)
