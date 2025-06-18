@@ -29,6 +29,7 @@ import { publicClient } from '@/auth/client'
 import { sleep } from '@/utils/sleep'
 import { CONTRACT_ADDRESSES } from '@/utils/constants'
 import { formatUnits } from 'viem'
+import { useRouter } from 'next/navigation'
 
 type LoanMatchResponse = {
   success: boolean
@@ -47,6 +48,8 @@ const getLoanObjectIdFromLog = async (log: any) => {
   try {
     const maxRetries = 3
     const retryInterval = 10000 // 10 seconds in milliseconds
+
+    await sleep(retryInterval)
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
@@ -76,12 +79,8 @@ const getLoanObjectIdFromLog = async (log: any) => {
   }
 }
 
-export const ApplyLoan = ({
-  handleShowInsuranceModal,
-}: {
-  handleShowInsuranceModal: (loanId: string) => void
-}) => {
-  // const router = useRouter()
+export const ApplyLoan = () => {
+  const router = useRouter()
   const { data: btcAvailability } = useQuery({
     queryKey: ['/initialisation/loanavailability'],
     queryFn: () =>
@@ -209,77 +208,78 @@ export const ApplyLoan = ({
   const isPending =
     isPendingMatch || approvalQuery.isPending || loanQuery.isPending || waiting
 
-const handleLoan = async () => {
-  // Get the original string values from the API response instead of using numeral
-  const loanAmountString = data?.data?.data?.loanSummary?.principal?.toString() || '0'
-  const totalAmountString = data?.data?.data?.loanSummary?.totalPayment?.toString() || '0'
+  const handleLoan = async () => {
+    // Get the original string values from the API response instead of using numeral
+    const loanAmountString =
+      data?.data?.data?.loanSummary?.principal?.toString() || '0'
+    const totalAmountString =
+      data?.data?.data?.loanSummary?.totalPayment?.toString() || '0'
 
-  // For validation, you can still convert to numbers
-  const loanAmountNumber = Number(loanAmountString)
-  const totalAmountNumber = Number(totalAmountString)
+    // For validation, you can still convert to numbers
+    const loanAmountNumber = Number(loanAmountString)
+    const totalAmountNumber = Number(totalAmountString)
 
-  const totalAmountParsed = BigInt(data?.data?.data?.loanSummary?.contract?.totalLoanAmount as string)
-  // const parsedBorrowerDeposit = BigInt(data?.data?.data?.loanSummary?.contract?.borrowerDeposit as string) 
+    const totalAmountParsed = BigInt(
+      data?.data?.data?.loanSummary?.contract?.totalLoanAmount as string
+    )
+    // const parsedBorrowerDeposit = BigInt(data?.data?.data?.loanSummary?.contract?.borrowerDeposit as string)
 
-  console.log('Loan Amount String:', loanAmountString)
-  console.log('Total Amount String:', totalAmountString)
-
-  if (
-    !isAuth ||
-    !address ||
-    !btcAmount ||
-    !term ||
-    !interestRate ||
-    !userId ||
-    !loanAmountNumber ||
-    !totalAmountNumber
-  )
-    return
-
-  // Use string values for the contract call
-  approveUSDC(totalAmountString).then(async (hash) => {
-    setWaiting(true)
-    const data = await publicClient.waitForTransactionReceipt({ hash })
-    await sleep(10000)
-    setWaiting(false)
-
-    if (data?.status === 'reverted') {
-      toast.error('Failed to approve USDC')
+    if (
+      !isAuth ||
+      !address ||
+      !btcAmount ||
+      !term ||
+      !interestRate ||
+      !userId ||
+      !loanAmountNumber ||
+      !totalAmountNumber
+    )
       return
-    }
 
-    // For the API call, still use numbers as expected by your backend
-    mutate(
-      {
-        borrower_address: address,
-        interest_rate: Number(interestRate),
-        duration_months: Number(term),
-        loan_amount: loanAmountNumber, // Use number for API
-      },
-      {
-        onError: () => {
-          toast.error('Failed to match loan')
+    // Use string values for the contract call
+    approveUSDC(totalAmountString).then(async (hash) => {
+      setWaiting(true)
+      const data = await publicClient.waitForTransactionReceipt({ hash })
+      await sleep(10000)
+      setWaiting(false)
+
+      if (data?.status === 'reverted') {
+        toast.error('Failed to approve USDC')
+        return
+      }
+
+      // For the API call, still use numbers as expected by your backend
+      mutate(
+        {
+          borrower_address: address,
+          interest_rate: Number(interestRate),
+          duration_months: Number(term),
+          loan_amount: loanAmountNumber, // Use number for API
         },
-        onSuccess: (matchData) => {
-          toast.success(matchData?.message || 'Successfully matched loan')
-
-          const lenderAddresses = matchData?.data?.matched_lenders?.map(
-            (lender) => lender.lender_address
-          )
-          
-          // IMPORTANT: Keep these as strings to preserve precision
-          const lenderAmounts = matchData?.data?.matched_lenders?.map(
-            (lender) => lender.amount.toString() // Convert to string immediately
-          )
-
-          if (
-            !lenderAddresses?.length ||
-            !lenderAmounts?.length ||
-            !totalAmountString
-          ) {
+        {
+          onError: () => {
             toast.error('Failed to match loan')
-            return
-          }
+          },
+          onSuccess: (matchData) => {
+            toast.success(matchData?.message || 'Successfully matched loan')
+
+            const lenderAddresses = matchData?.data?.matched_lenders?.map(
+              (lender) => lender.lender_address
+            )
+
+            // IMPORTANT: Keep these as strings to preserve precision
+            const lenderAmounts = matchData?.data?.matched_lenders?.map(
+              (lender) => lender.amount.toString() // Convert to string immediately
+            )
+
+            if (
+              !lenderAddresses?.length ||
+              !lenderAmounts?.length ||
+              !totalAmountString
+            ) {
+              toast.error('Failed to match loan')
+              return
+            }
 
             // call loan contract
             takeLoan(
@@ -304,7 +304,7 @@ const handleLoan = async () => {
 
                     // Get the loan ID from the transaction receipt
                     const loanId = await getLoanObjectIdFromLog(data)
-                    if (loanId) handleShowInsuranceModal(loanId)
+                    if (loanId) router.push(`/borrow?insuranceLoanId=${loanId}`)
 
                     return `Loan approved successfully!`
                   },
