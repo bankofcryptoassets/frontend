@@ -25,9 +25,6 @@ export const WalletSendCallsContent: React.FC<WalletSendCallsContentProps> = ({
   const handleSubmit = useCallback(async () => {
     const chainId = parseInt(content.chainId, 16)
     if (chainId !== wagmiChainId) {
-      console.log(
-        `Current Chain Id (${wagmiChainId}) doesn't match; switching to Chain Id ${chainId}.`
-      )
       await switchChainAsync({ chainId })
       await new Promise((r) => setTimeout(r, 300)) // Metamask requires some delay
     }

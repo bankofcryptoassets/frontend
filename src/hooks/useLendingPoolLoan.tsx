@@ -25,7 +25,7 @@ export const useLendingPoolLoan = () => {
     },
   })
 
-    /**
+  /**
    * Function to call the loan method on the lending pool contract
    *
    * @param totalAmount - Total loan amount including borrower deposit (in USDC)
@@ -51,11 +51,6 @@ export const useLendingPoolLoan = () => {
     lenderAddresses: `0x${string}`[],
     lenderAmounts: (number | string)[]
   ) => {
-
-    console.log("Total Amount:", totalAmount)
-    console.log("Lender Addresses:", lenderAddresses)
-    console.log("Lender Amounts:", lenderAmounts)
-    
     if (lenderAddresses.length !== lenderAmounts.length) {
       throw new Error(
         'Lender addresses and amounts arrays must have the same length'
@@ -64,19 +59,13 @@ export const useLendingPoolLoan = () => {
 
     const parsedLenderAmounts = lenderAmounts.map((amount) => {
       // Convert to string without scientific notation
-      const amountStr = typeof amount === 'string' 
-        ? amount 
-        : amount.toFixed(6).replace(/\.?0+$/, '') // Remove trailing zeros
-      
-      console.log(`Converting lender amount: ${amount} -> ${amountStr}`)
+      const amountStr =
+        typeof amount === 'string'
+          ? amount
+          : amount.toFixed(6).replace(/\.?0+$/, '') // Remove trailing zeros
+
       return parseUnits(amountStr, 6)
     })
-
-    console.log('Parsed Amount:', totalAmount)
-    console.log('Parsed Lender Amounts:', parsedLenderAmounts)
-    console.log('Lender Addresses:', lenderAddresses)
-    console.log('Duration Months:', durationMonths)
-    console.log('Annual Interest Rate:', annualInterestRate)
 
     return loanQuery.writeContractAsync({
       abi: parseAbi([
