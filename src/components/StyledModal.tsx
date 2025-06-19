@@ -58,7 +58,7 @@ export const StyledModal = ({
           </div>
         </ModalBody>
 
-        <ModalFooter className="flex-col pb-6">
+        <ModalFooter className="flex-col pb-6 pt-0">
           <Button
             className="w-full font-bold text-white"
             {...primaryButtonProps}

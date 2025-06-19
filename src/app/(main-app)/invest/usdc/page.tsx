@@ -194,7 +194,7 @@ export default function InvestUSDCPage() {
     setLoading(true)
     setTimeout(
       () => !IS_USER_TELEGRAM_CONNECTED && setIsTelegramModalOpen(true),
-      1000
+      2000
     )
     await depositUSDC(usdcAmount?.toString(), reinvest).then(async (hash) => {
       toast.promise(publicClient.waitForTransactionReceipt({ hash }), {
@@ -234,8 +234,8 @@ export default function InvestUSDCPage() {
       toast.error('Something went wrong')
       return
     }
-    setIsApproveModalOpen(true)
-    setIsInitTxModalOpen(false)
+    setIsApproveModalOpen(false)
+    setIsInitTxModalOpen(true)
     setIsTxSuccessModalOpen(false)
     setIsTxFailedModalOpen(false)
     setIsTelegramModalOpen(false)
