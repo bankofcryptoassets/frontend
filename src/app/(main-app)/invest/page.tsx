@@ -76,7 +76,10 @@ export default function InvestPage() {
   const formattedAvgAPR = numeral(avgAPR).format('0.00%')
 
   const formattedEarningsOnBitmor = numeral(
-    new Big(investmentOnBitmor || 0).times(avgAPR).div(100).toNumber()
+    new Big(investmentOnBitmor || 0)
+      .times(new Big(avgAPR).mul(100))
+      .div(100)
+      .toNumber()
   ).format('$0,0.00')
 
   return (

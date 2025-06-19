@@ -97,7 +97,10 @@ export default function InvestUSDCPage() {
     .toNumber()
 
   const formattedEarningsOnBitmor = numeral(
-    new Big(investmentOnBitmor || 0).times(avgAPR).div(100).toNumber()
+    new Big(investmentOnBitmor || 0)
+      .times(new Big(avgAPR).mul(100))
+      .div(100)
+      .toNumber()
   ).format('$0,0.00')
 
   const formattedGlobalInvested = numeral(

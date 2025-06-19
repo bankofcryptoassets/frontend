@@ -54,8 +54,6 @@ export const Navbar = () => {
     query: { enabled: !!address && !!isAuth },
   })
 
-  console.log(btcBalance)
-
   const onMenuItemClick = () => {
     setIsMenuOpen(false)
   }
