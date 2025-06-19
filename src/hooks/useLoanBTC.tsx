@@ -30,7 +30,7 @@ export const useLoanBTC = () => {
         address: CONTRACT_ADDRESSES.MAIN,
         functionName: 'loan',
         args: [
-          parseUnits(totalAmount, 6), // usdc decimals
+          BigInt(totalAmount), // usdc decimals
           parseUnits(durationMonths, 0),
           parseUnits(annualInterestRate, 0),
           parseUnits(downPaymentPercentage, 0),

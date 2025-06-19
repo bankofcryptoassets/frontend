@@ -208,7 +208,7 @@ export default function BorrowPage() {
       return
     }
     setLoading(true)
-    await approveUSDC(usdcAmount?.toString()).then(async (hash) => {
+    await approveUSDC(loanSummary?.data?.data?.loanSummary?.loanAmount.toString() as string).then(async (hash) => {
       toast.promise(publicClient.waitForTransactionReceipt({ hash }), {
         dismissible: false,
         loading: 'Waiting for USDC approval to be confirmed...',
@@ -242,7 +242,7 @@ export default function BorrowPage() {
     //   2000
     // )
     await loanBTC(
-      loanSummary?.data?.data?.loanSummary?.loanAmount?.toString() || '0',
+      loanSummary?.data?.data?.loanSummary?.contract?.totalLoanAmount || '0',
       duration,
       interestRate,
       loanSummary?.data?.data?.loanSummary?.basisPoints?.toString() || '0'
