@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonProps,
   Modal,
   ModalBody,
   ModalContent,
@@ -8,8 +9,28 @@ import {
   ModalProps,
 } from '@heroui/react'
 import Image from 'next/image'
+import { ReactNode } from 'react'
 
-export const StyledModal = (props: Partial<ModalProps>) => {
+type StyledModalProps = {
+  iconSrc: string
+  title: string
+  description: ReactNode
+  primaryButtonText: string
+  primaryButtonProps?: ButtonProps
+  secondaryButtonText?: string
+  secondaryButtonProps?: ButtonProps
+}
+
+export const StyledModal = ({
+  iconSrc,
+  title,
+  description,
+  primaryButtonText,
+  primaryButtonProps,
+  secondaryButtonText,
+  secondaryButtonProps,
+  ...props
+}: Partial<ModalProps> & StyledModalProps) => {
   return (
     <Modal
       {...props}
@@ -23,31 +44,37 @@ export const StyledModal = (props: Partial<ModalProps>) => {
       size="sm"
     >
       <ModalContent>
-        <ModalHeader className="mt-1 justify-center">
-          <h2>Modal Title</h2>
+        <ModalHeader className="mt-1 justify-center border-b border-default-200/40">
+          <h2>{title}</h2>
         </ModalHeader>
 
         <ModalBody>
           <div className="flex flex-col items-center justify-center gap-5 py-10">
-            <Image
-              src="/icons/approve.png"
-              alt="Approve icon"
-              width={60}
-              height={60}
-            />
+            <Image src={iconSrc} alt={title} width={60} height={60} />
 
-            <div>Lorem ipsum dolor sit amet</div>
+            <p className="text-pretty text-center text-default-d">
+              {description}
+            </p>
           </div>
         </ModalBody>
 
-        <ModalFooter className="flex-col">
-          <Button className="w-full font-bold text-white" color="secondary">
-            Approve
+        <ModalFooter className="flex-col pb-6">
+          <Button
+            className="w-full font-bold text-white"
+            {...primaryButtonProps}
+          >
+            {primaryButtonText}
           </Button>
 
-          <Button className="w-full text-default-a" variant="light">
-            Review Investment Details
-          </Button>
+          {secondaryButtonText && (
+            <Button
+              className="w-full font-bold text-default-a"
+              variant="light"
+              {...secondaryButtonProps}
+            >
+              {secondaryButtonText}
+            </Button>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>

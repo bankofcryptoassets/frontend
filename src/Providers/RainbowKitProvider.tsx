@@ -20,6 +20,7 @@ import { baseSepolia } from 'wagmi/chains'
 import { useTheme } from 'next-themes'
 import { authenticationAdapter } from '../auth/adapter'
 import { WalletAddressTracker } from '@/auth/WalletAddressTracker'
+import { Toaster } from 'sonner'
 
 declare module '@react-types/shared' {
   interface RouterConfig {
@@ -88,6 +89,12 @@ export const RainbowKitProvider = ({
             appInfo={{ appName: 'Bitmor' }}
             theme={theme}
           >
+            <Toaster
+              // expand
+              richColors
+              position="top-right"
+              theme={(resolvedTheme || 'dark') as 'dark' | 'light'}
+            />
             <WalletAddressTracker />
             {children}
           </NextRainbowKitProvider>

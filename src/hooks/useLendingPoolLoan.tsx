@@ -19,9 +19,9 @@ export const useLendingPoolLoan = () => {
       onError: () => {
         toast.error('Failed to apply loan')
       },
-      onSuccess: () => {
-        toast.success('Successfully applied loan')
-      },
+      // onSuccess: () => {
+      //   toast.success('Successfully applied loan')
+      // },
     },
   })
 
@@ -71,7 +71,7 @@ export const useLendingPoolLoan = () => {
       abi: parseAbi([
         'function loan(uint256 totalAmount, uint256 durationMonths, uint256 annualInterestRate, address[] calldata lenderAddresses, uint256[] calldata lenderAmounts) returns (uint256)',
       ]),
-      address: CONTRACT_ADDRESSES.LENDING_POOL,
+      address: CONTRACT_ADDRESSES.MAIN,
       functionName: 'loan',
       args: [
         totalAmount,

@@ -21,6 +21,9 @@ import { useState } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Image from 'next/image'
 import { useAuth } from '@/auth/useAuth'
+import { CONTRACT_ADDRESSES } from '@/utils/constants'
+import { useAccount, useBalance } from 'wagmi'
+import numeral from 'numeral'
 
 export const Logo = () => {
   return (
@@ -44,6 +47,14 @@ export const Navbar = () => {
   const isMainApp = pathname !== '/'
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { isAuth } = useAuth()
+  const { address } = useAccount()
+  const { data: btcBalance } = useBalance({
+    address,
+    token: CONTRACT_ADDRESSES.BTC,
+    query: { enabled: !!address && !!isAuth },
+  })
+
+  console.log(btcBalance)
 
   const onMenuItemClick = () => {
     setIsMenuOpen(false)
@@ -58,12 +69,15 @@ export const Navbar = () => {
       onMenuOpenChange={setIsMenuOpen}
       height="4.5rem"
     >
-      <NavbarContent className="basis-1/5 gap-12 sm:basis-full" justify="start">
+      <NavbarContent
+        className="basis-1/5 gap-12 max-xl:gap-8 sm:basis-full"
+        justify="start"
+      >
         <NavbarBrand as="li" className="max-w-fit" onClick={onMenuItemClick}>
           <Logo />
         </NavbarBrand>
 
-        <ul className="ml-2 hidden justify-start gap-8 lg:flex">
+        <ul className="ml-2 hidden justify-start gap-8 max-xl:gap-6 lg:flex">
           {siteConfig[isMainApp ? 'navItemMainApp' : 'navItems'].map((item) => (
             <NavbarItem
               key={item.href}
@@ -99,7 +113,9 @@ export const Navbar = () => {
                 className="border-default-300"
               >
                 <Image src="/icons/btc.svg" alt="BTC" width={16} height={16} />
-                <span className="text-base font-medium">403,026,080 sats</span>
+                <span className="text-base font-medium">
+                  {numeral(btcBalance?.value ?? 0).format('0,0')} sats
+                </span>
               </Button>
             </NavbarItem>
 
@@ -129,9 +145,9 @@ export const Navbar = () => {
         )}
 
         {isMainApp && (
-          <NavbarItem className="hidden gap-2 sm:flex [&>div>button]:!font-sans [&>div>button]:!text-sm [&>div>button]:!font-semibold">
+          <NavbarItem className="hidden gap-2 sm:flex [&>div>button]:!font-sans [&>div>button]:!text-sm [&>div>button]:!font-medium [&>div>button_*]:!font-sans [&>div>button_*]:!text-sm [&>div>button_*]:!font-medium">
             <ConnectButton
-              accountStatus="avatar"
+              accountStatus="full"
               showBalance={false}
               chainStatus="none"
             />
@@ -199,15 +215,13 @@ export const Navbar = () => {
                     width={16}
                     height={16}
                   />
-                  <span className="font-medium">403,026,080 sats</span>
+                  <span className="font-medium">
+                    {numeral(btcBalance?.value ?? 0).format('0,0')} sats
+                  </span>
                 </Button>
               )}
 
-              <Button
-                className="p-0 [&>div>button]:!h-full [&>div>button]:!w-full [&>div>button]:!font-sans [&>div>button]:!text-sm [&>div>button]:!font-semibold [&>div]:!h-full [&>div]:!w-full [&_*]:!flex [&_*]:!items-center [&_*]:!justify-center [&_*]:!gap-2"
-                variant="shadow"
-                color="primary"
-              >
+              <Button className="p-0 [&>div>button]:!h-full [&>div>button]:!w-full [&>div>button]:!font-sans [&>div>button]:!text-sm [&>div>button]:!font-semibold [&>div]:!h-full [&>div]:!w-full [&_*]:!flex [&_*]:!items-center [&_*]:!justify-center [&_*]:!gap-2 [&_[style='height:_24px;_width:_24px;']]:overflow-hidden [&_[style='height:_24px;_width:_24px;']]:!rounded-full">
                 <ConnectButton
                   accountStatus="avatar"
                   showBalance={false}

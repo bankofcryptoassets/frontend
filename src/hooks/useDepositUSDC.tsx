@@ -3,8 +3,8 @@ import { toast } from 'sonner'
 import { parseAbi, parseUnits } from 'viem'
 import { useWriteContract } from 'wagmi'
 
-export const useUSDCApproval = () => {
-  const approvalQuery = useWriteContract({
+export const useDepositUSDC = () => {
+  const depositQuery = useWriteContract({
     mutation: {
       onError: () => {
         toast.error('Failed to approve USDC')
@@ -15,18 +15,22 @@ export const useUSDCApproval = () => {
     },
   })
 
-  const approveUSDC = async (usdcAmount: string, options?: any) =>
-    approvalQuery.writeContractAsync(
+  const depositUSDC = async (
+    usdcAmount: string,
+    isReinvest: boolean,
+    options?: any
+  ) =>
+    depositQuery.writeContractAsync(
       {
         abi: parseAbi([
-          'function approve(address spender, uint256 amount) returns (bool)',
+          'function depositToPool(uint256 amount, bool reinvest)',
         ]),
         address: CONTRACT_ADDRESSES.USDC,
-        functionName: 'approve',
-        args: [CONTRACT_ADDRESSES.MAIN, parseUnits(usdcAmount, 6)],
+        functionName: 'depositToPool',
+        args: [parseUnits(usdcAmount, 6), isReinvest],
       },
       options
     )
 
-  return { approvalQuery, approveUSDC }
+  return { depositQuery, depositUSDC }
 }

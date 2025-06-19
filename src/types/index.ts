@@ -134,3 +134,22 @@ export type WithdrawableByUser = {
   user_id: string
   amount: number
 }
+
+export type LendingListData = {
+  lendings: {
+    _id: string
+    user_address: string
+    lending_amount_approved: number
+    available_amount: number
+    openedOn: string
+    duration_preference: string
+    updated_at: string
+  }[]
+}
+
+export type LendingStats = {
+  totalUSDInvested: number
+  totallenders: number
+  baseAPR: number
+  loanAPR: number
+}

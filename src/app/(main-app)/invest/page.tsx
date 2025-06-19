@@ -4,8 +4,81 @@ import Image from 'next/image'
 import NextLink from 'next/link'
 import { LuCircleDollarSign, LuTrendingUp } from 'react-icons/lu'
 import { LiaHourglassSolid } from 'react-icons/lia'
+import { useAccount, useBalance } from 'wagmi'
+import { CONTRACT_ADDRESSES } from '@/utils/constants'
+import numeral from 'numeral'
+import { useAuth } from '@/auth/useAuth'
+import { useQuery } from '@tanstack/react-query'
+import axios from '@/utils/axios'
+import { LendingListData, LendingStats } from '@/types'
+import Big from 'big.js'
 
 export default function InvestPage() {
+  const { address } = useAccount()
+  const { isAuth } = useAuth()
+  const { data: usdcBalance } = useBalance({
+    address,
+    token: CONTRACT_ADDRESSES.USDC,
+    query: { enabled: !!address && !!isAuth },
+  })
+  const { data: btcBalance } = useBalance({
+    address,
+    token: CONTRACT_ADDRESSES.BTC,
+    query: { enabled: !!address && !!isAuth },
+  })
+  const { data: lendingStats } = useQuery({
+    queryKey: ['lending', 'stats', 'universal', address, isAuth],
+    queryFn: async ({ signal }) => {
+      const response = await axios.get<LendingStats>(
+        '/lending/stats/universal',
+        { signal }
+      )
+      return response.data
+    },
+  })
+  const { data: lendingList } = useQuery({
+    queryKey: ['lending', address, isAuth],
+    queryFn: async ({ signal }) => {
+      const response = await axios.get<LendingListData>('/lending', { signal })
+      return response.data
+    },
+    enabled: !!address && !!isAuth,
+  })
+
+  const formattedUsdcBalance = numeral(
+    usdcBalance?.value
+      ? new Big(String(usdcBalance.value))
+          .div(10 ** usdcBalance.decimals)
+          .round(0, Big.roundDown)
+          .toNumber()
+      : 0
+  ).format('0,0')
+
+  const formattedBtcBalance = numeral(
+    btcBalance?.value
+      ? new Big(String(btcBalance?.value))
+          .div(10 ** btcBalance.decimals)
+          .toNumber()
+      : 0
+  ).format('0,0.0000[0000]')
+
+  const investmentOnBitmor = lendingList?.lendings.reduce(
+    (acc, curr) =>
+      new Big(acc || 0).plus(curr.lending_amount_approved || 0).toNumber(),
+    0
+  )
+
+  const avgAPR = new Big(lendingStats?.baseAPR || 0)
+    .plus(lendingStats?.loanAPR || 0)
+    .div(2)
+    .toNumber()
+
+  const formattedAvgAPR = numeral(avgAPR).format('0.00%')
+
+  const formattedEarningsOnBitmor = numeral(
+    new Big(investmentOnBitmor || 0).times(avgAPR).div(100).toNumber()
+  ).format('$0,0.00')
+
   return (
     <div
       className="container mt-10 grid h-full min-h-[calc(100vh-7rem)] w-full grid-cols-[280px_1fr] gap-5 pb-[60px] max-lg:grid-cols-1"
@@ -14,31 +87,32 @@ export default function InvestPage() {
       <div className="flex h-full w-full flex-col gap-4">
         <Card className="min-h-fit w-full space-y-6 rounded-2xl border border-default-200/40 bg-default-100/80 p-7 pb-[30px]">
           <div>
-            <div className="text-default-a text-xs">Your USDC Balance</div>
+            <div className="text-xs text-default-a">Your USDC Balance</div>
             <div className="mt-0.5 text-[28px] font-bold leading-tight text-secondary">
-              123,004 <span className="text-xl">USDC</span>
+              {formattedUsdcBalance}
+              <span className="text-xl"> USDC</span>
             </div>
           </div>
 
           <div>
-            <div className="text-default-a text-xs">Your BTC Balance</div>
-            <div className="text-default-d mt-0.5 text-[28px] font-bold leading-tight">
-              1.243 <span className="text-xl">BTC</span>
+            <div className="text-xs text-default-a">Your BTC Balance</div>
+            <div className="mt-0.5 text-[28px] font-bold leading-tight text-default-d">
+              {formattedBtcBalance} <span className="text-xl">BTC</span>
             </div>
           </div>
 
           <div>
-            <div className="text-default-a text-xs">
+            <div className="text-xs text-default-a">
               Your Earnings on Bitmor
             </div>
-            <div className="text-default-d mt-0.5 text-[28px] font-bold leading-tight">
-              $100.24
+            <div className="mt-0.5 text-[28px] font-bold leading-tight text-default-d">
+              {formattedEarningsOnBitmor}
             </div>
           </div>
         </Card>
 
         <Card className="h-full w-full rounded-2xl border border-default-200/40 bg-default-100/80 p-4">
-          <div className="text-default-d mb-[18px] border-b border-default-200 pb-3.5 pl-1 text-base font-medium">
+          <div className="mb-[18px] border-b border-default-200 pb-3.5 pl-1 text-base font-medium text-default-d">
             Bitmor Stats
           </div>
 
@@ -47,7 +121,7 @@ export default function InvestPage() {
               <div className="rounded-full bg-success-50 p-[5px]">
                 <LuCircleDollarSign className="text-success" size={18} />
               </div>
-              <div className="text-default-d text-sm">
+              <div className="text-sm text-default-d">
                 Lenders in Bitmor have made more money than Aave
               </div>
             </div>
@@ -60,7 +134,7 @@ export default function InvestPage() {
                   strokeWidth={3}
                 />
               </div>
-              <div className="text-default-d text-sm">
+              <div className="text-sm text-default-d">
                 99% of BTC loaned on Bitmor is earning interest in Aave
               </div>
             </div>
@@ -75,7 +149,7 @@ export default function InvestPage() {
                   className="size-[18px] min-w-[18px]"
                 />
               </div>
-              <div className="text-default-d text-sm">
+              <div className="text-sm text-default-d">
                 Earn yield on 100% of your borrowed BTC from Day 1
               </div>
             </div>
@@ -95,20 +169,20 @@ export default function InvestPage() {
       </div>
 
       <Card className="rounded-2xl border border-default-200 bg-default-100 px-7 pb-5 pt-[18px]">
-        <div className="text-default-d mb-7 border-b border-default-200 pb-4 pl-1 text-base font-medium">
+        <div className="mb-7 border-b border-default-200 pb-4 pl-1 text-base font-medium text-default-d">
           Investment Opportunities
         </div>
 
         <div className="!mb-7 flex flex-wrap gap-[60px] px-2">
           <div className="group w-[360px] rounded-xl border border-default-300/50 bg-default-200/40 px-5 pb-7 pt-[18px] transition hover:border-default-300 hover:bg-default-200 max-sm:w-full">
-            <div className="text-default-d mb-7 border-b border-default-200 pb-3.5 pl-1 text-base font-medium transition-[border-color] group-hover:border-default-300">
+            <div className="mb-7 border-b border-default-200 pb-3.5 pl-1 text-base font-medium text-default-d transition-[border-color] group-hover:border-default-300">
               Be a Lender on Bitmor
             </div>
 
             <div className="mb-10 px-3">
-              <div className="text-default-a mb-1 text-lg">APR on USDC</div>
-              <div className="text-default-e text-[32px] font-bold leading-tight">
-                5.7%
+              <div className="mb-1 text-lg text-default-a">APR on USDC</div>
+              <div className="text-[32px] font-bold leading-tight text-default-e">
+                {formattedAvgAPR}
               </div>
             </div>
 
@@ -124,7 +198,7 @@ export default function InvestPage() {
           </div>
 
           <div className="group w-[360px] rounded-xl border border-default-300/50 bg-default-200/40 px-5 pb-7 pt-[18px] transition hover:border-default-300 hover:bg-default-200 max-sm:w-full">
-            <div className="text-default-d mb-7 flex items-center justify-between gap-2 border-b border-default-200 pb-3.5 pl-1 text-base font-medium transition-[border-color] group-hover:border-default-300">
+            <div className="mb-7 flex items-center justify-between gap-2 border-b border-default-200 pb-3.5 pl-1 text-base font-medium text-default-d transition-[border-color] group-hover:border-default-300">
               <span>Earn from Aave</span>
 
               <Image
@@ -137,13 +211,13 @@ export default function InvestPage() {
             </div>
 
             <div className="mb-10 px-3">
-              <div className="text-default-a mb-1 text-lg">APR on BTC</div>
-              <div className="text-default-e text-[32px] font-bold leading-tight">
+              <div className="mb-1 text-lg text-default-a">APR on BTC</div>
+              <div className="text-[32px] font-bold leading-tight text-default-e">
                 0.3%
               </div>
             </div>
 
-            <Button
+            {/* <Button
               className="text-default-d mx-1 w-full bg-[#dcdcdb] font-medium dark:bg-[#121213]"
               size="lg"
               color="default"
@@ -151,6 +225,16 @@ export default function InvestPage() {
               href="/invest/aave"
             >
               Start Investment on Aave
+            </Button> */}
+            <Button
+              className="pointer-events-auto mx-1 w-full !cursor-not-allowed font-medium text-default-d"
+              size="lg"
+              color="default"
+              as={NextLink}
+              href="/invest/aave"
+              isDisabled
+            >
+              Coming Soon
             </Button>
           </div>
         </div>
@@ -160,7 +244,7 @@ export default function InvestPage() {
             <LiaHourglassSolid className="text-secondary" size={18} />
           </div>
 
-          <div className="text-default-a text-sm">
+          <div className="text-sm text-default-a">
             We’ll be adding more investment opportunities soon. Stay tuned to
             updates by connecting{' '}
             <Link
