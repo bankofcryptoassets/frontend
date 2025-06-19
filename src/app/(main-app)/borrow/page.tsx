@@ -242,7 +242,7 @@ export default function BorrowPage() {
     //   2000
     // )
     await loanBTC(
-      btcAmount?.toString(),
+      loanSummary?.data?.data?.loanSummary?.loanAmount?.toString() || '0',
       duration,
       interestRate,
       loanSummary?.data?.data?.loanSummary?.basisPoints?.toString() || '0'
