@@ -25,7 +25,7 @@ export const useDepositUSDC = () => {
         abi: parseAbi([
           'function depositToPool(uint256 amount, bool reinvest)',
         ]),
-        address: CONTRACT_ADDRESSES.USDC,
+        address: CONTRACT_ADDRESSES.MAIN,
         functionName: 'depositToPool',
         args: [parseUnits(usdcAmount, 6), isReinvest],
       },
