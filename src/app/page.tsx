@@ -16,8 +16,8 @@ export default function Home() {
       <Hero />
       <Stats />
       <Borrowers />
-      <Lenders />
       <WhyBitmor />
+      <Lenders />
       <Team />
       <FAQs />
       <CTABanner />

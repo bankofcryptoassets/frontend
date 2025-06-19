@@ -3,14 +3,14 @@ import { cn, Link as StyledLink } from '@heroui/react'
 import { Logo } from './Navbar'
 import Link from 'next/link'
 import { FaXTwitter } from 'react-icons/fa6'
-import { FaDiscord, FaGithub, FaTelegramPlane } from 'react-icons/fa'
+import { FaGithub, FaTelegramPlane } from 'react-icons/fa'
 
 const MENU_ITEMS = [
   {
     title: 'PRODUCTS',
     links: [
       { text: 'Borrowing', url: '/borrow' },
-      { text: 'Lending', url: '/lend' },
+      { text: 'Lending', url: '/invest' },
       { text: 'Pricing', url: '' },
       { text: 'API', url: '' },
     ],
@@ -27,8 +27,8 @@ const MENU_ITEMS = [
   {
     title: 'COMPANY',
     links: [
-      { text: 'About', url: '' },
       { text: 'Team', url: '/#team' },
+      { text: 'About', url: '' },
       { text: 'Careers', url: '' },
       { text: 'Contact', url: '' },
     ],
@@ -45,25 +45,19 @@ const SOCIAL_LINKS = [
   {
     name: 'x',
     href: 'https://x.com/',
-    icon: <FaXTwitter size={18} />,
+    icon: <FaXTwitter size={24} />,
     colors: 'hover:bg-default-900 hover:text-default-50',
-  },
-  {
-    name: 'discord',
-    href: 'https://discord.gg/',
-    icon: <FaDiscord size={18} />,
-    colors: 'hover:bg-white dark:hover:bg-default-900 hover:text-[#5865F2]',
   },
   {
     name: 'telegram',
     href: 'https://t.me/',
-    icon: <FaTelegramPlane size={18} />,
+    icon: <FaTelegramPlane size={24} />,
     colors: 'hover:bg-white dark:hover:bg-default-900 hover:text-[#24A1DE]',
   },
   {
     name: 'github',
     href: 'https://github.com/',
-    icon: <FaGithub size={18} />,
+    icon: <FaGithub size={24} />,
     colors: 'hover:bg-default-900 hover:text-default-50',
   },
 ]
@@ -78,10 +72,10 @@ export const Footer = () => {
           <div className="col-span-2 mb-8 lg:mb-0">
             <Logo />
             <p className="mt-2 text-sm font-medium">
-              Revolutionizing BTC Ownership and Yield for Everyone.
+              Revolutionizing BTC Ownership
             </p>
 
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-4 lg:mt-14">
               {SOCIAL_LINKS.map((social, index) => (
                 <Link
                   key={index}
@@ -125,7 +119,7 @@ export const Footer = () => {
           ))}
         </div>
 
-        <div className="mt-8 flex flex-col justify-between gap-4 border-t border-default pt-6 text-sm md:flex-row md:items-center">
+        <div className="mt-8 flex flex-col justify-between gap-4 border-t border-default/50 pt-6 text-sm md:flex-row md:items-center">
           <p>© {new Date().getFullYear()} Bitmor. All rights reserved.</p>
           <ul className="flex gap-4">
             {BOTTOM_LINKS.map((link, linkIdx) => (

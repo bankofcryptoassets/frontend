@@ -1,65 +1,50 @@
-'use client'
-import SlotCounter from 'react-slot-counter'
-import numeral from 'numeral'
-import {
-  LuCircleCheckBig,
-  LuCircleDollarSign,
-  LuTrendingUp,
-} from 'react-icons/lu'
+import { LuShieldCheck } from 'react-icons/lu'
+import Image from 'next/image'
+import { FaRegClock } from 'react-icons/fa6'
 
 export const Stats = () => {
   return (
-    <section className="container py-16 max-lg:py-12" id="stats">
+    <section className="container pb-16 pt-12 max-lg:pb-12" id="stats">
       <div className="grid grid-cols-1 place-items-center gap-4 lg:grid-cols-3">
-        <div className="flex flex-col items-center justify-center gap-2 text-center">
-          <div className="rounded-full bg-primary-50 p-2">
-            <LuCircleCheckBig className="text-primary" size={20} />
+        <div className="flex flex-col items-center justify-center text-center">
+          <div className="min-w-9 rounded-full bg-primary-50 p-1.5">
+            <Image
+              src="/icons/btc-outline.svg"
+              alt="Bitcoin"
+              width={24}
+              height={24}
+              className="size-[24px] min-w-[24px]"
+            />
           </div>
-
-          <SlotCounter
-            useMonospaceWidth
-            value={numeral(1069).format('0,0')}
-            animateOnVisible={{ triggerOnce: true }}
-            charClassName="text-foreground text-3xl font-bold font-mono"
-            separatorClassName="text-foreground text-3xl font-bold font-mono"
-          />
-
-          <div className="font-medium text-foreground">
-            Full BTC Owners Created
+          <div className="mt-2.5 text-[28px] font-bold leading-tight text-default-e">
+            Early Ownership
+          </div>
+          <div className="mt-0.5 font-medium text-default-a">
+            Own BTC upfront with just 20% deposit
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-2 text-center">
-          <div className="rounded-full bg-success-50 p-2">
-            <LuCircleDollarSign className="text-success" size={20} />
+        <div className="flex flex-col items-center justify-center text-center">
+          <div className="min-w-9 rounded-full bg-[#2C1542]/10 p-[7px] dark:bg-[#2C1542]">
+            <FaRegClock size={22} className="text-[#9C12F2]" />
           </div>
-
-          <SlotCounter
-            useMonospaceWidth
-            value={numeral(1032300).format('$0,0')}
-            animateOnVisible={{ triggerOnce: true }}
-            charClassName="text-foreground text-3xl font-bold font-mono"
-            separatorClassName="text-foreground text-3xl font-bold font-mono"
-          />
-
-          <div className="font-medium text-foreground">Paid Out to Lenders</div>
+          <div className="mt-2.5 text-[28px] font-bold leading-tight text-default-e">
+            Flexible Terms
+          </div>
+          <div className="mt-0.5 font-medium text-default-a">
+            Pay monthly. Prepay anytime
+          </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-2 text-center">
-          <div className="rounded-full bg-secondary-50 p-2">
-            <LuTrendingUp className="text-secondary" size={20} />
+        <div className="flex flex-col items-center justify-center text-center">
+          <div className="min-w-9 rounded-full bg-success-50 p-[7px]">
+            <LuShieldCheck size={22} className="text-success" />
           </div>
-
-          <SlotCounter
-            useMonospaceWidth
-            value={numeral(0.87).format('0%')}
-            animateOnVisible={{ triggerOnce: true }}
-            charClassName="text-foreground text-3xl font-bold font-mono"
-            separatorClassName="text-foreground text-3xl font-bold font-mono"
-          />
-
-          <div className="font-medium text-foreground">
-            of Loans Repaid Profitably
+          <div className="mt-2.5 text-[28px] font-bold leading-tight text-default-e">
+            Volatility Proof
+          </div>
+          <div className="mt-0.5 font-medium text-default-a">
+            No liquidations, even when markets swing
           </div>
         </div>
       </div>

@@ -31,12 +31,12 @@ import { useLoanBTC } from '@/hooks/useLoanBTC'
 
 const DEFAULT_USDC_BALANCE = 1_000_000
 const IS_USER_TELEGRAM_CONNECTED = false
-const TIME_PERIOD = [
+export const TIME_PERIOD = [
   { value: '36', label: '3 Years', y: 3 },
   { value: '60', label: '5 Years', y: 5 },
   { value: '84', label: '7 Years', y: 7 },
 ]
-const INTEREST_RATE = ['8']
+export const INTEREST_RATE = ['8']
 
 export default function BorrowPage() {
   const [step, setStep] = useState(0)

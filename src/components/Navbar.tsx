@@ -134,10 +134,10 @@ export const Navbar = () => {
               href="/borrow"
               color="primary"
               variant="shadow"
-              className="font-medium"
+              className="font-bold"
               onPress={onMenuItemClick}
             >
-              Enter App
+              Try Bitmor (Testnet)
             </Button>
           </NavbarItem>
         )}
@@ -156,23 +156,6 @@ export const Navbar = () => {
       {/* Mobile menu */}
       <NavbarContent className="basis-1 gap-2 pl-4 lg:hidden" justify="end">
         <ThemeSwitch />
-
-        <NavbarItem>
-          {!isMainApp && (
-            <Button
-              as={NextLink}
-              href="/borrow"
-              color="primary"
-              variant="shadow"
-              className="font-medium"
-              onPress={onMenuItemClick}
-              size="sm"
-            >
-              Enter App
-            </Button>
-          )}
-        </NavbarItem>
-
         <NavbarMenuToggle />
       </NavbarContent>
 
@@ -199,7 +182,7 @@ export const Navbar = () => {
             )
           )}
 
-          {isMainApp && (
+          {isMainApp ? (
             <div className="mt-6 flex flex-col gap-4">
               {isAuth && (
                 <Button
@@ -227,6 +210,17 @@ export const Navbar = () => {
                 />
               </Button>
             </div>
+          ) : (
+            <Button
+              as={NextLink}
+              href="/borrow"
+              color="primary"
+              variant="shadow"
+              className="mt-4 font-bold"
+              onPress={onMenuItemClick}
+            >
+              Try Bitmor (Testnet)
+            </Button>
           )}
         </div>
       </NavbarMenu>

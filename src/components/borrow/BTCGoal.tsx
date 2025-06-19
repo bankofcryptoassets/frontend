@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  Checkbox,
   cn,
   NumberInput,
   Radio,
@@ -262,6 +263,15 @@ export const BTCGoal = ({
               </div>
             </RadioGroup>
           </div>
+
+          <Tooltip content="Coming Soon">
+            <Checkbox
+              isDisabled
+              className="!pointer-events-auto !mt-6 !cursor-not-allowed"
+            >
+              Opt in for Liquidation Insurance
+            </Checkbox>
+          </Tooltip>
         </div>
 
         <div className="w-full sm:min-w-[360px]">

@@ -1,7 +1,6 @@
 'use client'
-import { Button } from '@heroui/react'
+import { Button, Input } from '@heroui/react'
 import { subtitle, title } from '../primitives'
-import Link from 'next/link'
 
 export const CTABanner = () => {
   return (
@@ -29,35 +28,36 @@ export const CTABanner = () => {
                 size: 'sm',
               })}
             >
-              Your BTC Journey Starts Now
+              Start your Bitcoin Ownership Journey Here.
             </h1>
 
             <p className={subtitle({ class: 'mt-4' })}>
-              Join Bitmor today and tranform how you own Bitcoin or earn yield.
+              Join 100M+ Bitcoin Owners today.
             </p>
           </div>
 
-          <div className="flex w-full items-center justify-center gap-8 max-sm:flex-col max-sm:gap-4">
-            <Button
-              color="primary"
-              variant="shadow"
+          <div className="mb-8 mt-1 w-full max-w-[720px]">
+            <Input
+              placeholder="Enter your Email ID"
+              className="h-[60px] w-full max-w-[720px] rounded-xl"
+              classNames={{
+                mainWrapper: 'w-full',
+                inputWrapper:
+                  'h-[60px] rounded-xl w-full pl-5 pr-2 !bg-[#EEEEEE] ',
+                innerWrapper: 'w-full',
+                input: '!text-black placeholder:text-[#666666]',
+              }}
               size="lg"
-              as={Link}
-              href="/borrow/apply"
-              className="font-medium max-sm:w-full"
-            >
-              Start Borrowing
-            </Button>
-            <Button
-              color="secondary"
-              variant="shadow"
-              size="lg"
-              as={Link}
-              href="/lend/earn"
-              className="font-medium max-sm:w-full"
-            >
-              Start Earning
-            </Button>
+              endContent={
+                <Button
+                  className="h-11 w-[160px] rounded-lg text-sm font-bold"
+                  color="primary"
+                  variant="shadow"
+                >
+                  Join Waitlist
+                </Button>
+              }
+            />
           </div>
         </div>
       </div>
