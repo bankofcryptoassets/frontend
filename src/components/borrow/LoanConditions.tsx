@@ -4,107 +4,142 @@ import {
   Checkbox,
   cn,
   Popover,
+  Tooltip,
   PopoverContent,
   PopoverTrigger,
 } from '@heroui/react'
 import { LuArrowLeft } from 'react-icons/lu'
 import { BsCaretDownFill, BsCaretUpFill } from 'react-icons/bs'
-import { useEffect, useRef, useState } from 'react'
+import { SetStateAction, Dispatch, useEffect, useRef, useState } from 'react'
+import numeral from 'numeral'
+import { LoanSummary } from '@/types'
 
 type LoanConditionsProps = {
-  setStep: (step: number) => void
-  setIsModalOpen: (isOpen: boolean) => void
-}
-
-export const LoanConditions = ({
-  setStep,
-  setIsModalOpen,
-}: LoanConditionsProps) => {
-  const [isOpen, setIsOpen] = useState<number | undefined>()
-  const [conditions, setConditions] = useState<{
+  setStep: Dispatch<SetStateAction<number>>
+  isOpen: number | undefined
+  setIsOpen: Dispatch<SetStateAction<number | undefined>>
+  conditions: {
     first: boolean
     second: boolean
     third: boolean
     fourth: boolean
-  }>({ first: false, second: false, third: false, fourth: false })
+  }
+  setConditions: Dispatch<
+    SetStateAction<{
+      first: boolean
+      second: boolean
+      third: boolean
+      fourth: boolean
+    }>
+  >
+  setIsApproveModalOpen: Dispatch<SetStateAction<boolean>>
+  isLoading: boolean
+  continueButtonDisabled: boolean
+  continueButtonTooltipContent: string | undefined
+  loanSummary?: LoanSummary | null
+  TIME_PERIOD: { value: string; label: string; y: number }[]
+}
 
+export const LoanConditions = ({
+  setStep,
+  isOpen,
+  setIsOpen,
+  conditions,
+  setConditions,
+  setIsApproveModalOpen,
+  isLoading,
+  continueButtonDisabled,
+  continueButtonTooltipContent,
+  loanSummary,
+  TIME_PERIOD,
+}: LoanConditionsProps) => {
   return (
     <Card className="rounded-2xl border border-default-200 bg-default-100 px-7 pb-5 pt-[18px]">
-      <div className="text-default-d mb-7 border-b border-default-200 pb-4 pl-1 text-base font-medium">
+      <div className="mb-7 border-b border-default-200 pb-4 pl-1 text-base font-medium text-default-d">
         Loan Conditions
       </div>
 
       <div className="mb-8 flex w-full justify-between gap-16 max-xl:flex-col">
         <div className="w-full sm:min-w-[360px]">
           <div className="w-full rounded-xl border border-default-200 bg-[#eaeaee] p-5 dark:bg-[#1F1F22]">
-            <div className="text-default-d mb-5 border-b border-default-300 px-1 pb-3.5 text-base font-medium">
+            <div className="mb-5 border-b border-default-300 px-1 pb-3.5 text-base font-medium text-default-d">
               Loan Summary
             </div>
 
             <div className="mb-5 flex items-center gap-12 border-b border-default-300 px-1 pb-4">
               <div className="flex flex-col gap-0.5">
-                <div className="text-default-d text-xs leading-tight">
+                <div className="text-xs leading-tight text-default-d">
                   Borrowed Amount
                 </div>
                 <div className="text-[32px] font-bold leading-tight text-primary">
-                  1.22 BTC
+                  {numeral(loanSummary?.initialBtcCollateral).format(
+                    '0,0.000[0000]'
+                  )}{' '}
+                  BTC
                 </div>
               </div>
               <div className="flex flex-col gap-0.5">
-                <div className="text-default-d text-xs leading-tight">
+                <div className="text-xs leading-tight text-default-d">
                   Loan Duration
                 </div>
-                <div className="text-default-d text-[32px] font-bold leading-tight">
-                  7Y
+                <div className="text-[32px] font-bold leading-tight text-default-d">
+                  {TIME_PERIOD.find(
+                    (item) => item.value === loanSummary?.term?.toString()
+                  )?.y || 0}
+                  Y
                 </div>
               </div>
             </div>
 
-            <div className="text-default-a space-y-3 px-1 text-sm">
+            <div className="space-y-3 px-1 text-sm text-default-a">
               <div className="flex items-center justify-between gap-2">
                 <span>Total Paid</span>
-                <span className="text-default-d text-right font-bold">
-                  20,000 USDC
+                <span className="text-right font-bold text-default-d">
+                  {formatUSDC(loanSummary?.totalPayment)} USDC
                 </span>
               </div>
               <div className="relative ml-7 flex items-center justify-between gap-2">
                 <span className="absolute -left-6 -top-2.5 size-5 border-b border-l border-default-300" />
                 <span>Principal</span>
-                <span className="text-right">5,000 USDC</span>
+                <span className="text-right">
+                  {formatUSDC(loanSummary?.principal)} USDC
+                </span>
               </div>
               <div className="relative ml-7 flex items-center justify-between gap-2">
                 <span className="absolute -left-6 -top-6 size-5 h-9 border-b border-l border-default-300" />
-                <span>Interest (11%)</span>
-                <span className="text-right">2,200 USDC</span>
+                <span>Interest ({loanSummary?.interestRate}%)</span>
+                <span className="text-right">
+                  {formatUSDC(loanSummary?.totalInterest)} USDC
+                </span>
               </div>
               <div className="flex items-center justify-between gap-2">
                 <span>Loan Origination Fees (1%)</span>
-                <span className="text-default-d text-right font-bold">
-                  100 USDC
+                <span className="text-right font-bold text-default-d">
+                  {formatUSDC(loanSummary?.openingFee)} USDC
                 </span>
               </div>
               <div className="flex items-center justify-between gap-2">
                 <span>Down Payment + Fees</span>
-                <span className="text-default-d text-right font-bold">
-                  1,000 USDC
+                <span className="text-right font-bold text-default-d">
+                  {formatUSDC(loanSummary?.firstTransaction?.amountSent)} USDC
                 </span>
               </div>
             </div>
 
-            <div className="text-default-d mt-7 flex items-center justify-between border-t border-default-300 px-1 pt-4 text-base font-medium">
+            <div className="mt-7 flex items-center justify-between border-t border-default-300 px-1 pt-4 text-base font-medium text-default-d">
               <span>Monthly Payment</span>
               <span className="text-right text-xl font-bold text-primary">
-                27,300 USDC
+                {formatUSDC(loanSummary?.monthlyPayment)} USDC
               </span>
             </div>
-            <div className="text-default-a mt-1 px-1 text-xs">
+            <div className="mt-1 px-1 text-xs text-default-a">
               starting 10th May 2025
             </div>
           </div>
         </div>
 
         <div className="h-full w-full px-2 sm:min-w-[400px]">
-          <div className="text-default-d mb-4 border-b border-default-300 px-1 pb-3.5 text-base font-medium">
+          <div className="mb-4 border-b border-default-300 px-1 pb-3.5 text-base font-medium text-default-d">
             Loan Conditions
           </div>
 
@@ -190,20 +225,29 @@ export const LoanConditions = ({
           size="lg"
           startContent={<LuArrowLeft />}
           variant="light"
-          className="hover:text-default-d px-0 text-[#777777] hover:!bg-transparent"
+          className="px-0 text-[#777777] hover:!bg-transparent hover:text-default-d"
           onPress={() => setStep(0)}
+          isLoading={isLoading}
         >
           Go Back
         </Button>
 
-        <Button
-          className="font-bold"
-          color="primary"
-          size="lg"
-          onPress={() => setIsModalOpen(true)}
+        <Tooltip
+          content={continueButtonTooltipContent}
+          isDisabled={!continueButtonDisabled}
+          color="danger"
         >
-          Continue
-        </Button>
+          <Button
+            className="font-bold data-[disabled=true]:pointer-events-auto data-[disabled=true]:cursor-not-allowed"
+            color="primary"
+            size="lg"
+            isLoading={isLoading}
+            onPress={() => setIsApproveModalOpen(true)}
+            isDisabled={continueButtonDisabled}
+          >
+            Continue
+          </Button>
+        </Tooltip>
       </div>
     </Card>
   )
@@ -273,7 +317,7 @@ const LoanConditionItem = ({
             {text}
           </Checkbox>
 
-          <span className="text-default-a mt-0.5 p-1" role="button">
+          <span className="mt-0.5 p-1 text-default-a" role="button">
             {isOpen ? <BsCaretUpFill /> : <BsCaretDownFill />}
           </span>
         </div>
@@ -295,7 +339,7 @@ const LoanConditionItem = ({
           </Checkbox>
 
           <span
-            className="text-default-a mt-0.5 p-1"
+            className="mt-0.5 p-1 text-default-a"
             role="button"
             onClick={() => setIsOpen(false)}
           >
@@ -303,7 +347,7 @@ const LoanConditionItem = ({
           </span>
         </div>
 
-        <div className="text-default-d px-6 pb-4 text-sm">
+        <div className="px-6 pb-4 text-sm text-default-d">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
           minim veniam, quis nostrud exe ullamco laboris nisi ut aliquip ex ea
@@ -315,4 +359,8 @@ const LoanConditionItem = ({
       </PopoverContent>
     </Popover>
   )
+}
+
+const formatUSDC = (amount: number | string | undefined) => {
+  return numeral(amount).format('0,0.[00]')
 }

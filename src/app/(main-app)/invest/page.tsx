@@ -60,7 +60,7 @@ export default function InvestPage() {
           .div(10 ** btcBalance.decimals)
           .toNumber()
       : 0
-  ).format('0,0.0000[0000]')
+  ).format('0,0.000[0000]')
 
   const investmentOnBitmor = lendingList?.lendings.reduce(
     (acc, curr) =>

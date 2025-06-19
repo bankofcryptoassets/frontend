@@ -10,39 +10,58 @@ import {
   Tooltip,
 } from '@heroui/react'
 import { LuInfo } from 'react-icons/lu'
-import { useMemo, useState } from 'react'
 import numeral from 'numeral'
 import { FaGear } from 'react-icons/fa6'
+import { Dispatch, SetStateAction } from 'react'
+import { LoanSummary } from '@/types'
 
 type BTCGoalProps = {
-  setStep: (step: number) => void
+  setStep: Dispatch<SetStateAction<number>>
+  usdcBalanceValue: number
+  availableLoanAmountInBTC: number
+  usdcAmount: number
+  setUsdcAmount: Dispatch<SetStateAction<number>>
+  btcAmount: number | undefined
+  setBtcAmount: Dispatch<SetStateAction<number | undefined>>
+  duration: string | undefined
+  setDuration: Dispatch<SetStateAction<string | undefined>>
+  interestRate: string
+  setInterestRate: Dispatch<SetStateAction<string>>
+  TIME_PERIOD: { value: string; label: string }[]
+  INTEREST_RATE: string[]
+  sliderInputInsufficient: boolean
+  acceptAndcontinueButtonDisabled: boolean
+  acceptAndcontinueButtonTooltipContent: string | undefined
+  disableUSDCInput: boolean
+  minUsdcAmount: number
+  maxUsdcAmount: number
+  loanSummary?: LoanSummary | null
+  isLoanSummaryFetching: boolean
 }
 
-const USER_USDC_BALANCE = 12932
-const TIME_PERIOD = ['3', '5', '7']
-const INTEREST_RATE = ['11']
-
-export const BTCGoal = ({ setStep }: BTCGoalProps) => {
-  const [usdcAmount, setUsdcAmount] = useState<number>(0)
-  const [btcAmount, setBtcAmount] = useState<number | undefined>(undefined)
-  const [duration, setDuration] = useState<string | undefined>(undefined)
-  const [interestRate, setInterestRate] = useState<string>('11')
-  const availableLoanAmountInBTC = 2.46
-
-  const sliderInputPosition = useMemo(() => {
-    const minValue = 0
-    const maxValue = USER_USDC_BALANCE
-    const percentage = (
-      ((usdcAmount - minValue) / (maxValue - minValue)) *
-      100
-    ).toFixed(2)
-    return Math.min(Math.max(16, Number(percentage) ?? 0), 83) + '%'
-  }, [usdcAmount])
-
-  const sliderInputInsufficient = useMemo(() => {
-    return usdcAmount > USER_USDC_BALANCE
-  }, [usdcAmount])
-
+export const BTCGoal = ({
+  setStep,
+  // usdcBalanceValue,
+  availableLoanAmountInBTC,
+  usdcAmount,
+  setUsdcAmount,
+  btcAmount,
+  setBtcAmount,
+  duration,
+  setDuration,
+  interestRate,
+  setInterestRate,
+  TIME_PERIOD,
+  INTEREST_RATE,
+  sliderInputInsufficient,
+  acceptAndcontinueButtonDisabled,
+  acceptAndcontinueButtonTooltipContent,
+  disableUSDCInput,
+  minUsdcAmount,
+  maxUsdcAmount,
+  loanSummary,
+  isLoanSummaryFetching,
+}: BTCGoalProps) => {
   return (
     <Card className="rounded-2xl border border-default-200 bg-default-100 px-7 pb-5 pt-[18px]">
       <div className="mb-7 border-b border-default-200 pb-4 pl-1 text-base font-medium text-default-d">
@@ -84,7 +103,8 @@ export const BTCGoal = ({ setStep }: BTCGoalProps) => {
                 <span className="text-sm text-default-a">
                   Available to be Borrowed:{' '}
                   <strong className="text-default-d">
-                    {availableLoanAmountInBTC ?? 0} BTC
+                    {numeral(availableLoanAmountInBTC).format('0,0.000[0000]')}{' '}
+                    BTC
                   </strong>
                 </span>
               </span>
@@ -105,14 +125,14 @@ export const BTCGoal = ({ setStep }: BTCGoalProps) => {
             onValueChange={setDuration}
           >
             {TIME_PERIOD.map((term) => (
-              <CustomRadio key={term} value={term.toString()}>
-                {term} Years
+              <CustomRadio key={term.value} value={term.value}>
+                {term.label}
               </CustomRadio>
             ))}
           </RadioGroup>
 
           <div className="rounded-xl border border-default-300/50 bg-[#eaeaee] p-5 pb-4 pt-[18px] dark:bg-[#1F1F1F] max-sm:w-full">
-            <div className="mb-16 flex items-center justify-between gap-2 pb-3.5 pl-1 text-base font-medium text-default-d">
+            <div className="mb-4 flex items-center justify-between gap-2 pb-3.5 pl-1 text-base font-medium text-default-d">
               <span>Select Down Payment:</span>
               <Tooltip content="Enter how much down payment you want to make">
                 <LuInfo className="cursor-pointer text-default-600 outline-none" />
@@ -121,16 +141,15 @@ export const BTCGoal = ({ setStep }: BTCGoalProps) => {
 
             <div className="mb-4 px-1">
               <div className="relative">
-                <div
-                  className="absolute -top-14 h-12"
-                  style={{
-                    left: sliderInputPosition,
-                    transform: 'translateX(-50%)',
-                  }}
-                >
+                <div className="mb-2 w-full">
                   {sliderInputInsufficient && (
                     <span className="absolute -top-5 left-1.5 mb-2 text-xs text-danger">
                       Insufficient Balance
+                    </span>
+                  )}
+                  {isLoanSummaryFetching && (
+                    <span className="absolute -top-5 left-1.5 mb-2 text-xs text-default-a">
+                      Recalculating Loan Summary...
                     </span>
                   )}
                   <NumberInput
@@ -145,9 +164,9 @@ export const BTCGoal = ({ setStep }: BTCGoalProps) => {
                     }
                     fullWidth
                     aria-label="USDC Amount"
-                    minValue={0}
+                    minValue={minUsdcAmount}
                     step={0.1}
-                    formatOptions={{ maximumFractionDigits: 8 }}
+                    formatOptions={{ maximumFractionDigits: 2 }}
                     classNames={{
                       inputWrapper: cn(
                         'bg-default-50',
@@ -156,7 +175,7 @@ export const BTCGoal = ({ setStep }: BTCGoalProps) => {
                       input: 'text-2xl font-bold',
                     }}
                     color={sliderInputInsufficient ? 'danger' : 'primary'}
-                    className="w-32"
+                    className="w-full"
                     value={usdcAmount}
                     onChange={(value) => {
                       if (typeof value === 'number') setUsdcAmount(value)
@@ -165,13 +184,14 @@ export const BTCGoal = ({ setStep }: BTCGoalProps) => {
                           numeral(value?.target?.value ?? 0).value() || 0
                         )
                     }}
+                    isDisabled={disableUSDCInput || isLoanSummaryFetching}
                   />
                 </div>
 
                 <Slider
                   className="w-full"
-                  maxValue={USER_USDC_BALANCE}
-                  minValue={0}
+                  maxValue={maxUsdcAmount}
+                  minValue={minUsdcAmount}
                   step={0.1}
                   color={sliderInputInsufficient ? 'danger' : 'primary'}
                   size="sm"
@@ -194,14 +214,18 @@ export const BTCGoal = ({ setStep }: BTCGoalProps) => {
                       />
                     </div>
                   )}
+                  isDisabled={disableUSDCInput || isLoanSummaryFetching}
                 />
               </div>
 
               <div className="flex items-start justify-between font-medium text-default-500">
-                <div className="text-sm text-default-a">0</div>
+                <div className="text-sm text-default-a">
+                  {numeral(minUsdcAmount).format('0,0.[00]')}
+                </div>
                 <div className="flex flex-col items-end text-left text-sm text-default-a">
                   <div className="text-left">
-                    12,932 <span className="text-xs">USDC</span>
+                    {numeral(maxUsdcAmount).format('0,0.[00]')}{' '}
+                    <span className="text-xs">USDC</span>
                   </div>
                 </div>
               </div>
@@ -250,29 +274,33 @@ export const BTCGoal = ({ setStep }: BTCGoalProps) => {
               <div className="flex items-center justify-between gap-2">
                 <span>Total Paid</span>
                 <span className="text-right font-bold text-default-d">
-                  20,000 USDC
+                  {formatUSDC(loanSummary?.totalPayment)} USDC
                 </span>
               </div>
               <div className="relative ml-7 flex items-center justify-between gap-2">
                 <span className="absolute -left-6 -top-2.5 size-5 border-b border-l border-default-300" />
                 <span>Principal</span>
-                <span className="text-right">5,000 USDC</span>
+                <span className="text-right">
+                  {formatUSDC(loanSummary?.principal)} USDC
+                </span>
               </div>
               <div className="relative ml-7 flex items-center justify-between gap-2">
                 <span className="absolute -left-6 -top-6 size-5 h-9 border-b border-l border-default-300" />
-                <span>Interest (11%)</span>
-                <span className="text-right">2,200 USDC</span>
+                <span>Interest ({loanSummary?.interestRate}%)</span>
+                <span className="text-right">
+                  {formatUSDC(loanSummary?.totalInterest)} USDC
+                </span>
               </div>
               <div className="flex items-center justify-between gap-2">
                 <span>Loan Origination Fees (1%)</span>
                 <span className="text-right font-bold text-default-d">
-                  100 USDC
+                  {formatUSDC(loanSummary?.openingFee)} USDC
                 </span>
               </div>
               <div className="flex items-center justify-between gap-2">
                 <span>Down Payment + Fees</span>
                 <span className="text-right font-bold text-default-d">
-                  1,000 USDC
+                  {formatUSDC(loanSummary?.firstTransaction?.amountSent)} USDC
                 </span>
               </div>
             </div>
@@ -280,20 +308,27 @@ export const BTCGoal = ({ setStep }: BTCGoalProps) => {
             <div className="mt-7 flex items-center justify-between border-t border-default-300 px-1 pt-4 text-base font-medium text-default-d">
               <span>Monthly Payment</span>
               <span className="text-right text-xl font-bold text-primary">
-                27,300 USDC
+                {formatUSDC(loanSummary?.monthlyPayment)} USDC
               </span>
             </div>
           </div>
 
           <div className="mt-7">
-            <Button
-              className="w-full font-bold"
-              size="lg"
-              color="primary"
-              onPress={() => setStep(1)}
+            <Tooltip
+              content={acceptAndcontinueButtonTooltipContent}
+              isDisabled={!acceptAndcontinueButtonDisabled}
+              color="danger"
             >
-              Accept and Continue
-            </Button>
+              <Button
+                className="w-full font-bold data-[disabled=true]:pointer-events-auto data-[disabled=true]:cursor-not-allowed"
+                size="lg"
+                color="primary"
+                onPress={() => setStep(1)}
+                isDisabled={acceptAndcontinueButtonDisabled}
+              >
+                Accept and Continue
+              </Button>
+            </Tooltip>
           </div>
         </div>
       </div>
@@ -318,4 +353,8 @@ export const CustomRadio = (props: RadioProps) => {
       {children}
     </Radio>
   )
+}
+
+const formatUSDC = (amount: number | string | undefined) => {
+  return numeral(amount).format('0,0.[00]')
 }

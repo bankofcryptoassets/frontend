@@ -37,7 +37,6 @@ import { sleep } from '@/utils/sleep'
 import { useDepositUSDC } from '@/hooks/useDepositUSDC'
 
 const DEFAULT_USDC_BALANCE = 1_000_000
-
 const IS_USER_TELEGRAM_CONNECTED = false
 
 export default function InvestUSDCPage() {
@@ -135,7 +134,7 @@ export default function InvestUSDCPage() {
     : !tncAccepted
       ? 'Please accept the terms and conditions to continue'
       : sliderInputInsufficient
-        ? 'Insufficient balance'
+        ? 'Insufficient USDC balance'
         : !usdcAmount
           ? 'Please enter a valid amount'
           : undefined
@@ -195,10 +194,10 @@ export default function InvestUSDCPage() {
     }
 
     setLoading(true)
-    setTimeout(
-      () => !IS_USER_TELEGRAM_CONNECTED && setIsTelegramModalOpen(true),
-      2000
-    )
+    // setTimeout(
+    //   () => !IS_USER_TELEGRAM_CONNECTED && setIsTelegramModalOpen(true),
+    //   2000
+    // )
     await depositUSDC(usdcAmount?.toString(), reinvest).then(async (hash) => {
       toast.promise(publicClient.waitForTransactionReceipt({ hash }), {
         dismissible: false,
