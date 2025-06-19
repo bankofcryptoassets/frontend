@@ -52,9 +52,9 @@ export const StyledModal = ({
           <div className="flex flex-col items-center justify-center gap-5 py-10">
             <Image src={iconSrc} alt={title} width={60} height={60} />
 
-            <p className="text-pretty text-center text-default-d">
+            <div className="text-pretty text-center text-default-d">
               {description}
-            </p>
+            </div>
           </div>
         </ModalBody>
 

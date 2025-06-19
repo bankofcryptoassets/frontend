@@ -12,6 +12,8 @@ import { useQuery } from '@tanstack/react-query'
 import axios from '@/utils/axios'
 import { LendingListData, LendingStats } from '@/types'
 import Big from 'big.js'
+import { StyledModal } from '@/components/StyledModal'
+import { useState } from 'react'
 
 export default function InvestPage() {
   const { address } = useAccount()
@@ -82,11 +84,42 @@ export default function InvestPage() {
       .toNumber()
   ).format('$0,0.00')
 
+  const [isTelegramModalOpen, setIsTelegramModalOpen] = useState(false)
+
+  const handleTelegramConnect = () => {
+    setIsTelegramModalOpen(false)
+  }
+
   return (
     <div
       className="container mt-10 grid h-full min-h-[calc(100vh-7rem)] w-full grid-cols-[280px_1fr] gap-5 pb-[60px] max-lg:grid-cols-1"
       id="invest-page"
     >
+      <StyledModal
+        isOpen={isTelegramModalOpen}
+        onOpenChange={setIsTelegramModalOpen}
+        iconSrc="/icons/telegram.png"
+        title="Receive Notifications"
+        description={
+          <div>
+            <p>
+              Connect with Bitmor via Telegram to receive latest updates of your
+              investments
+            </p>
+            <p className="mt-2 text-sm text-default-a">
+              You&apos;ll be redirected to our telegram bot, please start a chat
+              to start receiving notifications. we can&apos;t send you
+              notifications if you don&apos;t start a chat with us.
+            </p>
+          </div>
+        }
+        primaryButtonText="Connect Telegram"
+        primaryButtonProps={{
+          onPress: handleTelegramConnect,
+          color: 'secondary',
+        }}
+      />
+
       <div className="flex h-full w-full flex-col gap-4">
         <Card className="min-h-fit w-full space-y-6 rounded-2xl border border-default-200/40 bg-default-100/80 p-7 pb-[30px]">
           <div>
@@ -248,16 +281,16 @@ export default function InvestPage() {
           </div>
 
           <div className="text-sm text-default-a">
-            We’ll be adding more investment opportunities soon. Stay tuned to
-            updates by connecting{' '}
-            <Link
-              as={NextLink}
-              href="/"
+            We&apos;ll be adding more investment opportunities soon. Stay tuned
+            to updates by connecting{' '}
+            <Button
+              variant="light"
               color="secondary"
-              className="mx-auto text-sm font-medium underline"
+              className="mx-auto h-auto w-auto min-w-0 p-0 text-sm font-medium underline hover:bg-transparent hover:text-secondary-300 data-[hover]:bg-transparent data-[hover]:text-secondary-300"
+              onPress={() => setIsTelegramModalOpen(true)}
             >
               Telegram
-            </Link>
+            </Button>
             .
           </div>
         </div>

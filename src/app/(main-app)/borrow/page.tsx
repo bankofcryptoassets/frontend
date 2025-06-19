@@ -208,7 +208,9 @@ export default function BorrowPage() {
       return
     }
     setLoading(true)
-    await approveUSDC(loanSummary?.data?.data?.loanSummary?.loanAmount.toString() as string).then(async (hash) => {
+    await approveUSDC(
+      loanSummary?.data?.data?.loanSummary?.loanAmount.toString() || '0'
+    ).then(async (hash) => {
       toast.promise(publicClient.waitForTransactionReceipt({ hash }), {
         dismissible: false,
         loading: 'Waiting for USDC approval to be confirmed...',
@@ -344,7 +346,19 @@ export default function BorrowPage() {
         onOpenChange={setIsTelegramModalOpen}
         iconSrc="/icons/telegram.png"
         title="Receive Notifications"
-        description="Connect with Bitmor via Telegram to receive latest updates of your loan"
+        description={
+          <div>
+            <p>
+              Connect with Bitmor via Telegram to receive latest updates of your
+              loans and investments
+            </p>
+            <p className="mt-2 text-sm text-default-a">
+              You&apos;ll be redirected to our telegram bot, please start a chat
+              to start receiving notifications. we can&apos;t send you
+              notifications if you don&apos;t start a chat with us.
+            </p>
+          </div>
+        }
         primaryButtonText="Connect Telegram"
         primaryButtonProps={{
           onPress: handleTelegramConnect,
