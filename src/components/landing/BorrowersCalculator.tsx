@@ -15,7 +15,7 @@ import { useTheme } from 'next-themes'
 import { useMemo, useState } from 'react'
 import numeral from 'numeral'
 import SlotCounter from 'react-slot-counter'
-import { INTEREST_RATE, TIME_PERIOD } from '@/app/(main-app)/borrow/page'
+import { INTEREST_RATE, TIME_PERIOD } from '@/utils/constants'
 
 const BITCOIN_PRICE = 1_00_000
 

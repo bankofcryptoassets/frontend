@@ -14,7 +14,7 @@ import { useEffect, useState, useCallback, useRef } from 'react'
 import { StyledModal } from '@/components/StyledModal'
 import { BTCGoal } from '@/components/borrow/BTCGoal'
 import { LoanConditions } from '@/components/borrow/LoanConditions'
-import { CONTRACT_ADDRESSES } from '@/utils/constants'
+import { CONTRACT_ADDRESSES, INTEREST_RATE } from '@/utils/constants'
 import { useAuth } from '@/auth/useAuth'
 import { useAccount, useBalance } from 'wagmi'
 import numeral from 'numeral'
@@ -35,12 +35,6 @@ import { useLoanBTC } from '@/hooks/useLoanBTC'
 
 const DEFAULT_USDC_BALANCE = 1_000_000
 const IS_USER_TELEGRAM_CONNECTED = false
-export const TIME_PERIOD = [
-  { value: '36', label: '3 Years', y: 3 },
-  { value: '60', label: '5 Years', y: 5 },
-  { value: '84', label: '7 Years', y: 7 },
-]
-export const INTEREST_RATE = ['8']
 
 export default function BorrowPage() {
   const [step, setStep] = useState(0)
@@ -649,8 +643,6 @@ export default function BorrowPage() {
           setDuration={setDuration}
           interestRate={interestRate}
           setInterestRate={setInterestRate}
-          TIME_PERIOD={TIME_PERIOD}
-          INTEREST_RATE={INTEREST_RATE}
           sliderInputInsufficient={sliderInputInsufficient}
           acceptAndcontinueButtonDisabled={acceptAndContinueButtonDisabled}
           acceptAndcontinueButtonTooltipContent={
@@ -676,7 +668,6 @@ export default function BorrowPage() {
           continueButtonDisabled={continueButtonDisabled}
           continueButtonTooltipContent={continueButtonTooltipContent}
           loanSummary={loanSummary?.data?.data?.loanSummary || undefined}
-          TIME_PERIOD={TIME_PERIOD}
         />
       )}
     </div>

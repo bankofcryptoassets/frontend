@@ -10,3 +10,10 @@ export const CONTRACT_ADDRESSES = {
   MAIN: '0x80822a4BC3Ad8659686e2F44a24c70B47Cd5905b',
   BTC: '0xB4BF7595a438a41Dd9f691bfE7AF16A82123dF8d',
 } as const
+
+export const TIME_PERIOD = [
+  { value: '36', label: '3 Years', y: 3 },
+  { value: '60', label: '5 Years', y: 5 },
+  { value: '84', label: '7 Years', y: 7 },
+]
+export const INTEREST_RATE = ['8']

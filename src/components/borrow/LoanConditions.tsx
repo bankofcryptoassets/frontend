@@ -13,6 +13,7 @@ import { BsCaretDownFill, BsCaretUpFill } from 'react-icons/bs'
 import { SetStateAction, Dispatch, useEffect, useRef, useState } from 'react'
 import numeral from 'numeral'
 import { LoanSummary } from '@/types'
+import { TIME_PERIOD } from '@/utils/constants'
 
 type LoanConditionsProps = {
   setStep: Dispatch<SetStateAction<number>>
@@ -37,7 +38,6 @@ type LoanConditionsProps = {
   continueButtonDisabled: boolean
   continueButtonTooltipContent: string | undefined
   loanSummary?: LoanSummary | null
-  TIME_PERIOD: { value: string; label: string; y: number }[]
 }
 
 export const LoanConditions = ({
@@ -51,7 +51,6 @@ export const LoanConditions = ({
   continueButtonDisabled,
   continueButtonTooltipContent,
   loanSummary,
-  TIME_PERIOD,
 }: LoanConditionsProps) => {
   return (
     <Card className="rounded-2xl border border-default-200 bg-default-100 px-7 pb-5 pt-[18px]">

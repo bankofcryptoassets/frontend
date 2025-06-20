@@ -15,6 +15,7 @@ import numeral from 'numeral'
 import { FaGear } from 'react-icons/fa6'
 import { Dispatch, SetStateAction } from 'react'
 import { LoanSummary } from '@/types'
+import { INTEREST_RATE, TIME_PERIOD } from '@/utils/constants'
 
 type BTCGoalProps = {
   setStep: Dispatch<SetStateAction<number>>
@@ -28,8 +29,6 @@ type BTCGoalProps = {
   setDuration: Dispatch<SetStateAction<string | undefined>>
   interestRate: string
   setInterestRate: Dispatch<SetStateAction<string>>
-  TIME_PERIOD: { value: string; label: string }[]
-  INTEREST_RATE: string[]
   sliderInputInsufficient: boolean
   acceptAndcontinueButtonDisabled: boolean
   acceptAndcontinueButtonTooltipContent: string | undefined
@@ -53,8 +52,6 @@ export const BTCGoal = ({
   setDuration,
   interestRate,
   setInterestRate,
-  TIME_PERIOD,
-  INTEREST_RATE,
   sliderInputInsufficient,
   acceptAndcontinueButtonDisabled,
   acceptAndcontinueButtonTooltipContent,
