@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -22,6 +22,10 @@
     "@xmtp/content-type-transaction-reference": "2.0.2",
     "@xmtp/content-type-wallet-send-calls": "2.0.0",
     "axios": "1.9.0",
+    "big.js": "7.0.1",
+    "canvas-confetti": "1.9.3",
+    "embla-carousel-autoplay": "8.6.0",
+    "embla-carousel-react": "8.6.0",
     "framer-motion": "12.9.2",
     "jose": "6.0.11",
     "js-cookie": "3.0.5",
@@ -35,6 +39,7 @@
     "react-cookie": "8.0.1",
     "react-dom": "19.1.0",
     "react-icons": "5.5.0",
+    "react-inlinesvg": "4.2.0",
     "react-slot-counter": "3.3.1",
     "react-virtuoso": "4.12.8",
     "recharts": "2.15.3",
@@ -47,6 +52,8 @@
   "devDependencies": {
     "@eslint/eslintrc": "3.3.1",
     "@tanstack/eslint-plugin-query": "5.74.7",
+    "@types/big.js": "6.2.2",
+    "@types/canvas-confetti": "1.9.0",
     "@types/js-cookie": "3.0.6",
     "@types/node": "22.15.3",
     "@types/numeral": "2.0.5",

@@ -3,12 +3,10 @@ import { Button, Chip } from '@heroui/react'
 import { title } from '../primitives'
 import { LuCircleCheckBig } from 'react-icons/lu'
 import Link from 'next/link'
-import { LendingPools } from './LendingPools'
+import { LendingChart } from './LendingChart'
 
 const BENEFITS = [
-  'Lend to real BTC buyers, earn fixed or variable yield',
-  'Capital protected through liquidation of escrowed BTC',
-  'Receive monthly payments',
+  'Earn real yield by lending to real BTC buyers',
   'Withdraw anytime (subject to liquidity)',
 ]
 
@@ -27,18 +25,20 @@ export const Lenders = () => {
       ></div>
 
       <div className="container flex items-center justify-between gap-8 py-24 max-lg:flex-col-reverse max-lg:py-16">
-        <LendingPools />
+        <LendingChart />
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-7">
           <div className="flex flex-col gap-3">
-            <Chip color="secondary" classNames={{ content: 'font-semibold' }}>
-              FOR LENDERS
+            <Chip
+              color="secondary"
+              classNames={{ content: 'font-semibold text-white text-xs px-0' }}
+              className="mb-3 rounded-lg px-4 py-1.5"
+            >
+              For Lenders
             </Chip>
 
             <h2 className={title({ size: 'xs' })}>
-              Put Your Stablecoins to Work,
-              <br />
-              Safely
+              Put Your Stablecoins to Work, Safely
             </h2>
           </div>
 
@@ -46,10 +46,12 @@ export const Lenders = () => {
             {BENEFITS.map((item) => (
               <div key={item} className="flex items-start gap-2">
                 <LuCircleCheckBig
-                  className="mt-1 min-w-4 text-secondary"
+                  className="mt-1.5 min-w-4 text-secondary"
                   size={16}
                 />
-                <span>{item}</span>
+                <span className="text-lg font-medium text-default-e">
+                  {item}
+                </span>
               </div>
             ))}
           </div>
@@ -60,9 +62,9 @@ export const Lenders = () => {
             size="lg"
             as={Link}
             href="/lend/earn"
-            className="font-medium max-sm:w-full"
+            className="mt-5 max-w-[360px] font-bold text-white max-sm:w-full"
           >
-            Start Lending
+            Try Bitmor
           </Button>
         </div>
       </div>

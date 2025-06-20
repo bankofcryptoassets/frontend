@@ -9,9 +9,9 @@ export const useUSDCApproval = () => {
       onError: () => {
         toast.error('Failed to approve USDC')
       },
-      onSuccess: () => {
-        toast.success('Successfully approved USDC')
-      },
+      // onSuccess: () => {
+      //   toast.success('Successfully approved USDC')
+      // },
     },
   })
 
@@ -23,7 +23,7 @@ export const useUSDCApproval = () => {
         ]),
         address: CONTRACT_ADDRESSES.USDC,
         functionName: 'approve',
-        args: [CONTRACT_ADDRESSES.LENDING_POOL, parseUnits(usdcAmount, 6)],
+        args: [CONTRACT_ADDRESSES.MAIN, parseUnits(usdcAmount, 6)],
       },
       options
     )

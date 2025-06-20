@@ -8,6 +8,13 @@ export type LoanAvailabilityType = {
   status?: string
   data?: {
     availableLoanAmountInBTC?: number
+    fgi: {
+      value: number
+      valueText: string
+    }
+    btcBorrowers: number
+    totalLoanInBTC: number
+    totalLoanInUSD: number
   }
 }
 
@@ -36,12 +43,14 @@ export type LoanSummary = {
   liquidationChart: {
     months: number[]
     liquidationPrices: number[]
-  },
-   contract: {
-                totalLoanAmount: string,
-                borrowerDeposit: string,
-                lenderPrincipal: string
-            }
+  }
+  basisPoints: string
+  initialBtcCollateral: string
+  contract: {
+    totalLoanAmount: string
+    borrowerDeposit: string
+    lenderPrincipal: string
+  }
 }
 
 export type AmortizationSchedule = {
@@ -133,4 +142,23 @@ export type UserID = {
 export type WithdrawableByUser = {
   user_id: string
   amount: number
+}
+
+export type LendingListData = {
+  lendings: {
+    _id: string
+    user_address: string
+    lending_amount_approved: number
+    available_amount: number
+    openedOn: string
+    duration_preference: string
+    updated_at: string
+  }[]
+}
+
+export type LendingStats = {
+  totalUSDInvested: number
+  totallenders: number
+  baseAPR: number
+  loanAPR: number
 }

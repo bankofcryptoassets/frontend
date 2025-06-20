@@ -1,21 +1,21 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: 'BitMore',
+  name: 'Bitmor',
   description:
     'Buy Bitcoin with 80% Financing. Earn Yield Backed by Real Demand.',
   navItems: [
     {
-      label: 'Borrowers',
-      href: '/#borrowers',
+      label: 'Loan Calculator',
+      href: '/#calc',
     },
     {
-      label: 'Lenders',
-      href: '/#lenders',
-    },
-    {
-      label: 'Why BitMore',
+      label: 'Why Own Bitcoin',
       href: '/#why',
+    },
+    {
+      label: 'For Lenders',
+      href: '/#lenders',
     },
     {
       label: 'Team',
@@ -24,6 +24,24 @@ export const siteConfig = {
     {
       label: 'FAQs',
       href: '/#faqs',
+    },
+  ],
+  navItemMainApp: [
+    {
+      label: 'Borrow $BTC',
+      href: '/borrow',
+    },
+    {
+      label: 'Invest',
+      href: '/invest',
+    },
+    {
+      label: 'My Portfolio',
+      href: '/portfolio',
+    },
+    {
+      label: 'Analytics',
+      href: '/analytics',
     },
   ],
 }

@@ -1,20 +1,21 @@
 'use client'
-import { Button, Chip } from '@heroui/react'
+import { Button } from '@heroui/react'
 import { title } from '../primitives'
 import { LuCircleCheckBig } from 'react-icons/lu'
 import Link from 'next/link'
 import { BorrowersCalculator } from './BorrowersCalculator'
 
 const BENEFITS = [
-  'Own a full Bitcoin today like a Mortgage',
-  'Monthly EMIs, Flexible Terms, Auto Payments',
-  'BTC unlocks as you pay monthly',
-  'Sell your full BTC and close your loan anytime',
+  'Only 20% down, own any amount of Bitcoin',
+  'Earn yield on 100% of Bitcoin from day one',
+  'Flexible terms, automated monthly payments',
+  'Opt-in shield from liquidation events',
+  'Pre-close anytime, with your USDC or BTC gains',
 ]
 
 export const Borrowers = () => {
   return (
-    <section className="relative z-0" id="borrowers">
+    <section className="relative z-0" id="calc">
       <div
         className="pointer-events-none absolute inset-2 -z-[1] select-none overflow-hidden rounded-xl border-2 border-default-200"
         style={{
@@ -29,23 +30,21 @@ export const Borrowers = () => {
       <div className="container flex items-center justify-between gap-8 py-24 max-lg:flex-col max-lg:py-16">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
-            <Chip color="primary" classNames={{ content: 'font-semibold' }}>
-              FOR BORROWERS
-            </Chip>
-
-            <h2 className={title({ size: 'xs' })}>
-              Get Upto 80% Financing on Your BTC
+            <h2 className={title({ size: 'sm' })}>
+              You Can Get Upto 80% Financing
             </h2>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="mt-1 flex flex-col gap-2">
             {BENEFITS.map((item) => (
               <div key={item} className="flex items-start gap-2">
                 <LuCircleCheckBig
-                  className="mt-1 min-w-4 text-primary"
+                  className="mt-1.5 min-w-4 text-primary"
                   size={16}
                 />
-                <span>{item}</span>
+                <span className="text-lg font-medium text-default-e">
+                  {item}
+                </span>
               </div>
             ))}
           </div>
@@ -55,10 +54,10 @@ export const Borrowers = () => {
             variant="shadow"
             size="lg"
             as={Link}
-            href="/borrow/apply"
-            className="font-medium max-sm:w-full"
+            href="/borrow"
+            className="mt-6 max-w-[360px] font-bold max-sm:w-full"
           >
-            Start Borrowing
+            Get your Bitcoin
           </Button>
         </div>
 

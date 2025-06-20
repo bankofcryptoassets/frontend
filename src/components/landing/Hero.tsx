@@ -1,7 +1,6 @@
 'use client'
-import { Button } from '@heroui/react'
+import { Button, Input } from '@heroui/react'
 import { subtitle, title } from '../primitives'
-import Link from 'next/link'
 
 export const Hero = () => {
   return (
@@ -20,46 +19,51 @@ export const Hero = () => {
         }}
       ></div>
 
-      <div className="container py-16">
-        <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+      <div className="container pt-16">
+        <div className="flex flex-col items-center justify-center gap-4 pt-8 md:pt-10">
           <div className="inline-block max-w-4xl justify-center text-center">
             <h1 className="max-lg:text-balance">
-              <span className={title()}>Own BTC like a Mortgage. </span>
-              <span className={title({ color: 'primary' })}>
-                Earn <br className="max-lg:hidden" /> Yield
+              <span className={title({ size: 'lg' })}>Own Bitcoin Today, </span>
+              <span
+                className={title({ className: 'text-primary', size: 'lg' })}
+              >
+                Pay Later
               </span>
-              <span className={title()}> Backed by BTC Loans.</span>
             </h1>
 
-            <p className={subtitle({ class: 'mt-10' })}>
-              BitMore lets you own BTC with a small upfront payment. Or earn
-              stable yield by lending to Bitcoin buyers. All secured by smart
-              contracts.
+            <p className={subtitle({ class: 'mt-10 text-balance' })}>
+              Own any amount of BTC with 20% deposit. Smarter accumulation
+              starts with early ownership.
             </p>
           </div>
 
-          <div className="mt-12 flex w-full items-center justify-center gap-8 max-sm:flex-col max-sm:gap-4">
-            <Button
-              color="primary"
-              variant="shadow"
+          <div className="mb-20 mt-8 w-full max-w-[720px]">
+            <Input
+              placeholder="Enter your Email ID"
+              className="h-[60px] w-full max-w-[720px] rounded-xl"
+              classNames={{
+                mainWrapper: 'w-full',
+                inputWrapper:
+                  'h-[60px] rounded-xl w-full pl-5 pr-2 !bg-[#EEEEEE] ',
+                innerWrapper: 'w-full',
+                input: '!text-black placeholder:text-[#666666]',
+              }}
               size="lg"
-              as={Link}
-              href="/borrow/apply"
-              className="font-medium max-sm:w-full"
-            >
-              Start Borrowing
-            </Button>
-            <Button
-              color="secondary"
-              variant="shadow"
-              size="lg"
-              as={Link}
-              href="/lend/earn"
-              className="font-medium max-sm:w-full"
-            >
-              Start Earning
-            </Button>
+              endContent={
+                <Button
+                  className="h-11 w-[160px] rounded-lg text-sm font-bold"
+                  color="primary"
+                  variant="shadow"
+                >
+                  Join Waitlist
+                </Button>
+              }
+            />
           </div>
+
+          <p className="mb-6 text-balance text-center text-sm text-default-d">
+            No Credit Checks. No KYC. All Secured by Smart Contracts.
+          </p>
         </div>
       </div>
     </section>

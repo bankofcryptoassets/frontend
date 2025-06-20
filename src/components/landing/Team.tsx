@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
-import { Card, Chip, cn } from '@heroui/react'
+import { Card, cn } from '@heroui/react'
 import { useTheme } from 'next-themes'
-import { subtitle, title } from '../primitives'
+import { title } from '../primitives'
 import { MagicCard } from '../MagicCard'
 import { FaLinkedin, FaGithub, FaGlobe } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
@@ -30,7 +30,7 @@ const TEAM = [
     name: 'Jose Paul',
     role: 'Product & BD',
     description:
-      'Leading product strategy and business development with 5+ years in fintech.',
+      'Product lead and BD specialist, securing and growing Web3 ecosystems for 5+ years.',
     social: [
       {
         name: 'linkedin',
@@ -43,20 +43,7 @@ const TEAM = [
     ],
   },
   {
-    image: '/team/sudeep.jpeg',
-    name: 'Sudeep Kamat',
-    role: 'Smart Contracts',
-    description:
-      'Solidity expert specializing in DeFi security and optimization.',
-    social: [
-      {
-        name: 'linkedin',
-        href: 'https://www.linkedin.com/in/sudeep-kamat/',
-      },
-    ],
-  },
-  {
-    image: 'https://placehold.co/200?text=Suryansh+Chandak',
+    image: 'https://placehold.co/200/444444/FFFFFF?text=Suryansh+Chandak',
     name: 'Suryansh Chandak',
     role: 'DeFi Strategy',
     description:
@@ -73,9 +60,9 @@ const TEAM = [
     ],
   },
   {
-    image: 'https://placehold.co/200?text=Shreyas+Padmakiran',
+    image: 'https://placehold.co/200/444444/FFFFFF?text=Shreyas+Padmakiran',
     name: 'Shreyas Padmakiran',
-    role: 'Back End',
+    role: 'Tech Lead',
     description:
       'System architecture specialist focused on scalability and performance.',
     social: [
@@ -89,6 +76,19 @@ const TEAM = [
       },
     ],
   },
+  {
+    image: '/team/sudeep.jpeg',
+    name: 'Sudeep Kamat',
+    role: 'Smart Contracts',
+    description:
+      'Solidity expert specializing in DeFi security and optimization.',
+    social: [
+      {
+        name: 'linkedin',
+        href: 'https://www.linkedin.com/in/sudeep-kamat/',
+      },
+    ],
+  },
 ] as const
 
 export const Team = () => {
@@ -98,13 +98,11 @@ export const Team = () => {
     <section className="container py-20 max-lg:py-16" id="team">
       <div className="flex w-full flex-col items-center justify-center gap-6">
         <div className="flex w-full flex-col items-center justify-center gap-3 text-center">
-          <Chip color="primary" classNames={{ content: 'font-semibold' }}>
-            MEET THE TEAM
-          </Chip>
+          <h2 className={title({ size: 'xs', className: 'text-primary' })}>
+            Built by Crypto Natives
+          </h2>
 
-          <h2 className={title({ size: 'xs' })}>Built by Crypto Natives</h2>
-
-          <p className={subtitle()}>
+          <p className="text-balance text-center text-lg text-default-d">
             We&apos;re builders from crypto-native backgrounds, focused on
             making BTC ownership and yield radically accessible.
           </p>
@@ -115,45 +113,44 @@ export const Team = () => {
             {TEAM?.map((item, index) => {
               return (
                 <Card
-                  className="w-full max-w-xs bg-default/35 shadow-[2px_4px_16px_0px_hsl(var(--heroui-default-200))_inset]"
-                  radius="md"
+                  className="w-full max-w-xs rounded-2xl bg-default/35 shadow-[2px_4px_16px_0px_hsl(var(--heroui-default-200))_inset]"
                   key={index}
                 >
                   <MagicCard
                     gradientColor={theme === 'dark' ? '#333333' : '#D9D9D9aa'}
                     className="h-full p-0"
                   >
-                    <div className="space-y-3 p-6 pb-4">
+                    <div className="flex h-full flex-col space-y-3 p-4">
                       {item.image.startsWith('/') ? (
                         <Image
                           src={item.image}
                           alt={item.name}
-                          width={200}
-                          height={200}
-                          className="aspect-square h-full w-full rounded-md object-cover"
+                          width={252}
+                          height={196}
+                          className="aspect-[252/196] w-full rounded-xl object-cover"
                         />
                       ) : (
                         <img
                           src={item.image}
                           alt={item.name}
-                          width={200}
-                          height={200}
-                          className="aspect-square h-full w-full rounded-md object-cover"
+                          width={252}
+                          height={196}
+                          className="aspect-[252/196] w-full rounded-xl object-cover"
                         />
                       )}
 
-                      <div>
+                      <div className="mt-1 px-1">
                         <div className="text-xl font-semibold">{item.name}</div>
                         <div className="font-medium text-primary">
                           {item.role}
                         </div>
                       </div>
 
-                      <p className="text-sm text-default-700">
+                      <p className="!mb-3 px-1 text-sm text-default-700">
                         {item.description}
                       </p>
 
-                      <div className="flex flex-wrap items-center gap-2">
+                      <div className="!mt-auto flex flex-wrap items-center gap-2 px-1">
                         {item.social.map((social, index) => {
                           return (
                             <Link
