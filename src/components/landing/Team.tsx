@@ -30,7 +30,7 @@ const TEAM = [
     name: 'Jose Paul',
     role: 'Product & BD',
     description:
-      'Leading product strategy and business development with 5+ years in fintech.',
+      'Product lead and BD specialist, securing and growing Web3 ecosystems for 5+ years.',
     social: [
       {
         name: 'linkedin',
@@ -43,20 +43,7 @@ const TEAM = [
     ],
   },
   {
-    image: '/team/sudeep.jpeg',
-    name: 'Sudeep Kamat',
-    role: 'Smart Contracts',
-    description:
-      'Solidity expert specializing in DeFi security and optimization.',
-    social: [
-      {
-        name: 'linkedin',
-        href: 'https://www.linkedin.com/in/sudeep-kamat/',
-      },
-    ],
-  },
-  {
-    image: 'https://placehold.co/200?text=Suryansh+Chandak',
+    image: 'https://placehold.co/200/444444/FFFFFF?text=Suryansh+Chandak',
     name: 'Suryansh Chandak',
     role: 'DeFi Strategy',
     description:
@@ -73,7 +60,7 @@ const TEAM = [
     ],
   },
   {
-    image: 'https://placehold.co/200?text=Shreyas+Padmakiran',
+    image: 'https://placehold.co/200/444444/FFFFFF?text=Shreyas+Padmakiran',
     name: 'Shreyas Padmakiran',
     role: 'Tech Lead',
     description:
@@ -86,6 +73,19 @@ const TEAM = [
       {
         name: 'linkedin',
         href: 'https://www.linkedin.com/in/shreyaspm/',
+      },
+    ],
+  },
+  {
+    image: '/team/sudeep.jpeg',
+    name: 'Sudeep Kamat',
+    role: 'Smart Contracts',
+    description:
+      'Solidity expert specializing in DeFi security and optimization.',
+    social: [
+      {
+        name: 'linkedin',
+        href: 'https://www.linkedin.com/in/sudeep-kamat/',
       },
     ],
   },

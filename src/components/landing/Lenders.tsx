@@ -3,7 +3,7 @@ import { Button, Chip } from '@heroui/react'
 import { title } from '../primitives'
 import { LuCircleCheckBig } from 'react-icons/lu'
 import Link from 'next/link'
-import { LendingPools } from './LendingPools'
+import { LendingChart } from './LendingChart'
 
 const BENEFITS = [
   'Earn real yield by lending to real BTC buyers',
@@ -25,7 +25,7 @@ export const Lenders = () => {
       ></div>
 
       <div className="container flex items-center justify-between gap-8 py-24 max-lg:flex-col-reverse max-lg:py-16">
-        <LendingPools />
+        <LendingChart />
 
         <div className="flex flex-col gap-7">
           <div className="flex flex-col gap-3">
