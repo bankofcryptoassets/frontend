@@ -10,7 +10,7 @@ import {
   CarouselPagination,
 } from '@/components/Carousel'
 import Autoplay from 'embla-carousel-autoplay'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { StyledModal } from '@/components/StyledModal'
 import { BTCGoal } from '@/components/borrow/BTCGoal'
 import { LoanConditions } from '@/components/borrow/LoanConditions'
@@ -19,10 +19,14 @@ import { useAuth } from '@/auth/useAuth'
 import { useAccount, useBalance } from 'wagmi'
 import numeral from 'numeral'
 import Big from 'big.js'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import {
+  keepPreviousData,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import { LoanAvailabilityType, LoanSummaryResponse } from '@/types'
 import axios from '@/utils/axios'
-import { useDebounceValue, useLocalStorage } from 'usehooks-ts'
+import { useLocalStorage } from 'usehooks-ts'
 import { toast } from 'sonner'
 import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { publicClient } from '@/auth/client'
@@ -53,19 +57,48 @@ export default function BorrowPage() {
     'interest-rate',
     INTEREST_RATE[0]
   )
-  const [debouncedPayload] = useDebounceValue(
-    {
-      amount: btcAmount,
-      term: Number(duration),
-      interestRate: Number(interestRate),
-      ...(usdcAmount && { downPaymentAmount: usdcAmount }),
-    },
-    500,
-    {
-      equalityFn: (left, right) =>
-        JSON.stringify(left) === JSON.stringify(right),
+  const queryClient = useQueryClient()
+
+  // Create a clean payload object with only valid values
+  const createPayload = useCallback(() => {
+    const payload: any = {}
+
+    if (btcAmount && btcAmount > 0) {
+      payload.amount = btcAmount
     }
-  )
+
+    if (duration && !isNaN(Number(duration))) {
+      payload.term = Number(duration)
+    }
+
+    if (interestRate && !isNaN(Number(interestRate))) {
+      payload.interestRate = Number(interestRate)
+    }
+
+    return payload
+  }, [btcAmount, duration, interestRate])
+
+  // Use useMemo with a custom debounce effect instead of useDebounceValue
+  const [debouncedPayload, setDebouncedPayload] = useState<any>({})
+  const prevPayloadRef = useRef<any>({})
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      const newPayload = createPayload()
+
+      // Only update if the payload actually changed
+      const hasChanged =
+        JSON.stringify(newPayload) !== JSON.stringify(prevPayloadRef.current)
+
+      if (hasChanged) {
+        prevPayloadRef.current = newPayload
+        setDebouncedPayload(newPayload)
+      }
+    }, 500)
+
+    return () => clearTimeout(timeoutId)
+  }, [createPayload])
+
   const [isConditionOpen, setIsConditionOpen] = useState<number | undefined>()
   const [conditions, setConditions] = useState<{
     first: boolean
@@ -91,16 +124,15 @@ export default function BorrowPage() {
     queryFn: () =>
       axios.get<LoanAvailabilityType>(`/initialisation/loanavailability`),
   })
-  const {
-    data: loanSummary,
-    isLoading: isLoanSummaryLoading,
-    isFetching: isLoanSummaryFetching,
-  } = useQuery({
+  const { data: loanSummary, isLoading: isLoanSummaryLoading } = useQuery({
     queryKey: ['/initialisation/loansummary', debouncedPayload],
     enabled:
       !!debouncedPayload?.amount &&
       !!debouncedPayload?.term &&
-      !!debouncedPayload?.interestRate,
+      !!debouncedPayload?.interestRate &&
+      debouncedPayload.amount > 0 &&
+      debouncedPayload.term > 0 &&
+      debouncedPayload.interestRate > 0,
     queryFn: ({ signal }) =>
       axios.post<LoanSummaryResponse>(
         `/initialisation/loansummary`,
@@ -110,12 +142,59 @@ export default function BorrowPage() {
     placeholderData: keepPreviousData,
   })
 
+  const [isLoanSummaryFetching, setIsLoanSummaryFetching] = useState(false)
+  // Custom refetch function that includes current USDC amount
+  const refetchWithDownPayment = async (value: number) => {
+    setIsLoanSummaryFetching(true)
+    try {
+      const payload = { ...debouncedPayload, downPaymentAmount: value }
+      const response = await axios.post<LoanSummaryResponse>(
+        `/initialisation/loansummary`,
+        payload,
+        { headers: { 'Content-Type': 'application/json' } }
+      )
+
+      // Update the query cache with the new data
+      queryClient.setQueryData(
+        ['/initialisation/loansummary', debouncedPayload],
+        response
+      )
+      setIsLoanSummaryFetching(false)
+      return response
+    } catch (error) {
+      console.error(error)
+      setIsLoanSummaryFetching(false)
+    }
+  }
+
+  // Debounced version of refetchWithDownPayment
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedRefetchWithDownPayment = useCallback(
+    (() => {
+      let timeoutId: NodeJS.Timeout
+      return (value: number): Promise<any> => {
+        return new Promise((resolve, reject) => {
+          clearTimeout(timeoutId)
+          timeoutId = setTimeout(async () => {
+            try {
+              const result = await refetchWithDownPayment(value)
+              resolve(result)
+            } catch (error) {
+              reject(error)
+            }
+          }, 500)
+        })
+      }
+    })(),
+    [debouncedPayload, queryClient]
+  )
+
   useEffect(() => {
-    if (loanSummary?.data?.data?.loanSummary) {
+    if (loanSummary?.data?.data?.loanSummary?.downPayment) {
       setUsdcAmount(Number(loanSummary?.data?.data?.loanSummary?.downPayment))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loanSummary])
+  }, [loanSummary?.data?.data?.loanSummary?.downPayment])
 
   const formattedBtcBalance = numeral(
     btcBalance?.value
@@ -148,10 +227,8 @@ export default function BorrowPage() {
 
   const minUsdcAmount =
     Number(loanSummary?.data?.data?.loanSummary?.loanAmount) * 0.2
-  const maxUsdcAmount = Math.min(
-    usdcBalanceValue,
+  const maxUsdcAmount =
     Number(loanSummary?.data?.data?.loanSummary?.loanAmount) * 0.5
-  )
 
   const acceptAndContinueButtonDisabled =
     !isAuth ||
@@ -583,6 +660,7 @@ export default function BorrowPage() {
           maxUsdcAmount={maxUsdcAmount}
           loanSummary={loanSummary?.data?.data?.loanSummary || undefined}
           isLoanSummaryFetching={isLoanSummaryFetching}
+          refetchLoanSummary={debouncedRefetchWithDownPayment}
         />
       )}
       {step === 1 && (

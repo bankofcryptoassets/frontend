@@ -112,7 +112,7 @@ export const Navbar = () => {
               >
                 <Image src="/icons/btc.svg" alt="BTC" width={16} height={16} />
                 <span className="text-base font-medium">
-                  {numeral(btcBalance?.value ?? 0).format('0,0')} sats
+                  {numeral(btcBalance?.value || 0).format('0,0')} sats
                 </span>
               </Button>
             </NavbarItem>
@@ -197,7 +197,7 @@ export const Navbar = () => {
                     height={16}
                   />
                   <span className="font-medium">
-                    {numeral(btcBalance?.value ?? 0).format('0,0')} sats
+                    {numeral(btcBalance?.value || 0).format('0,0')} sats
                   </span>
                 </Button>
               )}

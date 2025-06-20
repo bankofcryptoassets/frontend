@@ -95,7 +95,7 @@ export const BorrowersCalculator = () => {
                 if (typeof value === 'number') setBtcAmount(value)
                 else if (value?.target)
                   setBtcAmount(
-                    numeral(value?.target?.value ?? 0).value() || undefined
+                    numeral(value?.target?.value || 0).value() || undefined
                   )
               }}
               classNames={{

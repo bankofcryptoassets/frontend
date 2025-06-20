@@ -38,6 +38,7 @@ type BTCGoalProps = {
   maxUsdcAmount: number
   loanSummary?: LoanSummary | null
   isLoanSummaryFetching: boolean
+  refetchLoanSummary: (value: number) => Promise<{ data: any }>
 }
 
 export const BTCGoal = ({
@@ -62,6 +63,7 @@ export const BTCGoal = ({
   maxUsdcAmount,
   loanSummary,
   isLoanSummaryFetching,
+  refetchLoanSummary,
 }: BTCGoalProps) => {
   return (
     <Card className="rounded-2xl border border-default-200 bg-default-100 px-7 pb-5 pt-[18px]">
@@ -75,6 +77,7 @@ export const BTCGoal = ({
             hideStepper
             isWheelDisabled
             placeholder="Enter BTC Goal"
+            aria-label="BTC Goal"
             name="btc"
             size="sm"
             endContent={
@@ -85,15 +88,17 @@ export const BTCGoal = ({
             fullWidth
             minValue={0}
             value={btcAmount}
-            formatOptions={{
-              maximumFractionDigits: 8,
-            }}
+            formatOptions={{ maximumFractionDigits: 8 }}
             onChange={(value) => {
-              if (typeof value === 'number') setBtcAmount(value)
-              else if (value?.target)
+              if (typeof value === 'number') {
+                setBtcAmount(value || undefined)
+                setUsdcAmount(0)
+              } else if (value?.target) {
                 setBtcAmount(
-                  numeral(value?.target?.value ?? 0).value() || undefined
+                  numeral(value?.target?.value || 0).value() || undefined
                 )
+                setUsdcAmount(0)
+              }
             }}
             classNames={{
               inputWrapper:
@@ -123,7 +128,10 @@ export const BTCGoal = ({
             }
             orientation="horizontal"
             value={duration}
-            onValueChange={setDuration}
+            onValueChange={(value) => {
+              setDuration(value)
+              setUsdcAmount(0)
+            }}
           >
             {TIME_PERIOD.map((term) => (
               <CustomRadio key={term.value} value={term.value}>
@@ -148,11 +156,6 @@ export const BTCGoal = ({
                       Insufficient Balance
                     </span>
                   )}
-                  {isLoanSummaryFetching && (
-                    <span className="absolute -top-5 left-1.5 mb-2 text-xs text-default-a">
-                      Recalculating Loan Summary...
-                    </span>
-                  )}
                   <NumberInput
                     hideStepper
                     isWheelDisabled
@@ -165,8 +168,9 @@ export const BTCGoal = ({
                     }
                     fullWidth
                     aria-label="USDC Amount"
-                    minValue={minUsdcAmount}
-                    step={0.1}
+                    minValue={minUsdcAmount || 0}
+                    min={minUsdcAmount || 0}
+                    step={0.01}
                     formatOptions={{ maximumFractionDigits: 2 }}
                     classNames={{
                       inputWrapper: cn(
@@ -179,11 +183,13 @@ export const BTCGoal = ({
                     className="w-full"
                     value={usdcAmount}
                     onChange={(value) => {
-                      if (typeof value === 'number') setUsdcAmount(value)
-                      else if (value?.target)
-                        setUsdcAmount(
-                          numeral(value?.target?.value ?? 0).value() || 0
-                        )
+                      if (typeof value === 'number') {
+                        setUsdcAmount(value)
+                        refetchLoanSummary(value)
+                      } else if (Array.isArray(value) && value.length === 1) {
+                        setUsdcAmount(value[0])
+                        refetchLoanSummary(value[0])
+                      }
                     }}
                     isDisabled={disableUSDCInput || isLoanSummaryFetching}
                   />
@@ -193,14 +199,20 @@ export const BTCGoal = ({
                   className="w-full"
                   maxValue={maxUsdcAmount}
                   minValue={minUsdcAmount}
-                  step={0.1}
+                  step={0.01}
                   color={sliderInputInsufficient ? 'danger' : 'primary'}
                   size="sm"
+                  formatOptions={{ maximumFractionDigits: 2 }}
                   aria-label="USDC Amount"
                   value={usdcAmount}
                   onChange={(value) => {
-                    if (typeof value === 'number') setUsdcAmount(value)
-                    else if (value?.length === 1) setUsdcAmount(value[0])
+                    if (typeof value === 'number') {
+                      setUsdcAmount(value)
+                      refetchLoanSummary(value)
+                    } else if (Array.isArray(value) && value.length === 1) {
+                      setUsdcAmount(value[0])
+                      refetchLoanSummary(value[0])
+                    }
                   }}
                   renderThumb={(props) => (
                     <div
@@ -245,7 +257,10 @@ export const BTCGoal = ({
               }
               orientation="horizontal"
               value={interestRate}
-              onValueChange={setInterestRate}
+              onValueChange={(value) => {
+                setInterestRate(value)
+                setUsdcAmount(0)
+              }}
             >
               {INTEREST_RATE.map((term) => (
                 <CustomRadio key={term} value={term.toString()}>
