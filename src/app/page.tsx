@@ -7,7 +7,7 @@ import {
   Lenders,
   Stats,
   Team,
-  WhyBitmor,
+  WhyBitcoin,
 } from '@/components/landing'
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
       <Hero />
       <Stats />
       <Borrowers />
-      <WhyBitmor />
+      <WhyBitcoin />
       <Lenders />
       <Team />
       <FAQs />
