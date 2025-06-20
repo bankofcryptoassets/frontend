@@ -339,6 +339,7 @@ export default function InvestUSDCPage() {
           href: '/portfolio',
           color: 'secondary',
         }}
+        showConfetti
       />
 
       <StyledModal

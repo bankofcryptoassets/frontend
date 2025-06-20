@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Button,
   ButtonProps,
@@ -10,6 +12,7 @@ import {
 } from '@heroui/react'
 import Image from 'next/image'
 import { ReactNode } from 'react'
+import { useConfettiFireworks } from '../hooks/useConfettiFireworks'
 
 type StyledModalProps = {
   iconSrc: string
@@ -19,6 +22,7 @@ type StyledModalProps = {
   primaryButtonProps?: ButtonProps
   secondaryButtonText?: string
   secondaryButtonProps?: ButtonProps
+  showConfetti?: boolean
 }
 
 export const StyledModal = ({
@@ -29,8 +33,11 @@ export const StyledModal = ({
   primaryButtonProps,
   secondaryButtonText,
   secondaryButtonProps,
+  showConfetti,
   ...props
 }: Partial<ModalProps> & StyledModalProps) => {
+  useConfettiFireworks(!!(showConfetti && props?.isOpen))
+
   return (
     <Modal
       {...props}

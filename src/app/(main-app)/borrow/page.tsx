@@ -455,6 +455,7 @@ export default function BorrowPage() {
           href: '/portfolio',
           color: 'primary',
         }}
+        showConfetti
       />
 
       <StyledModal
