@@ -61,7 +61,7 @@ export const Lenders = () => {
             variant="shadow"
             size="lg"
             as={Link}
-            href="/lend/earn"
+            href="/invest"
             className="mt-5 max-w-[360px] font-bold text-white max-sm:w-full"
           >
             Try Bitmor
