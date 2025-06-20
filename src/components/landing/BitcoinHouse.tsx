@@ -23,6 +23,7 @@ const HOUSE_PRICE_DATA = [
 
 export const BitcoinHouse = () => {
   const [active, setActive] = useState(HOUSE_PRICE_DATA[0])
+  const [isRotating, setIsRotating] = useState(false)
 
   useEffect(() => {
     const handleNext = () => {
@@ -36,6 +37,10 @@ export const BitcoinHouse = () => {
     return () => clearTimeout(timeout)
   }, [active])
 
+  useEffect(() => {
+    setIsRotating((value) => !value)
+  }, [active])
+
   return (
     <div className="mt-auto w-full max-w-[524px] select-none rounded-2xl bg-background text-right">
       <div className="relative mt-32 inline-flex items-end justify-end text-start">
@@ -44,7 +49,10 @@ export const BitcoinHouse = () => {
           alt="Bitcoin House"
           width={420}
           height={320}
-          className="w-full max-w-[420px] select-none"
+          className={cn(
+            'w-full max-w-[420px] select-none transition-all duration-1000 ease-in-out',
+            isRotating && '[transform:rotateY(360deg)]'
+          )}
         />
 
         <div className="absolute -left-16 top-0 space-y-2">
