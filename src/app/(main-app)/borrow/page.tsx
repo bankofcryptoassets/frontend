@@ -286,7 +286,7 @@ export default function BorrowPage() {
     }
     setLoading(true)
     await approveUSDC(
-      loanSummary?.data?.data?.loanSummary?.loanAmount.toString() || '0'
+      loanSummary?.data?.data?.loanSummary?.totalPayment.toString() || '0'
     ).then(async (hash) => {
       toast.promise(publicClient.waitForTransactionReceipt({ hash }), {
         dismissible: false,
@@ -335,7 +335,7 @@ export default function BorrowPage() {
 
           await sleep(10000)
           setLoading(false)
-          setIsTelegramModalOpen(true)
+          setIsTelegramModalOpen(false)
           setIsInitTxModalOpen(false)
           setIsTxSuccessModalOpen(true)
           return `Loan approved successfully!`
