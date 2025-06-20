@@ -78,7 +78,7 @@ export const BitcoinHouse = () => {
               <SlotCounter
                 useMonospaceWidth
                 value={active.btc}
-                animateOnVisible={{ triggerOnce: true }}
+                // animateOnVisible={{ triggerOnce: true }}
                 numberClassName="w-full"
                 charClassName="text-4xl font-bold leading-tight lg:text-[56px]"
                 separatorClassName="text-4xl font-bold leading-tight lg:text-[56px]"
@@ -107,7 +107,7 @@ export const BitcoinHouse = () => {
               <SlotCounter
                 useMonospaceWidth
                 value={active.usd}
-                animateOnVisible={{ triggerOnce: true }}
+                // animateOnVisible={{ triggerOnce: true }}
                 numberClassName="w-full"
                 charClassName="text-4xl font-bold leading-tight lg:text-[56px]"
                 separatorClassName="text-4xl font-bold leading-tight lg:text-[56px]"
