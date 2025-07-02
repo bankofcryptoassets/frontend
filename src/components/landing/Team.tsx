@@ -37,6 +37,10 @@ const TEAM = [
         href: 'https://www.linkedin.com/in/josepaul0/',
       },
       {
+        name: 'x',
+        href: 'https://x.com/josepaul_jp',
+      },
+      {
         name: 'website',
         href: 'https://josepaul-jp.replit.app/',
       },
@@ -50,12 +54,12 @@ const TEAM = [
       'Building simulations and finanical modelling for optimised yields.',
     social: [
       {
-        name: 'github',
-        href: 'https://github.com/suryanshchandak',
+        name: 'linkedin',
+        href: 'https://www.linkedin.com/in/suryansh-chandak/',
       },
       {
-        name: 'linkedin',
-        href: 'https://www.linkedin.com/in/suryanshchandak/',
+        name: 'x',
+        href: 'https://x.com/SuryChandak',
       },
     ],
   },
@@ -68,11 +72,15 @@ const TEAM = [
     social: [
       {
         name: 'github',
-        href: 'https://github.com/shreyaspm',
+        href: 'https://github.com/gitshreevatsa',
       },
       {
         name: 'linkedin',
-        href: 'https://www.linkedin.com/in/shreyaspm/',
+        href: 'https://www.linkedin.com/in/shreyas-padmakiran/',
+      },
+      {
+        name: 'x',
+        href: 'https://x.com/sakai_thezkguy',
       },
     ],
   },
@@ -84,8 +92,16 @@ const TEAM = [
       'Solidity expert specializing in DeFi security and optimization.',
     social: [
       {
+        name: 'github',
+        href: 'https://github.com/muskbuster',
+      },
+      {
         name: 'linkedin',
         href: 'https://www.linkedin.com/in/sudeep-kamat/',
+      },
+      {
+        name: 'x',
+        href: 'https://x.com/sudeepskamat',
       },
     ],
   },

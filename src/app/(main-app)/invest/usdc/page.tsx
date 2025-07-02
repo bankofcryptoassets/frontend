@@ -18,12 +18,6 @@ import { useState } from 'react'
 import numeral from 'numeral'
 import { toast } from 'sonner'
 import { StyledModal } from '@/components/StyledModal'
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/Chart'
-import { Bar, BarChart, LabelList, XAxis, YAxis } from 'recharts'
 import { useAccount, useBalance } from 'wagmi'
 import { CONTRACT_ADDRESSES } from '@/utils/constants'
 import { useAuth } from '@/auth/useAuth'
@@ -657,82 +651,7 @@ export default function InvestUSDCPage() {
             </Tooltip>
           </div>
 
-          <div className="w-full rounded-xl border border-default-200 bg-[#e8e8e8] p-5 dark:bg-[#181818] sm:min-w-[360px]">
-            <div className="text-base font-medium text-default-d">
-              Annualized Yield Comparison across Lending Scenarios
-            </div>
-
-            <div className="mt-7">
-              <ChartContainer
-                config={{
-                  apy: {
-                    label: 'APY (%)',
-                    color: 'hsl(var(--heroui-secondary))',
-                  },
-                }}
-                className="min-h-[430px] w-full [&_*]:outline-none"
-              >
-                <BarChart
-                  accessibilityLayer
-                  data={[
-                    { category: 'Maximum Earning by Reinvesting', apy: 29 },
-                    { category: 'Higher Earnings by Reinvesting', apy: 17 },
-                    { category: 'Average Bitmor Earnings', apy: 8 },
-                    { category: 'Average DeFi Earnings', apy: 3 },
-                  ]}
-                  barCategoryGap={10}
-                >
-                  <Bar
-                    dataKey="apy"
-                    fill="var(--color-apy)"
-                    radius={[8, 8, 0, 0]}
-                  >
-                    <LabelList
-                      position="top"
-                      offset={12}
-                      className="fill-default-d"
-                      formatter={(value: number) => `${value}%`}
-                      fontSize={14}
-                      fontWeight={500}
-                    />
-                  </Bar>
-                  <XAxis
-                    dataKey="category"
-                    tickLine={false}
-                    tickMargin={10}
-                    axisLine={true}
-                    tickFormatter={(value) => value.slice(0, 3)}
-                  />
-                  <YAxis
-                    dataKey="apy"
-                    tickLine={true}
-                    tickMargin={10}
-                    axisLine={true}
-                    label={{
-                      value: `APY (%)`,
-                      style: { textAnchor: 'middle' },
-                      angle: -90,
-                      position: 'left',
-                      offset: -16,
-                    }}
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={
-                      <ChartTooltipContent
-                        formatter={(value) => (
-                          <div className="flex items-center gap-2">
-                            <div className="">APY</div>
-                            <div className="">{value}%</div>
-                          </div>
-                        )}
-                      />
-                    }
-                  />
-                </BarChart>
-              </ChartContainer>
-            </div>
-          </div>
+          <div className="w-full sm:min-w-[360px]"></div>
         </div>
       </Card>
     </div>

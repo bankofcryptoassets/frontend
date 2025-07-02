@@ -33,7 +33,7 @@ export const BitcoinHouse = () => {
       setActive(HOUSE_PRICE_DATA[nextIndex + 1] || HOUSE_PRICE_DATA[0])
     }
 
-    const timeout = setTimeout(handleNext, 4000)
+    const timeout = setTimeout(handleNext, 2500)
     return () => clearTimeout(timeout)
   }, [active])
 

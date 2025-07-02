@@ -44,19 +44,19 @@ const BOTTOM_LINKS = [
 const SOCIAL_LINKS = [
   {
     name: 'x',
-    href: 'https://x.com/',
+    href: 'https://x.com/bitmor_btc',
     icon: <FaXTwitter size={24} />,
     colors: 'hover:bg-default-900 hover:text-default-50',
   },
   {
     name: 'telegram',
-    href: 'https://t.me/',
+    href: 'https://t.me/+Q55V_D-mhmViMzk1',
     icon: <FaTelegramPlane size={24} />,
     colors: 'hover:bg-white dark:hover:bg-default-900 hover:text-[#24A1DE]',
   },
   {
     name: 'github',
-    href: 'https://github.com/',
+    href: 'https://github.com/bankofcryptoassets',
     icon: <FaGithub size={24} />,
     colors: 'hover:bg-default-900 hover:text-default-50',
   },
