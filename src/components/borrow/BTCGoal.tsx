@@ -350,7 +350,7 @@ export const BTCGoal = ({
                 color="primary"
                 onPress={() => {
                   setStep(1)
-                  trackEvent('clicked "Accept and Continue"', {
+                  trackEvent('clicked "Accept and Continue" on "BTC Goal"', {
                     wallet_address: address,
                     btc_amount: btcAmount,
                     loan_term: duration,
