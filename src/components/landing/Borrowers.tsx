@@ -4,6 +4,7 @@ import { title } from '../primitives'
 import { LuCircleCheckBig } from 'react-icons/lu'
 import Link from 'next/link'
 import { BorrowersCalculator } from './BorrowersCalculator'
+import { trackEvent } from '@/utils/trackEvent'
 
 const BENEFITS = [
   'Only 20% down, own any amount of Bitcoin',
@@ -56,6 +57,9 @@ export const Borrowers = () => {
             as={Link}
             href="/borrow"
             className="mt-6 max-w-[360px] font-bold max-sm:w-full"
+            onPress={() => {
+              trackEvent('clicked "Get your Bitcoin"')
+            }}
           >
             Get your Bitcoin
           </Button>

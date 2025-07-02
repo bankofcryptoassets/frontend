@@ -4,6 +4,7 @@ import { title } from '../primitives'
 import { LuCircleCheckBig } from 'react-icons/lu'
 import Link from 'next/link'
 import { LendingChart } from './LendingChart'
+import { trackEvent } from '@/utils/trackEvent'
 
 const BENEFITS = [
   'Earn real yield by lending to real BTC buyers',
@@ -63,6 +64,9 @@ export const Lenders = () => {
             as={Link}
             href="/invest"
             className="mt-5 max-w-[360px] font-bold text-white max-sm:w-full"
+            onPress={() => {
+              trackEvent('clicked "Try Bitmor"')
+            }}
           >
             Try Bitmor
           </Button>

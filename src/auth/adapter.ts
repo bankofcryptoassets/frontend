@@ -9,6 +9,7 @@ import {
   setWalletAddress,
 } from './authStore'
 import { toast } from 'sonner'
+import { trackEvent } from '@/utils/trackEvent'
 
 type NounceResponse = {
   status: string
@@ -75,6 +76,10 @@ export const authenticationAdapter = createAuthenticationAdapter({
           description: `We've funded your wallet with test usdc from our faucet for you to test out the platform.`,
         })
 
+      trackEvent('connected_wallet', {
+        wallet_address: getWalletAddress(),
+      })
+
       return true
     } catch {
       // We're not using the error details here, but we could log it if needed
@@ -82,7 +87,6 @@ export const authenticationAdapter = createAuthenticationAdapter({
     }
   },
   signOut: async () => {
-    // await fetch('/api/logout')
     await signOutAction()
   },
 })

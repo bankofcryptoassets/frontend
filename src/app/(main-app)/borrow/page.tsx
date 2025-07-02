@@ -32,6 +32,7 @@ import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { publicClient } from '@/auth/client'
 import { sleep } from '@/utils/sleep'
 import { useLoanBTC } from '@/hooks/useLoanBTC'
+import { trackEvent } from '@/utils/trackEvent'
 
 const DEFAULT_USDC_BALANCE = 1_000_000
 const IS_USER_TELEGRAM_CONNECTED = false
@@ -332,6 +333,16 @@ export default function BorrowPage() {
           setIsTelegramModalOpen(false)
           setIsInitTxModalOpen(false)
           setIsTxSuccessModalOpen(true)
+          trackEvent('loan_success', {
+            wallet_address: address,
+            btc_amount:
+              loanSummary?.data?.data?.loanSummary?.initialBtcCollateral,
+            loan_term: loanSummary?.data?.data?.loanSummary?.term,
+            interest_rate: loanSummary?.data?.data?.loanSummary?.interestRate,
+            usdc_amount:
+              loanSummary?.data?.data?.loanSummary?.firstTransaction
+                ?.amountSent,
+          })
           return `Loan approved successfully!`
         },
         error: (err: Error) => {
@@ -339,6 +350,17 @@ export default function BorrowPage() {
           setIsTelegramModalOpen(false)
           setIsInitTxModalOpen(false)
           setIsTxFailedModalOpen(true)
+          trackEvent('loan_failed', {
+            wallet_address: address,
+            error: err.message || 'Loan transaction failed',
+            btc_amount:
+              loanSummary?.data?.data?.loanSummary?.initialBtcCollateral,
+            loan_term: loanSummary?.data?.data?.loanSummary?.term,
+            interest_rate: loanSummary?.data?.data?.loanSummary?.interestRate,
+            usdc_amount:
+              loanSummary?.data?.data?.loanSummary?.firstTransaction
+                ?.amountSent,
+          })
           return err.message || 'Loan transaction failed'
         },
       })
@@ -630,6 +652,7 @@ export default function BorrowPage() {
 
       {step === 0 && (
         <BTCGoal
+          address={address}
           setStep={setStep}
           usdcBalanceValue={usdcBalanceValue}
           availableLoanAmountInBTC={
@@ -658,6 +681,7 @@ export default function BorrowPage() {
       )}
       {step === 1 && (
         <LoanConditions
+          address={address}
           setStep={setStep}
           isOpen={isConditionOpen}
           setIsOpen={setIsConditionOpen}

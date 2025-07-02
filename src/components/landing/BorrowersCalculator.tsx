@@ -16,6 +16,7 @@ import { useMemo, useState } from 'react'
 import numeral from 'numeral'
 import SlotCounter from 'react-slot-counter'
 import { INTEREST_RATE, TIME_PERIOD } from '@/utils/constants'
+import { trackEvent } from '@/utils/trackEvent'
 
 const BITCOIN_PRICE = 1_00_000
 
@@ -171,6 +172,13 @@ export const BorrowersCalculator = () => {
             href="/borrow"
             className="text-lg font-medium"
             fullWidth
+            onPress={() => {
+              trackEvent('clicked "Get Full Quote in App"', {
+                btc_amount: btcAmount,
+                loan_term: loanTerm,
+                interest_rate: INTEREST_RATE[0],
+              })
+            }}
           >
             Get Full Quote in App
           </Button>

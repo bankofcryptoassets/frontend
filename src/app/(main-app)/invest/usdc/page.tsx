@@ -29,6 +29,7 @@ import { useUSDCApproval } from '@/hooks/useUSDCApproval'
 import { publicClient } from '@/auth/client'
 import { sleep } from '@/utils/sleep'
 import { useDepositUSDC } from '@/hooks/useDepositUSDC'
+import { trackEvent } from '@/utils/trackEvent'
 
 const DEFAULT_USDC_BALANCE = 1_000_000
 const IS_USER_TELEGRAM_CONNECTED = false
@@ -205,6 +206,11 @@ export default function InvestUSDCPage() {
           setIsInitTxModalOpen(false)
           setIsTelegramModalOpen(false)
           setIsTxSuccessModalOpen(true)
+          trackEvent('investment_success', {
+            wallet_address: address,
+            usdc_amount: usdcAmount,
+            reinvest: reinvest ? 'Yes' : 'No',
+          })
           return `USDC deposited successfully!`
         },
         error: (err: Error) => {
@@ -212,6 +218,11 @@ export default function InvestUSDCPage() {
           setIsInitTxModalOpen(false)
           setIsTelegramModalOpen(false)
           setIsTxFailedModalOpen(true)
+          trackEvent('investment_failed', {
+            usdc_amount: usdcAmount,
+            reinvest: reinvest ? 'Yes' : 'No',
+            error: err.message || 'USDC deposit transaction failed',
+          })
           return err.message || 'USDC deposit transaction failed'
         },
       })
@@ -642,7 +653,14 @@ export default function InvestUSDCPage() {
                 className="w-full font-bold text-white data-[disabled=true]:pointer-events-auto data-[disabled=true]:cursor-not-allowed"
                 size="lg"
                 color="secondary"
-                onPress={() => setIsApproveModalOpen(true)}
+                onPress={() => {
+                  setIsApproveModalOpen(true)
+                  trackEvent('clicked "Continue with the Investment"', {
+                    wallet_address: address,
+                    usdc_amount: usdcAmount,
+                    reinvest: reinvest ? 'Yes' : 'No',
+                  })
+                }}
                 isDisabled={continueButtonDisabled}
                 isLoading={isLoading}
               >

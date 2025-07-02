@@ -16,8 +16,10 @@ import { FaGear } from 'react-icons/fa6'
 import { Dispatch, SetStateAction } from 'react'
 import { LoanSummary } from '@/types'
 import { INTEREST_RATE, TIME_PERIOD } from '@/utils/constants'
+import { trackEvent } from '@/utils/trackEvent'
 
 type BTCGoalProps = {
+  address?: string
   setStep: Dispatch<SetStateAction<number>>
   usdcBalanceValue: number
   availableLoanAmountInBTC: number
@@ -41,6 +43,7 @@ type BTCGoalProps = {
 }
 
 export const BTCGoal = ({
+  address,
   setStep,
   // usdcBalanceValue,
   availableLoanAmountInBTC,
@@ -345,7 +348,16 @@ export const BTCGoal = ({
                 className="w-full font-bold data-[disabled=true]:pointer-events-auto data-[disabled=true]:cursor-not-allowed"
                 size="lg"
                 color="primary"
-                onPress={() => setStep(1)}
+                onPress={() => {
+                  setStep(1)
+                  trackEvent('clicked "Accept and Continue"', {
+                    wallet_address: address,
+                    btc_amount: btcAmount,
+                    loan_term: duration,
+                    interest_rate: interestRate,
+                    usdc_amount: usdcAmount,
+                  })
+                }}
                 isDisabled={acceptAndcontinueButtonDisabled}
               >
                 Accept and Continue

@@ -14,8 +14,10 @@ import { SetStateAction, Dispatch, useEffect, useRef, useState } from 'react'
 import numeral from 'numeral'
 import { LoanSummary } from '@/types'
 import { TIME_PERIOD } from '@/utils/constants'
+import { trackEvent } from '@/utils/trackEvent'
 
 type LoanConditionsProps = {
+  address?: string
   setStep: Dispatch<SetStateAction<number>>
   isOpen: number | undefined
   setIsOpen: Dispatch<SetStateAction<number | undefined>>
@@ -41,6 +43,7 @@ type LoanConditionsProps = {
 }
 
 export const LoanConditions = ({
+  address,
   setStep,
   isOpen,
   setIsOpen,
@@ -241,7 +244,16 @@ export const LoanConditions = ({
             color="primary"
             size="lg"
             isLoading={isLoading}
-            onPress={() => setIsApproveModalOpen(true)}
+            onPress={() => {
+              setIsApproveModalOpen(true)
+              trackEvent('clicked "Continue" on "Loan Conditions"', {
+                wallet_address: address,
+                btc_amount: loanSummary?.initialBtcCollateral,
+                loan_term: loanSummary?.term,
+                interest_rate: loanSummary?.interestRate,
+                usdc_amount: loanSummary?.firstTransaction?.amountSent,
+              })
+            }}
             isDisabled={continueButtonDisabled}
           >
             Continue
