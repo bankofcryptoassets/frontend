@@ -508,10 +508,10 @@ export default function BorrowPage() {
           <div className="flex items-center justify-center gap-6">
             <div className="flex flex-col items-center">
               <span className="text-[32px] font-bold leading-tight text-default-d">
-                {fgi?.value}
+                {fgi?.value || 50}
               </span>
               <span className="text-sm font-medium leading-tight text-default-a">
-                {fgi?.valueText}
+                {fgi?.valueText || 'Neutral'}
               </span>
             </div>
 
