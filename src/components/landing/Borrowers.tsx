@@ -4,7 +4,6 @@ import { title } from '../primitives'
 import { LuCircleCheckBig } from 'react-icons/lu'
 import Link from 'next/link'
 import { BorrowersCalculator } from './BorrowersCalculator'
-import { trackEvent } from '@/utils/trackEvent'
 
 const BENEFITS = [
   'Only 20% down, own any amount of Bitcoin',
@@ -32,7 +31,7 @@ export const Borrowers = () => {
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <h2 className={title({ size: 'sm' })}>
-              You Can Get Upto 80% Financing
+              Start with Less. Stack More.
             </h2>
           </div>
 
@@ -55,13 +54,13 @@ export const Borrowers = () => {
             variant="shadow"
             size="lg"
             as={Link}
-            href="/borrow"
+            href="/#cta"
             className="mt-6 max-w-[360px] font-bold max-sm:w-full"
-            onPress={() => {
-              trackEvent('clicked "Get your Bitcoin"')
-            }}
+            // onPress={() => {
+            //   trackEvent('clicked "Get your Bitcoin"')
+            // }}
           >
-            Get your Bitcoin
+            Join Our Early Access List
           </Button>
         </div>
 

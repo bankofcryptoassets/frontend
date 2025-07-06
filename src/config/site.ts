@@ -6,11 +6,11 @@ export const siteConfig = {
     'Buy Bitcoin with 80% Financing. Earn Yield Backed by Real Demand.',
   navItems: [
     {
-      label: 'Loan Calculator',
+      label: 'Ownership Calculator',
       href: '/#calc',
     },
     {
-      label: 'Why Own Bitcoin',
+      label: 'Bitmor Edge',
       href: '/#why',
     },
     {

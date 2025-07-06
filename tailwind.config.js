@@ -23,6 +23,15 @@ module.exports = {
           '2xl': '2.5rem',
         },
       },
+      // animation: {
+      //   'bounce-slow': 'bounce-slow 15s ease infinite',
+      // },
+      // keyframes: {
+      //   'bounce-slow': {
+      //     '0%, 100%': { transform: 'none' },
+      //     '50%': { transform: 'translateY(-10%)' },
+      //   },
+      // },
     },
   },
   darkMode: 'class',

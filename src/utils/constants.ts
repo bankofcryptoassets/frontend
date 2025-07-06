@@ -12,8 +12,8 @@ export const CONTRACT_ADDRESSES = {
 } as const
 
 export const TIME_PERIOD = [
-  { value: '36', label: '3 Years', y: 3 },
-  { value: '60', label: '5 Years', y: 5 },
-  { value: '84', label: '7 Years', y: 7 },
+  { value: '36', label: '3 Years', y: 3, interestForLandingPage: 8 },
+  { value: '60', label: '5 Years', y: 5, interestForLandingPage: 9 },
+  { value: '84', label: '7 Years', y: 7, interestForLandingPage: 10 },
 ]
 export const INTEREST_RATE = ['8']

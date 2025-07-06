@@ -42,8 +42,8 @@ export const BitcoinHouse = () => {
   }, [active])
 
   return (
-    <div className="mt-auto w-full max-w-[524px] select-none rounded-2xl bg-background text-right">
-      <div className="relative mt-32 inline-flex items-end justify-end text-start">
+    <div className="mt-auto w-full max-w-[524px] select-none rounded-2xl bg-background text-right max-sm:text-center">
+      <div className="relative mt-32 inline-flex flex-col items-end justify-end text-start max-sm:items-center max-sm:justify-center max-sm:gap-4">
         <Image
           src="/extras/bitcoin-house.png"
           alt="Bitcoin House"
@@ -55,7 +55,8 @@ export const BitcoinHouse = () => {
           )}
         />
 
-        <div className="absolute -left-16 top-0 space-y-2">
+        {/* Year */}
+        <div className="-left-16 top-0 space-y-2 max-sm:mt-4 sm:absolute">
           {HOUSE_PRICE_DATA.map((item) => (
             <div
               key={item.year}
@@ -70,7 +71,8 @@ export const BitcoinHouse = () => {
           ))}
         </div>
 
-        <div className="absolute -bottom-5 -left-24 flex flex-col items-end gap-2">
+        {/* BTC */}
+        <div className="-bottom-5 -left-24 flex flex-col items-end gap-2 sm:absolute">
           <div className="-mr-5 w-fit rounded-2xl border-[4px] border-background bg-[#fbecda] px-10 py-2.5 text-sm font-bold leading-tight text-primary dark:bg-[#251604]">
             Home Price in BTC
           </div>
@@ -99,7 +101,8 @@ export const BitcoinHouse = () => {
           </div>
         </div>
 
-        <div className="absolute -right-0 -top-32 flex flex-col items-end gap-2">
+        {/* USD */}
+        <div className="-right-0 -top-32 flex flex-col items-end gap-2 sm:absolute">
           <div className="w-fit rounded-2xl border-[4px] border-background bg-success-50 px-10 py-2.5 text-sm font-bold leading-tight text-success">
             Home Price in USD
           </div>

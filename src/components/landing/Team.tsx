@@ -26,7 +26,7 @@ const SOCIAL_COLORS = {
 
 const TEAM = [
   {
-    image: '/team/jose.jpeg',
+    image: '/team/jose.png',
     name: 'Jose Paul',
     role: 'Product & BD',
     description:
@@ -47,7 +47,7 @@ const TEAM = [
     ],
   },
   {
-    image: 'https://placehold.co/200/444444/FFFFFF?text=Suryansh+Chandak',
+    image: '/team/suryansh.png',
     name: 'Suryansh Chandak',
     role: 'DeFi Strategy',
     description:
@@ -64,7 +64,7 @@ const TEAM = [
     ],
   },
   {
-    image: 'https://placehold.co/200/444444/FFFFFF?text=Shreyas+Padmakiran',
+    image: '/team/shreyas.png',
     name: 'Shreyas Padmakiran',
     role: 'Tech Lead',
     description:
@@ -85,7 +85,7 @@ const TEAM = [
     ],
   },
   {
-    image: '/team/sudeep.jpeg',
+    image: '/team/sudeep.png',
     name: 'Sudeep Kamat',
     role: 'Smart Contracts',
     description:

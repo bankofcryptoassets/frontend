@@ -8,7 +8,7 @@ import { trackEvent } from '@/utils/trackEvent'
 
 const BENEFITS = [
   'Earn real yield by lending to real BTC buyers',
-  'Withdraw anytime (subject to liquidity)',
+  'Exit anytime from the investment',
 ]
 
 export const Lenders = () => {

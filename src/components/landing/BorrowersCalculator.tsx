@@ -48,8 +48,11 @@ export const BorrowersCalculator = () => {
     // Calculate financing amount (80% of BTC value)
     const financingAmount = btcValue - upfrontAmount
 
-    // Interest rate (assuming 10% APR for fixed rate)
-    const annualInterestRate = 0.1
+    // Interest rate
+    const annualInterestRate =
+      (TIME_PERIOD.find((term) => term.value === loanTerm)
+        ?.interestForLandingPage || TIME_PERIOD[0]?.interestForLandingPage) /
+      100
     const monthlyInterestRate = annualInterestRate / 12
 
     // Calculate monthly payment using loan formula
@@ -76,9 +79,11 @@ export const BorrowersCalculator = () => {
         className="p-0"
       >
         <div className="px-6 py-5">
-          <div className="mb-4 text-base font-medium text-default-d">
-            How Much BTC Can You Borrow?
+          <div className="mb-4 text-base font-medium leading-tight text-default-d">
+            Ownership Calculator
           </div>
+
+          <Divider />
 
           <div className="my-6 flex w-full flex-col gap-6">
             <NumberInput
@@ -127,14 +132,15 @@ export const BorrowersCalculator = () => {
             <RadioGroup
               label="Interest Rate:"
               orientation="horizontal"
-              value={INTEREST_RATE[0]}
+              value={loanTerm}
+              onValueChange={setLoanTerm}
               classNames={{
                 label: 'text-sm font-medium text-default-d',
               }}
             >
-              {INTEREST_RATE.map((term) => (
-                <CustomRadio key={term} value={term.toString()}>
-                  {term}%
+              {TIME_PERIOD.map((term) => (
+                <CustomRadio key={term.value} value={term.value}>
+                  {term.interestForLandingPage}%
                 </CustomRadio>
               ))}
             </RadioGroup>
@@ -144,21 +150,21 @@ export const BorrowersCalculator = () => {
             <div className="flex flex-col gap-2">
               <div className="flex justify-between gap-2">
                 <div className="text-sm font-medium text-default-d">
-                  Down Payment:
+                  Down Payment
                 </div>
                 <Counter value={calculateLoanAmounts?.upfront} />
               </div>
 
               <div className="flex justify-between gap-2">
                 <div className="text-sm font-medium text-default-d">
-                  Monthly EMI:
+                  Monthly EMI
                 </div>
                 <Counter value={calculateLoanAmounts?.monthly} />
               </div>
 
               <div className="flex justify-between gap-2">
                 <div className="text-sm font-medium text-default-d">
-                  Total Paid:
+                  Total Paid
                 </div>
                 <Counter value={calculateLoanAmounts?.total} />
               </div>

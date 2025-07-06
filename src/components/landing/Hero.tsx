@@ -1,6 +1,7 @@
 'use client'
-import { Button, Input } from '@heroui/react'
+import { Button, Divider, Input } from '@heroui/react'
 import { subtitle, title } from '../primitives'
+import Image from 'next/image'
 
 export const Hero = () => {
   return (
@@ -24,6 +25,7 @@ export const Hero = () => {
           <div className="inline-block max-w-4xl justify-center text-center">
             <h1 className="max-lg:text-balance">
               <span className={title({ size: 'lg' })}>Own Bitcoin Today, </span>
+              <br />
               <span
                 className={title({ className: 'text-primary', size: 'lg' })}
               >
@@ -32,37 +34,57 @@ export const Hero = () => {
             </h1>
 
             <p className={subtitle({ class: 'mt-10 text-balance' })}>
-              Own any amount of BTC with 20% deposit. Smarter accumulation
-              starts with early ownership.
+              Start with just 20%. Earn yield while you repay.
             </p>
           </div>
 
           <div className="mb-20 mt-8 w-full max-w-[720px]">
             <Input
-              placeholder="Enter your Email ID"
+              placeholder="Early access = better terms"
               className="h-[60px] w-full max-w-[720px] rounded-xl"
               classNames={{
                 mainWrapper: 'w-full',
                 inputWrapper:
-                  'h-[60px] rounded-xl w-full pl-5 pr-2 !bg-[#EEEEEE] ',
+                  'h-[60px] rounded-xl w-full pl-5 pr-2 !bg-[#F5F5F5] ',
                 innerWrapper: 'w-full',
                 input: '!text-black placeholder:text-[#666666]',
               }}
               size="lg"
               endContent={
-                <Button
-                  className="h-11 w-[160px] rounded-lg text-sm font-bold"
-                  color="primary"
-                  variant="shadow"
-                >
-                  Join Waitlist
-                </Button>
+                <div className="flex items-center gap-4">
+                  <Button
+                    className="size-11 rounded-lg bg-white text-sm font-bold shadow-[1px_2px_8px_0px_#0000000A] hover:bg-white/90"
+                    size="sm"
+                    isIconOnly
+                  >
+                    <Image
+                      src="/icons/google.png"
+                      alt="google"
+                      width={24}
+                      height={24}
+                      className="size-6 min-w-6"
+                    />
+                  </Button>
+
+                  <Divider
+                    orientation="vertical"
+                    className="h-8 w-px bg-default-d"
+                  />
+
+                  <Button
+                    className="h-11 w-[160px] rounded-lg text-sm font-bold"
+                    color="primary"
+                    variant="shadow"
+                  >
+                    Join Waitlist
+                  </Button>
+                </div>
               }
             />
           </div>
 
           <p className="mb-6 text-balance text-center text-sm text-default-d">
-            No Credit Checks. No KYC. All Secured by Smart Contracts.
+            Bitmor Lets You Stack BTC. No Checks. No KYC.
           </p>
         </div>
       </div>

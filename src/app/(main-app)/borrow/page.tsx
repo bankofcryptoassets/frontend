@@ -532,7 +532,7 @@ export default function BorrowPage() {
               <span className="text-[32px] font-bold leading-tight text-default-d">
                 {fgi?.value || 50}
               </span>
-              <span className="text-sm font-medium leading-tight text-default-a">
+              <span className="text-center text-sm font-medium leading-tight text-default-a">
                 {fgi?.valueText || 'Neutral'}
               </span>
             </div>
