@@ -29,7 +29,7 @@ export const Hero = () => {
               <span
                 className={title({ className: 'text-primary', size: 'lg' })}
               >
-                Pay Later
+                Pay Monthly
               </span>
             </h1>
 
