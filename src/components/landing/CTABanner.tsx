@@ -1,7 +1,6 @@
 'use client'
-import { Button, Divider, Input } from '@heroui/react'
 import { subtitle, title } from '../primitives'
-import Image from 'next/image'
+import { JoinWishlist } from './JoinWishlist'
 
 export const CTABanner = () => {
   return (
@@ -38,7 +37,8 @@ export const CTABanner = () => {
           </div>
 
           <div className="mb-8 mt-1 w-full max-w-[720px]">
-            <Input
+            <JoinWishlist />
+            {/* <Input
               placeholder="Early access = better terms"
               className="h-[60px] w-full max-w-[720px] rounded-xl"
               classNames={{
@@ -79,7 +79,7 @@ export const CTABanner = () => {
                   </Button>
                 </div>
               }
-            />
+            /> */}
           </div>
         </div>
       </div>

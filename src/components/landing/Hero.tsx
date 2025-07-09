@@ -1,7 +1,6 @@
 'use client'
-import { Button, Divider, Input } from '@heroui/react'
 import { subtitle, title } from '../primitives'
-import Image from 'next/image'
+import { JoinWishlist } from './JoinWishlist'
 
 export const Hero = () => {
   return (
@@ -39,7 +38,8 @@ export const Hero = () => {
           </div>
 
           <div className="mb-20 mt-8 w-full max-w-[720px]">
-            <Input
+            <JoinWishlist />
+            {/* <Input
               placeholder="Early access = better terms"
               className="h-[60px] w-full max-w-[720px] rounded-xl"
               classNames={{
@@ -80,7 +80,7 @@ export const Hero = () => {
                   </Button>
                 </div>
               }
-            />
+            /> */}
           </div>
 
           <p className="mb-6 text-balance text-center text-sm text-default-d">
