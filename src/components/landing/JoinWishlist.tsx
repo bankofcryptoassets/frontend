@@ -24,18 +24,22 @@ export const JoinWishlist = () => {
 
   useEffect(() => {
     const googleWaitlistSuccess = searchParams.get('waitlist_success')
+
     if (googleWaitlistSuccess === 'true') {
       toast.success('Successfully joined the waitlist!', {
         duration: 10000,
         description: 'We will notify you when we launch',
       })
-    } else if (googleWaitlistSuccess === 'false') {
+      router.replace('/')
+    }
+    if (googleWaitlistSuccess === 'false') {
       toast.error('Failed to join waitlist!!', {
         duration: 10000,
         description: 'Please try again. or contact us if this error persists.',
       })
+      router.replace('/')
     }
-  }, [searchParams])
+  }, [searchParams, router])
 
   const [email, setEmail] = useState('')
 
