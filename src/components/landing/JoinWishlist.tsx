@@ -21,9 +21,9 @@ const joinWaitlist = async (email: string): Promise<WaitlistResponse> => {
 export const JoinWishlist = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const googleWaitlistSuccess = searchParams.get('waitlist_success')
 
   useEffect(() => {
+    const googleWaitlistSuccess = searchParams.get('waitlist_success')
     if (googleWaitlistSuccess === 'true') {
       toast.success('Successfully joined the waitlist!', {
         duration: 10000,
@@ -35,7 +35,7 @@ export const JoinWishlist = () => {
         description: 'Please try again. or contact us if this error persists.',
       })
     }
-  }, [googleWaitlistSuccess])
+  }, [searchParams])
 
   const [email, setEmail] = useState('')
 
