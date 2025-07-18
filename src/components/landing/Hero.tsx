@@ -38,7 +38,7 @@ export const Hero = () => {
           </div>
 
           <div className="mb-20 mt-8 w-full max-w-[720px]">
-            <JoinWishlist />
+            <JoinWishlist isInHero />
             {/* <Input
               placeholder="Early access = better terms"
               className="h-[60px] w-full max-w-[720px] rounded-xl"

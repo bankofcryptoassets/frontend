@@ -18,18 +18,20 @@ const joinWaitlist = async (email: string): Promise<WaitlistResponse> => {
   return response.data
 }
 
-export const JoinWishlist = () => {
+export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
   useEffect(() => {
+    if (!isInHero) return
+
     const googleWaitlistSuccess = searchParams.get('waitlist_success')
 
     if (googleWaitlistSuccess === 'true') {
-      toast.success('Successfully joined the waitlist!', {
-        duration: 10000,
-        description: 'We will notify you when we launch',
-      })
+      toast.success(
+        'You are now part of the Alpha Community who will be distributed 1 BTC. Go tell your friends.',
+        { duration: 10000 }
+      )
       router.replace('/')
     }
     if (googleWaitlistSuccess === 'false') {
@@ -39,7 +41,7 @@ export const JoinWishlist = () => {
       })
       router.replace('/')
     }
-  }, [searchParams, router])
+  }, [searchParams, router, isInHero])
 
   const [email, setEmail] = useState('')
 
@@ -47,10 +49,10 @@ export const JoinWishlist = () => {
     mutationFn: joinWaitlist,
     onSuccess: () => {
       setEmail('')
-      toast.success('Successfully joined the waitlist!', {
-        duration: 10000,
-        description: 'We will notify you when we launch',
-      })
+      toast.success(
+        'You are now part of the Alpha Community who will be distributed 1 BTC. Go tell your friends.',
+        { duration: 10000 }
+      )
     },
     onError: (error: any) => {
       toast.error(
@@ -80,7 +82,7 @@ export const JoinWishlist = () => {
   return (
     <div className="w-full max-w-[720px]">
       <Input
-        placeholder="Early access = better terms"
+        placeholder="Early access = earn bonus sats"
         className="h-[60px] w-full rounded-xl"
         classNames={{
           mainWrapper: 'w-full',
