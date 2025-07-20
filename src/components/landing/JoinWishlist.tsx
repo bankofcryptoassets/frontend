@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import axios from '@/utils/axios'
+import { trackEvent } from '@/utils/trackEvent'
 
 interface WaitlistResponse {
   success: boolean
@@ -73,6 +74,7 @@ export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
       return
     }
 
+    trackEvent('Join Waitlist via Email', { email })
     joinWaitlistMutation.mutate(email)
   }
 
@@ -83,12 +85,14 @@ export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
     <div className="w-full max-w-[720px]">
       <Input
         placeholder="Early access = earn bonus sats"
-        className="h-[60px] w-full rounded-xl"
+        className="h-[60px] w-full rounded-xl max-sm:h-full"
         classNames={{
           mainWrapper: 'w-full',
-          inputWrapper: 'h-[60px] rounded-xl w-full pl-5 pr-2 !bg-[#F5F5F5] ',
-          innerWrapper: 'w-full',
-          input: '!text-black placeholder:text-[#666666]',
+          inputWrapper:
+            'h-[60px] rounded-xl w-full pl-5 pr-2 !bg-[#F5F5F5] max-sm:h-full max-sm:p-3',
+          innerWrapper: 'w-full max-sm:flex-col',
+          input:
+            '!text-black placeholder:text-[#666666] max-sm:mb-4 max-sm:text-center',
         }}
         size="lg"
         value={email}
@@ -100,6 +104,7 @@ export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
               size="sm"
               isIconOnly
               onPress={() => {
+                trackEvent('Join Waitlist via Google')
                 router.push('https://backend.xefi.ai/api/auth/google')
               }}
             >

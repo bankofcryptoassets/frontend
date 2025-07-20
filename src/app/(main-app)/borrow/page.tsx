@@ -33,6 +33,7 @@ import { publicClient } from '@/auth/client'
 import { sleep } from '@/utils/sleep'
 import { useLoanBTC } from '@/hooks/useLoanBTC'
 import { trackEvent } from '@/utils/trackEvent'
+import { FearGreedIndexChart } from '@/components/FearGreedIndexChart'
 
 const DEFAULT_USDC_BALANCE = 1_000_000
 const IS_USER_TELEGRAM_CONNECTED = false
@@ -539,13 +540,8 @@ export default function BorrowPage() {
 
             <div className="h-12 w-px bg-default-300" />
 
-            <div>
-              <Image
-                src="/extras/fear-and-greed.png"
-                alt="Fear and Greed Index"
-                width={120}
-                height={62}
-              />
+            <div className="h-[62px] w-full max-w-[120px] [&>*]:pointer-events-none">
+              <FearGreedIndexChart needleValue={fgi?.value || 50} />
             </div>
           </div>
         </Card>

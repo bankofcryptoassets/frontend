@@ -281,6 +281,7 @@ export const BTCGoal = ({
 
           <Tooltip content="Coming Soon">
             <Checkbox
+              isSelected
               isDisabled
               className="!pointer-events-auto !mt-6 !cursor-not-allowed"
             >

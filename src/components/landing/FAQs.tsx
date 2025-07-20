@@ -4,39 +4,70 @@ import { title } from '../primitives'
 
 const FAQ_ITEMS = [
   {
-    question: 'What happens to my funds if I miss payments?',
-    answer:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    question: 'How does Bitmor work?',
+    answer: (
+      <div className="space-y-3">
+        <p>
+          Bitmor lets you own any amount of Bitcoin today and pay for it over 1,
+          3, or 5 years. Just put down 25 % of your chosen BTC amount’s current
+          price in USDC, and our lenders cover the rest. We buy and hold your
+          BTC in an audited on-chain escrow, then you make fixed monthly USDC
+          payments toward principal, interest, and fees. Your BTC is released at
+          the end of the loan.
+        </p>
+
+        <div>
+          <p>You can close or sell your position anytime:</p>
+
+          <ul className="list-disc pl-6">
+            <li>
+              If BTC’s price is above your purchase price, we sell just enough
+              to repay lenders + fees and hand the rest of the BTC back to you.
+            </li>
+            <li>If it’s below, closing early could mean a loss.</li>
+          </ul>
+        </div>
+
+        <p>
+          Miss a payment? We’ll automatically sell a small slice of your BTC to
+          cover that month’s dues (as long as BTC stays above your personal
+          safety level). Each payment increases your safety levels. For as long
+          as you pay on time, you’re always protected from liquidations, and
+          we’ll send friendly reminders before each payment is due.
+        </p>
+      </div>
+    ),
   },
   {
-    question: `How are lenders' Funds protected?`,
+    question: `What crypto assets do I need to get started?`,
     answer:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'You only need USDC to cover your 25 % down payment and monthly payments, plus an EVM-compatible wallet (e.g. MetaMask or Phantom) to connect and sign transactions, no BTC or other tokens required up front.',
   },
   {
-    question: 'How is the interest rate determined?',
+    question: 'Who is eligible for a Bitmor loan?',
     answer:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'BitMor is open to everyone, no KYC or credit checks, so all you need is an EVM-compatible wallet and enough USDC for the down payment to start stacking sats with us (after all, we began with just a sat and a dream).',
   },
   {
-    question: 'How is the yield generated?',
+    question:
+      'How is my interest rate determined, and can it change over time?',
     answer:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'Your rate is always capped at 11% APR, but when market conditions push borrowing costs lower, you’ll automatically pay the reduced rate for that month. Plus, keep that on-time payment streak alive, or refer a friend mid-term, and we’ll shave extra basis points off your rate as a thank-you!',
   },
   {
-    question: 'Is there a liquidation risk?',
+    question: 'What happens to my Bitcoin if I miss a payment?',
     answer:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'Miss a payment? We’ll sell just a tiny slice of your escrowed BTC to cover that month’s dues, only if BTC stays above your personal safety price. Your safety price starts at 75 % of the purchase price and falls as you pay down principal, so your equity buffer grows over time. If BTC dips below that threshold and payments stop, a full liquidation would be required, but don’t worry, we’ll send friendly reminders before every due date!',
   },
   {
-    question: 'What happens if the BTC price drops?',
+    question: 'How do you have no forced liquidations?',
     answer:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'Every BitMor loan comes with our Liquidation Protection Plan, think of it as insurance that steps in if Bitcoin plunges too far, so you won’t face a forced sell-off. It’s valid for one year and renews annually (the premium can vary with market swings). We usually recommend a 1-year plan for new users and longer terms for more risk-tolerant borrowers.',
   },
   {
-    question: 'Can I prepay anytime?',
+    question: 'Can I make extra payments or pay off my loan early?',
     answer:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'Absolutely, feel free to prepay anytime! Just send enough USDC to cover your remaining balance and fees, and we’ll release the full BTC to you immediately!',
   },
 ]
 
