@@ -1,3 +1,4 @@
+import { useTheme } from 'next-themes'
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
 
 const RADIAN = Math.PI / 180
@@ -17,31 +18,36 @@ export const FearGreedIndexChart = ({
   needleValue = 50,
 }: {
   needleValue?: number
-}) => (
-  <ResponsiveContainer width="100%" height="100%">
-    <PieChart width={120} height={62}>
-      <Pie
-        dataKey="value"
-        startAngle={180}
-        endAngle={0}
-        data={data}
-        cx="50%"
-        cy="100%"
-        innerRadius={iR}
-        outerRadius={oR}
-        fill="#8884d8"
-        stroke="none"
-        paddingAngle={5}
-        cornerRadius={3}
-      >
-        {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={entry.color} />
-        ))}
-      </Pie>
-      {needle(needleValue, data, cx, cy, iR / 2, oR / 2, '#FFFFFF')}
-    </PieChart>
-  </ResponsiveContainer>
-)
+}) => {
+  const { resolvedTheme } = useTheme()
+  const needleColor = resolvedTheme === 'dark' ? '#FFFFFF' : '#000000'
+
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <PieChart width={120} height={62}>
+        <Pie
+          dataKey="value"
+          startAngle={180}
+          endAngle={0}
+          data={data}
+          cx="50%"
+          cy="100%"
+          innerRadius={iR}
+          outerRadius={oR}
+          fill="#8884d8"
+          stroke="none"
+          paddingAngle={5}
+          cornerRadius={3}
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.color} />
+          ))}
+        </Pie>
+        {needle(needleValue, data, cx, cy, iR / 2, oR / 2, needleColor)}
+      </PieChart>
+    </ResponsiveContainer>
+  )
+}
 
 const needle = (
   value: number,

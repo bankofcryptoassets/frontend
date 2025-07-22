@@ -8,10 +8,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['var(--font-sans)'],
-        mono: ['var(--font-mono)'],
-      },
+      fontFamily: { sans: ['var(--font-sans)'], mono: ['var(--font-mono)'] },
       container: {
         center: true,
         padding: {
@@ -129,22 +126,10 @@ module.exports = {
             },
             background: '#ffffff',
             foreground: '#000000',
-            content1: {
-              DEFAULT: '#ffffff',
-              foreground: '#000',
-            },
-            content2: {
-              DEFAULT: '#f4f4f5',
-              foreground: '#000',
-            },
-            content3: {
-              DEFAULT: '#e4e4e7',
-              foreground: '#000',
-            },
-            content4: {
-              DEFAULT: '#d4d4d8',
-              foreground: '#000',
-            },
+            content1: { DEFAULT: '#ffffff', foreground: '#000' },
+            content2: { DEFAULT: '#f4f4f5', foreground: '#000' },
+            content3: { DEFAULT: '#e4e4e7', foreground: '#000' },
+            content4: { DEFAULT: '#d4d4d8', foreground: '#000' },
             focus: '#006FEE',
             overlay: '#000000',
           },
@@ -240,30 +225,16 @@ module.exports = {
             },
             background: '#000000',
             foreground: '#ffffff',
-            content1: {
-              DEFAULT: '#18181b',
-              foreground: '#fff',
-            },
-            content2: {
-              DEFAULT: '#27272a',
-              foreground: '#fff',
-            },
-            content3: {
-              DEFAULT: '#3f3f46',
-              foreground: '#fff',
-            },
-            content4: {
-              DEFAULT: '#52525b',
-              foreground: '#fff',
-            },
+            content1: { DEFAULT: '#18181b', foreground: '#fff' },
+            content2: { DEFAULT: '#27272a', foreground: '#fff' },
+            content3: { DEFAULT: '#3f3f46', foreground: '#fff' },
+            content4: { DEFAULT: '#52525b', foreground: '#fff' },
             focus: '#006FEE',
             overlay: '#ffffff',
           },
         },
       },
-      layout: {
-        disabledOpacity: '0.4',
-      },
+      layout: { disabledOpacity: '0.4' },
     }),
   ],
 }

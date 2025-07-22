@@ -119,6 +119,7 @@ export default function BorrowPage() {
     queryKey: ['/initialisation/loanavailability'],
     queryFn: () =>
       axios.get<LoanAvailabilityType>(`/initialisation/loanavailability`),
+    staleTime: Infinity,
   })
   const { data: loanSummary, isLoading: isLoanSummaryLoading } = useQuery({
     queryKey: ['/initialisation/loansummary', debouncedPayload],
@@ -482,10 +483,7 @@ export default function BorrowPage() {
         title="Transaction Failed"
         description="Oops! Something went wrong. Please try again."
         primaryButtonText="Retry"
-        primaryButtonProps={{
-          onPress: handleRetryTx,
-          color: 'primary',
-        }}
+        primaryButtonProps={{ onPress: handleRetryTx, color: 'primary' }}
         secondaryButtonText="Exit"
         secondaryButtonProps={{
           onPress: () => {
