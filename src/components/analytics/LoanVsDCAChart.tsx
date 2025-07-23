@@ -119,7 +119,7 @@ export function LoanVsDCAChart({
           isSelected={showMA}
           onValueChange={setShowMA}
           size="sm"
-          classNames={{ label: 'text-xs text-default-a', base: 'ml-auto' }}
+          classNames={{ label: 'text-xs text-default-a' }}
         >
           Show MA Average
         </Checkbox>
@@ -127,7 +127,7 @@ export function LoanVsDCAChart({
 
       <ChartContainer
         config={chartConfig}
-        className="relative h-full min-h-[400px] w-full min-w-[540px] overflow-hidden"
+        className="relative h-full min-h-[400px] w-full min-w-[540px] overflow-hidden lg:max-h-[460px]"
       >
         <ComposedChart
           data={formattedData}

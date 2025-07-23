@@ -6,13 +6,19 @@ import {
   CardHeader,
   Input,
   Slider,
-  Divider,
+  Checkbox,
+  NumberInput,
+  Radio,
+  RadioGroup,
+  RadioProps,
+  cn,
   Chip,
 } from '@heroui/react'
-import { LuCalendar } from 'react-icons/lu'
+import { LuCalendar, LuInfo } from 'react-icons/lu'
+import numeral from 'numeral'
 
 interface Props {
-  loanAmount: number
+  loanAmount: number | undefined
   onLoanAmountChange: (value: number) => void
   timePeriod: number
   onTimePeriodChange: (value: number) => void
@@ -24,6 +30,14 @@ interface Props {
   onStartDateChange: (value: string) => void
   endDate: string
   onEndDateChange: (value: string) => void
+  liquidationInsuranceCost: number
+  onLiquidationInsuranceCostChange: (value: number) => void
+  dcaCadence: 'daily' | 'weekly' | 'monthly'
+  onDcaCadenceChange: (value: 'daily' | 'weekly' | 'monthly') => void
+  btcYield: number
+  onBtcYieldChange: (value: number) => void
+  dcaWithoutDownPayment: boolean
+  onDcaWithoutDownPaymentChange: (value: boolean) => void
 }
 
 export function LoanVsDCASidebar({
@@ -31,155 +45,254 @@ export function LoanVsDCASidebar({
   onLoanAmountChange,
   timePeriod,
   onTimePeriodChange,
-  downPayment,
+  // downPayment,
   onDownPaymentChange,
-  loanAPR,
+  // loanAPR,
   onLoanAPRChange,
-  startDate,
+  // startDate,
   onStartDateChange,
-  endDate,
+  // endDate,
   onEndDateChange,
+  // liquidationInsuranceCost,
+  onLiquidationInsuranceCostChange,
+  dcaCadence,
+  onDcaCadenceChange,
+  btcYield,
+  onBtcYieldChange,
+  dcaWithoutDownPayment,
+  onDcaWithoutDownPaymentChange,
 }: Props) {
-  const minAmount = 1000
-  const maxAmount = 1000000
+  // const minAmount = 1000
+  // const maxAmount = 1000000
 
   return (
-    <Card className="border border-default-200">
-      <CardHeader className="p-4">
-        <h3 className="text-lg font-semibold">Loan vs DCA Calculator</h3>
+    <Card className="h-full border border-default-200 lg:max-h-[640px]">
+      <CardHeader className="p-4 pb-0">
+        <h3 className="w-full border-b border-default-200 px-1 pb-3.5 text-base font-medium text-default-d">
+          Loan vs DCA Calculator
+        </h3>
       </CardHeader>
 
-      <CardBody className="gap-6 p-4">
-        {/* Loan Amount */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Loan Amount in USD</label>
-          <Input
-            type="number"
-            value={loanAmount.toString()}
-            onChange={(e) => {
-              const value = parseFloat(e.target.value) || 0
-              if (value >= minAmount && value <= maxAmount) {
+      <CardBody className="gap-4 px-0 py-4">
+        <div className="space-y-4 px-4">
+          <NumberInput
+            hideStepper
+            isWheelDisabled
+            placeholder="Loan Amount in USD"
+            value={loanAmount}
+            onChange={(value) => {
+              if (typeof value === 'number') {
                 onLoanAmountChange(value)
               }
             }}
-            startContent={<span className="text-default-400">$</span>}
-            className="font-mono"
+            classNames={{
+              inputWrapper:
+                'dark:bg-[#1F1F1F] dark:data-[hover=true]:[#1F1F1F] text-default-600 border border-default-300/50',
+            }}
           />
-        </div>
 
-        {/* Time Period */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Time Period (in Months)</label>
-          <div className="flex items-center gap-3">
-            <Slider
-              size="sm"
-              step={12}
-              minValue={12}
-              maxValue={60}
-              value={timePeriod}
-              onChange={(value) => onTimePeriodChange(value as number)}
-              className="flex-1"
-              classNames={{
-                thumb: 'bg-primary',
-                track: 'bg-default-200',
-                filler: 'bg-primary',
-              }}
-            />
-            <div className="w-20 text-right font-mono text-sm">
-              {timePeriod}
-            </div>
-          </div>
-          <p className="text-xs text-default-400">Between 12 - 60 Months</p>
-        </div>
-
-        <Divider />
-
-        {/* Advanced Options */}
-        <div className="space-y-4">
-          <h4 className="text-sm font-medium text-default-600">
-            Advanced Options:
-          </h4>
-
-          {/* Down Payment */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Enter Down Payment</label>
-            <div className="flex items-center gap-3">
-              <Slider
-                size="sm"
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-default-a">
+                Time Period (in Months)
+              </label>
+              <NumberInput
                 step={1}
-                minValue={0}
-                maxValue={50}
-                value={downPayment}
-                onChange={(value) => onDownPaymentChange(value as number)}
-                className="flex-1"
-                isDisabled
+                minValue={12}
+                maxValue={60}
+                value={timePeriod}
+                className="flex-1 text-right"
+                onChange={(value) => {
+                  if (typeof value === 'number') onTimePeriodChange(value)
+                }}
                 classNames={{
-                  thumb: 'bg-default-300',
-                  track: 'bg-default-200',
-                  filler: 'bg-default-300',
+                  inputWrapper:
+                    'dark:bg-[#1F1F1F] dark:data-[hover=true]:[#1F1F1F] text-default-600 border border-default-300/50 w-28',
+                  input: 'text-center',
                 }}
               />
-              <div className="w-20 text-right">
-                <Chip size="sm" variant="flat" color="default">
-                  Coming Soon
-                </Chip>
-              </div>
             </div>
-            <div className="flex justify-between text-xs text-default-400">
-              <span>{downPayment}</span>
-              <span>Min.</span>
+            <p className="text-right text-xs text-default-a">
+              Between 12 - 60 Months
+            </p>
+          </div>
+        </div>
+
+        <h4 className="mt-4 flex items-center justify-between gap-2 bg-default-200/70 px-5 py-1.5 text-sm font-medium text-default-a">
+          Advanced Options:{' '}
+          <Chip size="sm" variant="flat" color="default">
+            Coming Soon
+          </Chip>
+        </h4>
+
+        <div className="space-y-4 px-4">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-default-a">
+                Enter Down Payment
+              </label>
+              <NumberInput
+                hideStepper
+                isDisabled
+                // value={downPayment}
+                className="flex-1 text-right"
+                onChange={(v) =>
+                  typeof v === 'number' && onDownPaymentChange(v)
+                }
+                classNames={{
+                  inputWrapper: 'bg-transparent w-20',
+                  input: 'text-right',
+                }}
+              />
+            </div>
+            <Slider
+              size="sm"
+              step={1}
+              minValue={0}
+              maxValue={(loanAmount || 0) * 0.5}
+              // value={downPayment}
+              onChange={(value) => onDownPaymentChange(value as number)}
+              className="w-full"
+              isDisabled
+              classNames={{
+                thumb: 'bg-default-300',
+                track: 'bg-default-200',
+                filler: 'bg-default-300',
+              }}
+            />
+            <div className="flex justify-between text-xs text-default-a">
+              <span>0 Min.</span>
               <span className="text-right">
-                {(loanAmount * 0.5).toFixed(0)} USDC
-                <br />
-                Max.
+                {numeral((loanAmount || 0) * 0.5).format('0,0')} USDC Max.
               </span>
             </div>
           </div>
 
-          {/* Loan APR */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Enter Loan APR</label>
+          <Input
+            placeholder="Enter Loan APR"
+            isDisabled
+            // value={loanAPR.toString()}
+            onChange={(e) => onLoanAPRChange(parseFloat(e.target.value) || 0)}
+            endContent={<span className="text-default-a">%</span>}
+            classNames={{
+              inputWrapper: 'bg-default/35 data-[hover=true]:bg-default/50',
+            }}
+          />
+
+          <div className="grid grid-cols-2 gap-3">
             <Input
-              type="number"
-              value={loanAPR.toString()}
-              onChange={(e) => onLoanAPRChange(parseFloat(e.target.value) || 0)}
-              endContent={<span className="text-default-400">%</span>}
+              // type="date"
+              placeholder="Start Date"
+              // value={startDate}
+              onChange={(e) => onStartDateChange(e.target.value)}
+              startContent={<LuCalendar className="text-default-a" size={16} />}
               isDisabled
-              placeholder="Coming Soon"
+              classNames={{
+                inputWrapper: 'bg-default/35 data-[hover=true]:bg-default/50',
+              }}
+            />
+            <Input
+              // type="date"
+              placeholder="End Date"
+              // value={endDate}
+              onChange={(e) => onEndDateChange(e.target.value)}
+              startContent={<LuCalendar className="text-default-a" size={16} />}
+              isDisabled
+              classNames={{
+                inputWrapper: 'bg-default/35 data-[hover=true]:bg-default/50',
+              }}
             />
           </div>
 
-          {/* Date Range */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Start Date</label>
-              <Input
-                type="date"
-                value={startDate}
-                onChange={(e) => onStartDateChange(e.target.value)}
-                startContent={
-                  <LuCalendar className="text-default-400" size={16} />
-                }
-                isDisabled
-                placeholder="Coming Soon"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">End Date</label>
-              <Input
-                type="date"
-                value={endDate}
-                onChange={(e) => onEndDateChange(e.target.value)}
-                startContent={
-                  <LuCalendar className="text-default-400" size={16} />
-                }
-                isDisabled
-                placeholder="Coming Soon"
-              />
-            </div>
+          <Input
+            placeholder="Liquidation Insurance Cost"
+            isDisabled
+            // value={liquidationInsuranceCost.toString()}
+            onChange={(e) =>
+              onLiquidationInsuranceCostChange(parseFloat(e.target.value) || 0)
+            }
+            classNames={{
+              inputWrapper: 'bg-default/35 data-[hover=true]:bg-default/50',
+            }}
+          />
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-default-a">
+              DCA Cadence:
+            </label>
+            <RadioGroup
+              orientation="horizontal"
+              value={dcaCadence}
+              onValueChange={(value) =>
+                onDcaCadenceChange(value as 'daily' | 'weekly' | 'monthly')
+              }
+              classNames={{ wrapper: 'gap-2' }}
+              isDisabled
+            >
+              {(['daily', 'weekly', 'monthly'] as const).map((cadence) => (
+                <CustomRadio key={cadence} value={cadence}>
+                  {cadence.charAt(0).toUpperCase() + cadence.slice(1)}
+                </CustomRadio>
+              ))}
+            </RadioGroup>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-default-a">
+              BTC Yield:
+            </label>
+            <NumberInput
+              hideStepper
+              isWheelDisabled
+              value={btcYield}
+              onChange={(v) => typeof v === 'number' && onBtcYieldChange(v)}
+              endContent={<span className="text-default-a">%</span>}
+              isDisabled
+              className="flex-1 text-right"
+              classNames={{
+                inputWrapper:
+                  'bg-default/35 data-[hover=true]:bg-default/50 w-28',
+                input: 'text-center',
+              }}
+            />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Checkbox
+              isSelected={dcaWithoutDownPayment}
+              onValueChange={onDcaWithoutDownPaymentChange}
+              isDisabled
+              classNames={{
+                base: 'items-start',
+                wrapper: 'mr-3 mt-1',
+                label: 'text-default-a text-sm',
+              }}
+            >
+              DCA without Down Payment
+            </Checkbox>
+            <LuInfo className="text-default-400" size={16} />
           </div>
         </div>
       </CardBody>
     </Card>
+  )
+}
+
+const CustomRadio = (props: RadioProps) => {
+  const { children, className, ...otherProps } = props
+
+  return (
+    <Radio
+      {...otherProps}
+      className={cn('group', className)}
+      classNames={{
+        base: 'm-0 rounded-lg bg-default-200 transition hover:bg-primary/5 data-[selected=true]:bg-primary/5 border border-default-300/50 data-[selected=true]:border-primary/50',
+        wrapper: 'hidden',
+        labelWrapper:
+          'ml-0 ms-0 px-3 [&>span]:group-data-[selected=true]:text-primary [&>span]:text-default-a [&>span]:font-medium [&>span]:group-data-[selected=true]:font-semibold',
+      }}
+    >
+      {children}
+    </Radio>
   )
 }

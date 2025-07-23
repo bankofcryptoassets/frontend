@@ -11,15 +11,23 @@ import { LuInfo } from 'react-icons/lu'
 import { LoanAvailabilityType } from '@/types'
 import axios from '@/utils/axios'
 
+const DEFAULT_LOAN_AMOUNT = 100000
+
 export default function AnalyticsPage() {
   const [mode, setMode] = useState<'btc' | 'usd'>('btc')
-  const [loanAmount, setLoanAmount] = useState(100000)
-  const [timePeriod, setTimePeriod] = useState(60)
+  const [loanAmount, setLoanAmount] = useState<number | undefined>(undefined)
+  const [timePeriod, setTimePeriod] = useState<number>(60)
   const [downPayment, setDownPayment] = useState(0)
   const [loanAPR, setLoanAPR] = useState(10)
   const [startDate, setStartDate] = useState('2017-08-17')
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0])
   const [selectedPoint, setSelectedPoint] = useState<any>(null)
+  const [liquidationInsuranceCost, setLiquidationInsuranceCost] = useState(0)
+  const [dcaCadence, setDcaCadence] = useState<'daily' | 'weekly' | 'monthly'>(
+    'daily'
+  )
+  const [btcYield, setBtcYield] = useState(1)
+  const [dcaWithoutDownPayment, setDcaWithoutDownPayment] = useState(true)
 
   const { data: borrowStats } = useQuery({
     queryKey: ['/initialisation/loanavailability'],
@@ -34,7 +42,13 @@ export default function AnalyticsPage() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['btc-loan-vs-dca-enhanced', loanAmount, timePeriod, startDate],
+    queryKey: [
+      'btc-loan-vs-dca-enhanced',
+      loanAmount,
+      timePeriod,
+      startDate,
+      mode,
+    ],
     queryFn: async () => {
       // Fetch the CSV data
       const response = await fetch('/data/BTCUSDT_1h.csv', {
@@ -50,11 +64,14 @@ export default function AnalyticsPage() {
       // Run enhanced analysis
       const result = await fullAnalysisBrowserEnhanced(csvContent, {
         start: startDate,
+        loanAmount: loanAmount || DEFAULT_LOAN_AMOUNT,
+        timePeriod,
+        mode,
       })
 
       // Store full results in window for debugging
-      ;(window as any).btcLoanVsDcaResults = result.results
-      ;(window as any).btcLoanVsDcaChartData = result.chartData
+      // ;(window as any).btcLoanVsDcaResults = result.results
+      // ;(window as any).btcLoanVsDcaChartData = result.chartData
 
       return result
     },
@@ -77,22 +94,24 @@ export default function AnalyticsPage() {
   const statsData = useMemo(() => {
     if (!analysisData) return null
 
-    const point =
-      selectedPoint || analysisData.chartData[analysisData.chartData.length - 1]
+    const point = selectedPoint || analysisData.chartData[0]
     if (!point) return null
 
-    const costPerBTCLoan = loanAmount / point.btcLoan
-    const costPerBTCDCA = loanAmount / point.btcDca
+    const tempLoanAmount = loanAmount || DEFAULT_LOAN_AMOUNT
+    const costPerBTCLoan = tempLoanAmount / point.btcLoan
+    const costPerBTCDCA = tempLoanAmount / point.btcDca
 
     return {
       loanBTC: point.btcLoan,
       dcaBTC: point.btcDca,
-      loanReturns: point.profitLoan + loanAmount,
-      dcaReturns: point.profitDca + loanAmount,
+      loanReturns: point.profitLoan + tempLoanAmount,
+      dcaReturns: point.profitDca + tempLoanAmount,
       loanCostPerBTC: costPerBTCLoan,
       dcaCostPerBTC: costPerBTCDCA,
     }
   }, [analysisData, selectedPoint, loanAmount])
+
+  // console.log(analysisData, summary, statsData)
 
   return (
     <div className="min-h-[calc(100vh-4.5rem)] bg-background">
@@ -112,6 +131,14 @@ export default function AnalyticsPage() {
             onStartDateChange={setStartDate}
             endDate={endDate}
             onEndDateChange={setEndDate}
+            liquidationInsuranceCost={liquidationInsuranceCost}
+            onLiquidationInsuranceCostChange={setLiquidationInsuranceCost}
+            dcaCadence={dcaCadence}
+            onDcaCadenceChange={setDcaCadence}
+            btcYield={btcYield}
+            onBtcYieldChange={setBtcYield}
+            dcaWithoutDownPayment={dcaWithoutDownPayment}
+            onDcaWithoutDownPaymentChange={setDcaWithoutDownPayment}
           />
 
           {/* EMI Stats */}
@@ -124,8 +151,8 @@ export default function AnalyticsPage() {
         {/* Chart and Stats */}
         <div className="flex h-full flex-1 flex-col gap-3">
           {/* Chart Card */}
-          <Card className="h-full border border-default-200">
-            <CardBody className="p-6">
+          <Card className="h-full border border-default-200 lg:max-h-[640px]">
+            <CardBody className="h-full p-6">
               {/* Mode Toggle */}
               <div className="mb-8 grid grid-cols-1 place-items-center justify-center gap-3 md:grid-cols-3">
                 <div className="max-md:hidden"></div>
@@ -222,19 +249,17 @@ export default function AnalyticsPage() {
             </CardBody>
           </Card>
 
-          <div className="">
-            {/* Strategy Stats */}
-            {statsData && (
-              <StrategyStats
-                loanBTC={statsData.loanBTC}
-                dcaBTC={statsData.dcaBTC}
-                loanReturns={statsData.loanReturns}
-                dcaReturns={statsData.dcaReturns}
-                loanCostPerBTC={statsData.loanCostPerBTC}
-                dcaCostPerBTC={statsData.dcaCostPerBTC}
-              />
-            )}
-          </div>
+          {/* Strategy Stats */}
+          {statsData && (
+            <StrategyStats
+              loanBTC={statsData.loanBTC}
+              dcaBTC={statsData.dcaBTC}
+              loanReturns={statsData.loanReturns}
+              dcaReturns={statsData.dcaReturns}
+              loanCostPerBTC={statsData.loanCostPerBTC}
+              dcaCostPerBTC={statsData.dcaCostPerBTC}
+            />
+          )}
         </div>
       </div>
     </div>

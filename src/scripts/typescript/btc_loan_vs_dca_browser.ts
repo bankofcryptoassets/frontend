@@ -39,6 +39,7 @@ interface SimulationResult {
   btcDca: number
   dollarsIn: number
   valPx: number
+  monthlyPayment: number
 }
 
 interface AnalysisResult {
@@ -59,20 +60,16 @@ interface CommandOptions {
   debug?: string
   flashCrash?: number
   futureScenario?: boolean
+  mode?: 'usd' | 'btc'
+  loanAmount?: number
+  timePeriod?: number
 }
 
 // ────────────────────────────────────────────────────────────────
 // Parameters – adjust at will
 // ────────────────────────────────────────────────────────────────
-const CASH_UPFRONT = 20_000 // USD paid immediately
-const LOAN_PRINCIPAL = 80_000 // USD financed
-const TERM_MONTHS = 60 // five years
 const ANNUAL_RATE = 0.1
 const MONTHLY_RATE = ANNUAL_RATE / 12
-
-const MONTHLY_PAYMENT =
-  (LOAN_PRINCIPAL * MONTHLY_RATE * Math.pow(1 + MONTHLY_RATE, TERM_MONTHS)) /
-  (Math.pow(1 + MONTHLY_RATE, TERM_MONTHS) - 1)
 
 // ────────────────────────────────────────────────────────────────
 // Load price data from CSV string
@@ -177,29 +174,37 @@ function appendFutureScenario(
 function simulateStart(
   startDate: Date,
   priceSeries: Map<string, number>,
-  crashPx?: number
+  crashPx?: number,
+  loanAmount: number = 100_000,
+  timePeriod: number = 60
 ): SimulationResult {
+  const cashUpfront = loanAmount * 0.2
+  const loanPrincipal = loanAmount * 0.8
+  const monthlyPayment =
+    (loanPrincipal * MONTHLY_RATE * Math.pow(1 + MONTHLY_RATE, timePeriod)) /
+    (Math.pow(1 + MONTHLY_RATE, timePeriod) - 1)
+
   const px0 = priceOn(startDate, priceSeries)
-  const fullBtc = (CASH_UPFRONT + LOAN_PRINCIPAL) / px0
+  const fullBtc = loanAmount / px0
 
   // Get last available price date
   const sortedDates = Array.from(priceSeries.keys()).sort()
   const lastPriceDate = parseISO(sortedDates[sortedDates.length - 1])
 
   // Evaluation date = min(start + 60m, last available price)
-  const potentialEvalDate = addMonths(startDate, TERM_MONTHS)
+  const potentialEvalDate = addMonths(startDate, timePeriod)
   const evalDate = isAfter(potentialEvalDate, lastPriceDate)
     ? lastPriceDate
     : potentialEvalDate
 
   // Build ledger
-  let btcDca = CASH_UPFRONT / px0
+  let btcDca = cashUpfront / px0
   const rows: LedgerRow[] = [
     {
       Date: format(startDate, 'yyyy-MM-dd'),
-      Payment_USD: CASH_UPFRONT,
+      Payment_USD: cashUpfront,
       BTC_Price: px0,
-      BTC_Added_DCA: CASH_UPFRONT / px0,
+      BTC_Added_DCA: cashUpfront / px0,
       Cum_BTC_DCA: btcDca,
     },
   ]
@@ -209,18 +214,18 @@ function simulateStart(
 
   while (true) {
     payDate = addMonths(payDate, 1)
-    if (isAfter(payDate, evalDate) || paidMonths >= TERM_MONTHS) {
+    if (isAfter(payDate, evalDate) || paidMonths >= timePeriod) {
       break
     }
 
     const btcPrice = priceOn(payDate, priceSeries)
-    const btcAdded = MONTHLY_PAYMENT / btcPrice
+    const btcAdded = monthlyPayment / btcPrice
     btcDca += btcAdded
     paidMonths += 1
 
     rows.push({
       Date: format(payDate, 'yyyy-MM-dd'),
-      Payment_USD: MONTHLY_PAYMENT,
+      Payment_USD: monthlyPayment,
       BTC_Price: btcPrice,
       BTC_Added_DCA: btcAdded,
       Cum_BTC_DCA: btcDca,
@@ -231,9 +236,9 @@ function simulateStart(
   const evalPx = priceOn(evalDate, priceSeries)
   const valuationPx = crashPx !== undefined ? crashPx : evalPx
   const valDate = crashPx !== undefined ? addDays(evalDate, 1) : evalDate
-  const dollarsIn = CASH_UPFRONT + MONTHLY_PAYMENT * paidMonths
+  const dollarsIn = cashUpfront + monthlyPayment * paidMonths
 
-  const profitLoan = fullBtc * valuationPx - (CASH_UPFRONT + LOAN_PRINCIPAL)
+  const profitLoan = fullBtc * valuationPx - loanAmount
   const profitDca = btcDca * valuationPx - dollarsIn
 
   return {
@@ -246,6 +251,7 @@ function simulateStart(
     btcDca,
     dollarsIn,
     valPx: valuationPx,
+    monthlyPayment,
   }
 }
 
@@ -271,10 +277,7 @@ function calculateMovingAverages(
       date: string
       price: number
       [key: string]: number | string | null
-    } = {
-      date: dateStr,
-      price,
-    }
+    } = { date: dateStr, price }
 
     // Calculate each moving average
     periods.forEach((period) => {
@@ -331,7 +334,13 @@ async function fullAnalysisBrowser(
 
   for (const dateStr of startDates) {
     const startDate = parseISO(dateStr)
-    const simulation = simulateStart(startDate, priceSeries, options.flashCrash)
+    const simulation = simulateStart(
+      startDate,
+      priceSeries,
+      options.flashCrash,
+      options.loanAmount,
+      options.timePeriod
+    )
 
     const winner = simulation.profitLoan > simulation.profitDca ? 'loan' : 'dca'
 
@@ -401,9 +410,22 @@ async function fullAnalysisBrowserEnhanced(
 
   for (const dateStr of startDates) {
     const startDate = parseISO(dateStr)
-    const simulation = simulateStart(startDate, priceSeries, options.flashCrash)
+    const simulation = simulateStart(
+      startDate,
+      priceSeries,
+      options.flashCrash,
+      options.loanAmount,
+      options.timePeriod
+    )
 
-    const winner = simulation.profitLoan > simulation.profitDca ? 'loan' : 'dca'
+    const winner =
+      options.mode === 'usd'
+        ? simulation.profitLoan > simulation.profitDca
+          ? 'loan'
+          : 'dca'
+        : simulation.btcLoan > simulation.btcDca
+          ? 'loan'
+          : 'dca'
 
     results.push({
       date: dateStr,
@@ -419,8 +441,8 @@ async function fullAnalysisBrowserEnhanced(
     })
 
     // Accumulate for averages
-    totalMonthlyPaymentLoan += MONTHLY_PAYMENT
-    totalMonthlyPaymentDCA += MONTHLY_PAYMENT
+    totalMonthlyPaymentLoan += simulation.monthlyPayment
+    totalMonthlyPaymentDCA += simulation.monthlyPayment
     totalBTCLoan += simulation.btcLoan
     totalBTCDCA += simulation.btcDca
     validResultsCount++
@@ -454,11 +476,7 @@ async function fullAnalysisBrowserEnhanced(
       validResultsCount > 0 ? totalBTCDCA / validResultsCount : 0,
   }
 
-  return {
-    results,
-    chartData,
-    averageMetrics,
-  }
+  return { results, chartData, averageMetrics }
 }
 
 async function debugSingleDateBrowser(
@@ -488,7 +506,13 @@ async function debugSingleDateBrowser(
   }
 
   const startDate = parseISO(debugDate)
-  const simulation = simulateStart(startDate, priceSeries, options.flashCrash)
+  const simulation = simulateStart(
+    startDate,
+    priceSeries,
+    options.flashCrash,
+    options.loanAmount,
+    options.timePeriod
+  )
 
   const winner = simulation.profitLoan > simulation.profitDca ? 'loan' : 'dca'
 
@@ -528,11 +552,7 @@ export {
   fullAnalysisBrowser,
   fullAnalysisBrowserEnhanced,
   debugSingleDateBrowser,
-  CASH_UPFRONT,
-  LOAN_PRINCIPAL,
-  TERM_MONTHS,
   ANNUAL_RATE,
-  MONTHLY_PAYMENT,
 }
 
 export type { AnalysisResult, LedgerRow, CommandOptions }

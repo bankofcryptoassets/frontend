@@ -51,8 +51,8 @@ export function StrategyStats({
   dcaCostPerBTC,
 }: StrategyStatsProps) {
   return (
-    <Card className="border border-default-200">
-      <CardBody className="px-5 py-4">
+    <Card className="border border-default-200 max-lg:overflow-x-auto">
+      <CardBody className="px-5 py-4 max-lg:min-w-[640px]">
         <table className="w-full">
           <thead>
             <tr className="divide-x divide-default-200 border-b border-default-200 text-sm">
