@@ -60,7 +60,7 @@ export function StrategyStats({
                 Strategy
               </th>
               <th className="pb-3.5 pl-5 font-medium text-default-a">
-                Total BTC Earned
+                Total BTC Owned
               </th>
               <th className="pb-3.5 pl-5 font-medium text-default-a">
                 Dollar Returns of Held BTC

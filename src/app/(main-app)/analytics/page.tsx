@@ -42,13 +42,7 @@ export default function AnalyticsPage() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: [
-      'btc-loan-vs-dca-enhanced',
-      loanAmount,
-      timePeriod,
-      startDate,
-      mode,
-    ],
+    queryKey: ['btc-loan-vs-dca-enhanced', loanAmount, timePeriod, startDate],
     queryFn: async () => {
       // Fetch the CSV data
       const response = await fetch('/data/BTCUSDT_1h.csv', {
@@ -66,7 +60,6 @@ export default function AnalyticsPage() {
         start: startDate,
         loanAmount: loanAmount || DEFAULT_LOAN_AMOUNT,
         timePeriod,
-        mode,
       })
 
       // Store full results in window for debugging
@@ -83,12 +76,14 @@ export default function AnalyticsPage() {
   const summary = useMemo(() => {
     if (!analysisData) return null
 
-    const loanWins = analysisData.results.filter((r) => r.win === 'loan').length
+    const loanWins = analysisData.results.filter((r) =>
+      mode === 'btc' ? r.btcWin === 'loan' : r.win === 'loan'
+    ).length
     const totalDays = analysisData.results.length
     const winPercentage = ((loanWins / totalDays) * 100).toFixed(1)
 
     return { totalDays, loanWins, dcaWins: totalDays - loanWins, winPercentage }
-  }, [analysisData])
+  }, [analysisData, mode])
 
   // Calculate stats for selected point or average
   const statsData = useMemo(() => {
@@ -97,21 +92,23 @@ export default function AnalyticsPage() {
     const point = selectedPoint || analysisData.chartData[0]
     if (!point) return null
 
-    const tempLoanAmount = loanAmount || DEFAULT_LOAN_AMOUNT
-    const costPerBTCLoan = tempLoanAmount / point.btcLoan
-    const costPerBTCDCA = tempLoanAmount / point.btcDca
+    const finalLoanAmount = loanAmount || DEFAULT_LOAN_AMOUNT
+    const loanReturns =
+      point.loanReturns || point.profitLoan + point.btcLoan * point.price
+    const dcaReturns =
+      point.dcaReturns || point.profitDca + point.btcDca * point.price
+    const loanCostPerBTC = finalLoanAmount / point.btcLoan
+    const dcaCostPerBTC = point.dollarsIn / point.btcDca
 
     return {
       loanBTC: point.btcLoan,
       dcaBTC: point.btcDca,
-      loanReturns: point.profitLoan + tempLoanAmount,
-      dcaReturns: point.profitDca + tempLoanAmount,
-      loanCostPerBTC: costPerBTCLoan,
-      dcaCostPerBTC: costPerBTCDCA,
+      loanReturns,
+      dcaReturns,
+      loanCostPerBTC,
+      dcaCostPerBTC,
     }
   }, [analysisData, selectedPoint, loanAmount])
-
-  // console.log(analysisData, summary, statsData)
 
   return (
     <div className="min-h-[calc(100vh-4.5rem)] bg-background">

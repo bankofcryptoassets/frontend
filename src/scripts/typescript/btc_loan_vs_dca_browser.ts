@@ -32,6 +32,8 @@ interface LedgerRow {
 interface SimulationResult {
   profitLoan: number
   profitDca: number
+  loanReturns: number
+  dcaReturns: number
   ledger: LedgerRow[]
   evalDate: Date
   valDate: Date
@@ -45,12 +47,16 @@ interface SimulationResult {
 interface AnalysisResult {
   date: string
   win: 'loan' | 'dca'
+  btcWin: 'loan' | 'dca'
   btcPrice: number
   profitLoan: number
   profitDca: number
   profitDifference: number
+  loanReturns: number
+  dcaReturns: number
   btcLoan: number
   btcDca: number
+  dollarsIn: number
   evalDate: string
   valDate: string
 }
@@ -60,7 +66,6 @@ interface CommandOptions {
   debug?: string
   flashCrash?: number
   futureScenario?: boolean
-  mode?: 'usd' | 'btc'
   loanAmount?: number
   timePeriod?: number
 }
@@ -241,9 +246,15 @@ function simulateStart(
   const profitLoan = fullBtc * valuationPx - loanAmount
   const profitDca = btcDca * valuationPx - dollarsIn
 
+  // Calculate returns (total value of holdings)
+  const loanReturns = fullBtc * valuationPx
+  const dcaReturns = btcDca * valuationPx
+
   return {
     profitLoan,
     profitDca,
+    loanReturns,
+    dcaReturns,
     ledger: rows,
     evalDate,
     valDate,
@@ -305,66 +316,67 @@ function calculateMovingAverages(
 // ────────────────────────────────────────────────────────────────
 // Main analysis functions - browser version
 // ────────────────────────────────────────────────────────────────
-async function fullAnalysisBrowser(
-  csvContent: string,
-  options: CommandOptions = {}
-): Promise<AnalysisResult[]> {
-  // Load price data from CSV string
-  let priceSeries = loadPriceDataFromCsv(csvContent)
+// async function fullAnalysisBrowser(
+//   csvContent: string,
+//   options: CommandOptions = {}
+// ): Promise<AnalysisResult[]> {
+//   // Load price data from CSV string
+//   let priceSeries = loadPriceDataFromCsv(csvContent)
 
-  // Apply future scenario if requested
-  if (options.futureScenario) {
-    priceSeries = appendFutureScenario(priceSeries)
-  }
+//   // Apply future scenario if requested
+//   if (options.futureScenario) {
+//     priceSeries = appendFutureScenario(priceSeries)
+//   }
 
-  // Get all dates
-  let startDates = Array.from(priceSeries.keys()).sort()
+//   // Get all dates
+//   let startDates = Array.from(priceSeries.keys()).sort()
 
-  // Apply start filter if provided
-  if (options.start) {
-    const startFilter = parseISO(options.start)
-    startDates = startDates.filter((dateStr) => {
-      const date = parseISO(dateStr)
-      return !isAfter(startFilter, date)
-    })
-  }
+//   // Apply start filter if provided
+//   if (options.start) {
+//     const startFilter = parseISO(options.start)
+//     startDates = startDates.filter((dateStr) => {
+//       const date = parseISO(dateStr)
+//       return !isAfter(startFilter, date)
+//     })
+//   }
 
-  // Run simulations for all start dates
-  const results: AnalysisResult[] = []
+//   // Run simulations for all start dates
+//   const results: AnalysisResult[] = []
 
-  for (const dateStr of startDates) {
-    const startDate = parseISO(dateStr)
-    const simulation = simulateStart(
-      startDate,
-      priceSeries,
-      options.flashCrash,
-      options.loanAmount,
-      options.timePeriod
-    )
+//   for (const dateStr of startDates) {
+//     const startDate = parseISO(dateStr)
+//     const simulation = simulateStart(
+//       startDate,
+//       priceSeries,
+//       options.flashCrash,
+//       options.loanAmount,
+//       options.timePeriod
+//     )
 
-    const winner = simulation.profitLoan > simulation.profitDca ? 'loan' : 'dca'
+//     const winner = simulation.profitLoan > simulation.profitDca ? 'loan' : 'dca'
 
-    results.push({
-      date: dateStr,
-      win: winner,
-      btcPrice: priceOn(startDate, priceSeries),
-      profitLoan: simulation.profitLoan,
-      profitDca: simulation.profitDca,
-      profitDifference: simulation.profitLoan - simulation.profitDca,
-      btcLoan: simulation.btcLoan,
-      btcDca: simulation.btcDca,
-      evalDate: format(simulation.evalDate, 'yyyy-MM-dd'),
-      valDate: format(simulation.valDate, 'yyyy-MM-dd'),
-    })
-  }
+//     results.push({
+//       date: dateStr,
+//       win: winner,
+//       btcPrice: priceOn(startDate, priceSeries),
+//       profitLoan: simulation.profitLoan,
+//       profitDca: simulation.profitDca,
+//       profitDifference: simulation.profitLoan - simulation.profitDca,
+//       btcLoan: simulation.btcLoan,
+//       btcDca: simulation.btcDca,
+//       dollarsIn: simulation.dollarsIn,
+//       evalDate: format(simulation.evalDate, 'yyyy-MM-dd'),
+//       valDate: format(simulation.valDate, 'yyyy-MM-dd'),
+//     })
+//   }
 
-  return results
-}
+//   return results
+// }
 
 // ────────────────────────────────────────────────────────────────
 // Enhanced main analysis functions with MA data
 // ────────────────────────────────────────────────────────────────
-async function fullAnalysisBrowserEnhanced(
+export async function fullAnalysisBrowserEnhanced(
   csvContent: string,
   options: CommandOptions = {}
 ): Promise<{
@@ -418,24 +430,23 @@ async function fullAnalysisBrowserEnhanced(
       options.timePeriod
     )
 
-    const winner =
-      options.mode === 'usd'
-        ? simulation.profitLoan > simulation.profitDca
-          ? 'loan'
-          : 'dca'
-        : simulation.btcLoan > simulation.btcDca
-          ? 'loan'
-          : 'dca'
+    const usdWinner =
+      simulation.profitLoan > simulation.profitDca ? 'loan' : 'dca'
+    const btcWinner = simulation.btcLoan > simulation.btcDca ? 'loan' : 'dca'
 
     results.push({
       date: dateStr,
-      win: winner,
+      win: usdWinner,
+      btcWin: btcWinner,
       btcPrice: priceOn(startDate, priceSeries),
       profitLoan: simulation.profitLoan,
       profitDca: simulation.profitDca,
       profitDifference: simulation.profitLoan - simulation.profitDca,
+      loanReturns: simulation.loanReturns,
+      dcaReturns: simulation.dcaReturns,
       btcLoan: simulation.btcLoan,
       btcDca: simulation.btcDca,
+      dollarsIn: simulation.dollarsIn,
       evalDate: format(simulation.evalDate, 'yyyy-MM-dd'),
       valDate: format(simulation.valDate, 'yyyy-MM-dd'),
     })
@@ -453,14 +464,19 @@ async function fullAnalysisBrowserEnhanced(
     const maInfo = maData.get(result.date)
     return {
       date: result.date,
+      valDate: result.valDate,
       price: result.btcPrice,
       win: result.win,
+      btcWin: result.btcWin,
       ma200: maInfo?.ma200,
       ma500: maInfo?.ma500,
       profitLoan: result.profitLoan,
       profitDca: result.profitDca,
+      loanReturns: result.loanReturns,
+      dcaReturns: result.dcaReturns,
       btcLoan: result.btcLoan,
       btcDca: result.btcDca,
+      dollarsIn: result.dollarsIn,
     }
   })
 
@@ -479,80 +495,70 @@ async function fullAnalysisBrowserEnhanced(
   return { results, chartData, averageMetrics }
 }
 
-async function debugSingleDateBrowser(
-  csvContent: string,
-  debugDate: string,
-  options: CommandOptions = {}
-): Promise<{
-  result: AnalysisResult
-  ledger: LedgerRow[]
-  summary: {
-    loanProfitUSD: number
-    dcaProfitUSD: number
-    winner: 'loan' | 'dca'
-    winnerProfitDiff: number
-    btcLoan: number
-    btcDca: number
-    dollarsInvested: number
-    valuationPrice: number
-  }
-}> {
-  // Load price data from CSV string
-  let priceSeries = loadPriceDataFromCsv(csvContent)
+// async function debugSingleDateBrowser(
+//   csvContent: string,
+//   debugDate: string,
+//   options: CommandOptions = {}
+// ): Promise<{
+//   result: AnalysisResult
+//   ledger: LedgerRow[]
+//   summary: {
+//     loanProfitUSD: number
+//     dcaProfitUSD: number
+//     winner: 'loan' | 'dca'
+//     winnerProfitDiff: number
+//     btcLoan: number
+//     btcDca: number
+//     dollarsInvested: number
+//     valuationPrice: number
+//   }
+// }> {
+//   // Load price data from CSV string
+//   let priceSeries = loadPriceDataFromCsv(csvContent)
 
-  // Apply future scenario if requested
-  if (options.futureScenario) {
-    priceSeries = appendFutureScenario(priceSeries)
-  }
+//   // Apply future scenario if requested
+//   if (options.futureScenario) {
+//     priceSeries = appendFutureScenario(priceSeries)
+//   }
 
-  const startDate = parseISO(debugDate)
-  const simulation = simulateStart(
-    startDate,
-    priceSeries,
-    options.flashCrash,
-    options.loanAmount,
-    options.timePeriod
-  )
+//   const startDate = parseISO(debugDate)
+//   const simulation = simulateStart(
+//     startDate,
+//     priceSeries,
+//     options.flashCrash,
+//     options.loanAmount,
+//     options.timePeriod
+//   )
 
-  const winner = simulation.profitLoan > simulation.profitDca ? 'loan' : 'dca'
+//   const winner = simulation.profitLoan > simulation.profitDca ? 'loan' : 'dca'
 
-  const result: AnalysisResult = {
-    date: debugDate,
-    win: winner,
-    btcPrice: priceOn(startDate, priceSeries),
-    profitLoan: simulation.profitLoan,
-    profitDca: simulation.profitDca,
-    profitDifference: simulation.profitLoan - simulation.profitDca,
-    btcLoan: simulation.btcLoan,
-    btcDca: simulation.btcDca,
-    evalDate: format(simulation.evalDate, 'yyyy-MM-dd'),
-    valDate: format(simulation.valDate, 'yyyy-MM-dd'),
-  }
+//   const result: AnalysisResult = {
+//     date: debugDate,
+//     win: winner,
+//     btcPrice: priceOn(startDate, priceSeries),
+//     profitLoan: simulation.profitLoan,
+//     profitDca: simulation.profitDca,
+//     profitDifference: simulation.profitLoan - simulation.profitDca,
+//     btcLoan: simulation.btcLoan,
+//     btcDca: simulation.btcDca,
+//     evalDate: format(simulation.evalDate, 'yyyy-MM-dd'),
+//     valDate: format(simulation.valDate, 'yyyy-MM-dd'),
+//   }
 
-  return {
-    result,
-    ledger: simulation.ledger,
-    summary: {
-      loanProfitUSD: simulation.profitLoan,
-      dcaProfitUSD: simulation.profitDca,
-      winner,
-      winnerProfitDiff: Math.abs(simulation.profitLoan - simulation.profitDca),
-      btcLoan: simulation.btcLoan,
-      btcDca: simulation.btcDca,
-      dollarsInvested: simulation.dollarsIn,
-      valuationPrice: simulation.valPx,
-    },
-  }
-}
-
-// ────────────────────────────────────────────────────────────────
-// Export enhanced functions
-// ────────────────────────────────────────────────────────────────
-export {
-  fullAnalysisBrowser,
-  fullAnalysisBrowserEnhanced,
-  debugSingleDateBrowser,
-  ANNUAL_RATE,
-}
+//   return {
+//     result,
+//     ledger: simulation.ledger,
+//     summary: {
+//       loanProfitUSD: simulation.profitLoan,
+//       dcaProfitUSD: simulation.profitDca,
+//       winner,
+//       winnerProfitDiff: Math.abs(simulation.profitLoan - simulation.profitDca),
+//       btcLoan: simulation.btcLoan,
+//       btcDca: simulation.btcDca,
+//       dollarsInvested: simulation.dollarsIn,
+//       valuationPrice: simulation.valPx,
+//     },
+//   }
+// }
 
 export type { AnalysisResult, LedgerRow, CommandOptions }

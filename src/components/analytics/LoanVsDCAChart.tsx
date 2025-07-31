@@ -38,11 +38,15 @@ interface Props {
 }
 
 const CustomDot = (props: any) => {
-  const { cx, cy, payload } = props
+  const { cx, cy, payload, mode } = props
   const fillColor =
-    payload.win === 'loan'
-      ? 'hsl(var(--heroui-success))'
-      : 'hsl(var(--heroui-danger))' // green for loan, red for dca
+    mode === 'btc'
+      ? payload.btcWin === 'loan'
+        ? 'hsl(var(--heroui-success))'
+        : 'hsl(var(--heroui-danger))'
+      : payload.win === 'loan'
+        ? 'hsl(var(--heroui-success))'
+        : 'hsl(var(--heroui-danger))' // green for loan, red for dca
 
   return (
     <circle
@@ -69,30 +73,9 @@ export function LoanVsDCAChart({
     ma500: { label: '500-day MA', color: 'hsl(var(--heroui-primary))' },
   }
 
-  // Format data based on mode (BTC vs USD)
-  const formattedData = data.map((point) => ({
-    ...point,
-    displayValue:
-      mode === 'btc'
-        ? point.btcLoan > point.btcDca
-          ? point.btcLoan
-          : point.btcDca
-        : point.profitLoan > point.profitDca
-          ? point.profitLoan
-          : point.profitDca,
-    winValue:
-      mode === 'btc'
-        ? point.win === 'loan'
-          ? point.btcLoan
-          : point.btcDca
-        : point.win === 'loan'
-          ? point.profitLoan
-          : point.profitDca,
-  }))
-
   const uniqueYears = [
     ...new Set(
-      formattedData.map(
+      data.map(
         (point) => `${new Date(point.date).getFullYear()?.toString()}-01-01`
       )
     ),
@@ -130,7 +113,7 @@ export function LoanVsDCAChart({
         className="relative h-full min-h-[400px] w-full min-w-[540px] overflow-hidden lg:max-h-[460px]"
       >
         <ComposedChart
-          data={formattedData}
+          data={data}
           margin={{ left: 34, right: 12, top: 24, bottom: 22 }}
           onClick={(e) => {
             if (e && e.activePayload && e.activePayload[0]) {
@@ -195,7 +178,7 @@ export function LoanVsDCAChart({
           {/* Scatter plot for wins */}
           <Scatter
             dataKey="price"
-            shape={<CustomDot />}
+            shape={<CustomDot mode={mode} />}
             isAnimationActive={false}
           />
 
