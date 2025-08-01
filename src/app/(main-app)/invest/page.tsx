@@ -14,7 +14,7 @@ import { LendingListData, LendingStats } from '@/types'
 import Big from 'big.js'
 import { StyledModal } from '@/components/StyledModal'
 import { useState } from 'react'
-// import TelegramLoginButton, { TelegramUser } from 'telegram-login-button'
+import TelegramLoginButton, { TelegramUser } from 'telegram-login-button'
 
 export default function InvestPage() {
   const { address } = useAccount()
@@ -94,7 +94,7 @@ export default function InvestPage() {
     window.open(
       `https://oauth.telegram.org/auth?bot_id=7818630903&origin=${window.location.origin}&embed=1&request_access=write&return_to=${window.location.href}`,
       'telegram-auth',
-      'width=500,height=600'
+      'width=500,height=500'
     )
   }
 
@@ -120,10 +120,10 @@ export default function InvestPage() {
               notifications if you don&apos;t start a chat with us.
             </p>
 
-            {/* <TelegramLoginButton
+            <TelegramLoginButton
               botName="bitmore_test_bot"
               dataOnauth={(user: TelegramUser) => console.log(user)}
-            /> */}
+            />
           </div>
         }
         primaryButtonText="Connect Telegram"
