@@ -7,10 +7,9 @@ import { FaTelegramPlane } from 'react-icons/fa'
 export default function ConnectTelegram() {
   const [loading, setLoading] = useState(false)
   const handleTelegramConnect = () => {
-    // https://oauth.telegram.org/auth?bot_id=7818630903&origin=https%3A%2F%2Fbitmor-git-dev-kruz-projects.vercel.app&embed=1&request_access=write&return_to=https%3A%2F%2Fbitmor-git-dev-kruz-projects.vercel.app%2Finvest
     setLoading(true)
     window.open(
-      `https://oauth.telegram.org/auth?bot_id=7818630903&origin=${window.location.origin}&embed=1&request_access=write&return_to=${window.location.href}`,
+      `https://oauth.telegram.org/auth?bot_id=7818630903&origin=${window.location.origin}&embed=1&request_access=write&return_to=${window.location.origin}/connect-telegram`,
       'telegram-oauth',
       `width=500,height=500,left=${window.screen.availWidth / 2 - 250},top=${window.screen.availHeight / 2 - 250}`
     )
