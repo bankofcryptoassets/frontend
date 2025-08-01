@@ -25,6 +25,8 @@ import { CONTRACT_ADDRESSES } from '@/utils/constants'
 import { useAccount, useBalance } from 'wagmi'
 import numeral from 'numeral'
 
+const HIDE_NAVBAR_PATHS = ['/connect-telegram']
+
 export const Logo = () => {
   return (
     <NextLink href="/">
@@ -58,11 +60,14 @@ export const Navbar = () => {
     setIsMenuOpen(false)
   }
 
+  const isNavbarHidden = HIDE_NAVBAR_PATHS.some((path) =>
+    pathname.startsWith(path)
+  )
+  if (isNavbarHidden) return null
+
   return (
     <HeroUINavbar
-      classNames={{
-        wrapper: '!container',
-      }}
+      classNames={{ wrapper: '!container' }}
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       height="4.5rem"
