@@ -14,6 +14,7 @@ import { LendingListData, LendingStats } from '@/types'
 import Big from 'big.js'
 import { StyledModal } from '@/components/StyledModal'
 import { useState } from 'react'
+import TelegramLoginButton, { TelegramUser } from 'telegram-login-button'
 
 export default function InvestPage() {
   const { address } = useAccount()
@@ -111,6 +112,11 @@ export default function InvestPage() {
               to start receiving notifications. we can&apos;t send you
               notifications if you don&apos;t start a chat with us.
             </p>
+
+            <TelegramLoginButton
+              botName="bitmore_test_bot"
+              dataOnauth={(user: TelegramUser) => console.log(user)}
+            />
           </div>
         }
         primaryButtonText="Connect Telegram"
