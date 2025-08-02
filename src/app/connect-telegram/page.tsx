@@ -18,11 +18,11 @@ export default function ConnectTelegram() {
     window.Telegram.Login.auth(
       {
         bot_id: '7818630903', // required
-        request_access: 'write',
+        request_access: 'true',
+        lang: 'en-us',
       },
       (authData: any) => {
         console.log('authData', authData)
-        // window.location.href = '/';
       }
     )
 
@@ -38,7 +38,7 @@ export default function ConnectTelegram() {
       className="container flex aspect-square h-full max-w-md flex-col items-center justify-center gap-8 text-center"
       id="connect-telegram"
     >
-      <Script src="https://telegram.org/js/telegram-widget.js?22" />
+      <Script src="https://telegram.org/js/telegram-widget.js?21" />
 
       <div className="select-none">
         <span className={title({ className: '!text-2xl text-primary' })}>
