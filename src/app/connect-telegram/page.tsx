@@ -9,7 +9,7 @@ export default function ConnectTelegram() {
   const handleTelegramConnect = () => {
     setLoading(true)
     window.open(
-      `https://oauth.telegram.org/auth?bot_id=7818630903&origin=${window.location.origin}&embed=1&request_access=write&return_to=${window.location.origin}/connect-telegram`,
+      `https://oauth.telegram.org/auth?bot_id=7818630903&origin=${window.location.origin}&request_access=write&return_to=${window.location.origin}/connect-telegram`,
       'telegram-oauth',
       `width=500,height=500,left=${window.screen.availWidth / 2 - 250},top=${window.screen.availHeight / 2 - 250}`
     )
