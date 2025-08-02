@@ -87,14 +87,7 @@ export default function InvestPage() {
   const [isTelegramModalOpen, setIsTelegramModalOpen] = useState(false)
 
   const handleTelegramConnect = () => {
-    // setIsTelegramModalOpen(false)
-    // https://oauth.telegram.org/auth?bot_id=7818630903&origin=https%3A%2F%2Fbitmor-git-dev-kruz-projects.vercel.app&embed=1&request_access=write&return_to=https%3A%2F%2Fbitmor-git-dev-kruz-projects.vercel.app%2Finvest
-
-    window.open(
-      `${window.location.origin}/connect-telegram`,
-      'connect-telegram',
-      'width=500,height=500'
-    )
+    setIsTelegramModalOpen(false)
   }
 
   return (
