@@ -23,6 +23,7 @@ type StyledModalProps = {
   secondaryButtonText?: string
   secondaryButtonProps?: ButtonProps
   showConfetti?: boolean
+  continueConfettiIndefinitely?: boolean
 }
 
 export const StyledModal = ({
@@ -34,9 +35,13 @@ export const StyledModal = ({
   secondaryButtonText,
   secondaryButtonProps,
   showConfetti,
+  continueConfettiIndefinitely,
   ...props
 }: Partial<ModalProps> & StyledModalProps) => {
-  useConfettiFireworks(!!(showConfetti && props?.isOpen))
+  useConfettiFireworks(
+    !!(showConfetti && props?.isOpen),
+    continueConfettiIndefinitely
+  )
 
   return (
     <Modal

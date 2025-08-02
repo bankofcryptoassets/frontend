@@ -31,6 +31,7 @@ import { sleep } from '@/utils/sleep'
 import { useDepositUSDC } from '@/hooks/useDepositUSDC'
 import { trackEvent } from '@/utils/trackEvent'
 import { ConnectTelegramButton } from '@/components/ConnectTelegramButton'
+import { ShareButtons } from '@/components/ShareButtons'
 
 const DEFAULT_USDC_BALANCE = 1_000_000
 const IS_USER_TELEGRAM_CONNECTED = false
@@ -338,7 +339,18 @@ export default function InvestUSDCPage() {
         onOpenChange={setIsTxSuccessModalOpen}
         iconSrc="/icons/success.png"
         title="Transaction Successful"
-        description="Congratulations! Your USDC has been deposited and you are now earning interest."
+        description={
+          <>
+            <p>
+              Congratulations! Your USDC has been deposited and you are now
+              earning interest.
+            </p>
+
+            <div className="-mb-10 mt-6 flex w-full flex-col gap-2">
+              <ShareButtons type="deposit" amount={usdcAmount} />
+            </div>
+          </>
+        }
         primaryButtonText="View My Portfolio"
         primaryButtonProps={{
           as: NextLink,
@@ -346,6 +358,7 @@ export default function InvestUSDCPage() {
           color: 'secondary',
         }}
         showConfetti
+        continueConfettiIndefinitely
       />
 
       <StyledModal

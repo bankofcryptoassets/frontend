@@ -35,6 +35,7 @@ import { useLoanBTC } from '@/hooks/useLoanBTC'
 import { trackEvent } from '@/utils/trackEvent'
 import { FearGreedIndexChart } from '@/components/FearGreedIndexChart'
 import { ConnectTelegramButton } from '@/components/ConnectTelegramButton'
+import { ShareButtons } from '@/components/ShareButtons'
 
 const DEFAULT_USDC_BALANCE = 1_000_000
 const IS_USER_TELEGRAM_CONNECTED = false
@@ -467,7 +468,15 @@ export default function BorrowPage() {
         onOpenChange={setIsTxSuccessModalOpen}
         iconSrc="/icons/success.png"
         title="Transaction Successful"
-        description="Congratulations! Your loan has been approved successfully."
+        description={
+          <>
+            <p>Congratulations! Your loan has been approved successfully.</p>
+
+            <div className="-mb-10 mt-6 flex w-full flex-col gap-2">
+              <ShareButtons type="loan" amount={btcAmount} />
+            </div>
+          </>
+        }
         primaryButtonText="View My Portfolio"
         primaryButtonProps={{
           as: NextLink,
@@ -475,6 +484,7 @@ export default function BorrowPage() {
           color: 'primary',
         }}
         showConfetti
+        continueConfettiIndefinitely
       />
 
       <StyledModal
