@@ -47,8 +47,8 @@ export const ConnectTelegramButton = ({
         const response = await axios.post('/auth/telegram', { telegramId })
         return response.data
       },
-      onSuccess: (data: { success: string }) => {
-        if (data?.success !== 'success')
+      onSuccess: (data: { status?: string | null }) => {
+        if (data?.status !== 'success')
           throw new Error('Failed to connect Telegram')
 
         setSuccess(true)
