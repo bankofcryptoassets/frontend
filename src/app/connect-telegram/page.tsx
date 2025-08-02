@@ -1,18 +1,36 @@
 'use client'
 import { title } from '@/components/primitives'
 import { Button } from '@heroui/react'
+import Script from 'next/script'
 import { useState } from 'react'
 import { FaTelegramPlane } from 'react-icons/fa'
 
 export default function ConnectTelegram() {
   const [loading, setLoading] = useState(false)
   const handleTelegramConnect = () => {
+    if (typeof window.Telegram === 'undefined') {
+      console.log('Telegram is not defined')
+      return
+    }
+
     setLoading(true)
-    window.open(
-      `https://oauth.telegram.org/auth?bot_id=7818630903&origin=${window.location.origin}&request_access=write&return_to=${window.location.origin}/connect-telegram`,
-      'telegram-oauth',
-      `width=500,height=500,left=${window.screen.availWidth / 2 - 250},top=${window.screen.availHeight / 2 - 250}`
+
+    window.Telegram.Login.auth(
+      {
+        bot_id: '7818630903', // required
+        request_access: 'write',
+      },
+      (authData: any) => {
+        console.log('authData', authData)
+        // window.location.href = '/';
+      }
     )
+
+    // window.open(
+    //   `https://oauth.telegram.org/auth?bot_id=7818630903&origin=${window.location.origin}&request_access=write&return_to=${window.location.origin}/connect-telegram`,
+    //   'telegram-oauth',
+    //   `width=500,height=500,left=${window.screen.availWidth / 2 - 250},top=${window.screen.availHeight / 2 - 250}`
+    // )
   }
 
   return (
@@ -20,6 +38,8 @@ export default function ConnectTelegram() {
       className="container flex aspect-square h-full max-w-md flex-col items-center justify-center gap-8 text-center"
       id="connect-telegram"
     >
+      <Script src="https://telegram.org/js/telegram-widget.js?22" />
+
       <div className="select-none">
         <span className={title({ className: '!text-2xl text-primary' })}>
           Bit
