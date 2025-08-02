@@ -16,11 +16,7 @@ export default function ConnectTelegram() {
     setLoading(true)
 
     window.Telegram.Login.auth(
-      {
-        bot_id: '7818630903', // required
-        request_access: 'true',
-        lang: 'en-us',
-      },
+      { bot_id: '7818630903', request_access: 'write' },
       (authData: any) => {
         console.log('authData', authData)
       }
@@ -38,7 +34,17 @@ export default function ConnectTelegram() {
       className="container flex aspect-square h-full max-w-md flex-col items-center justify-center gap-8 text-center"
       id="connect-telegram"
     >
-      <Script src="https://telegram.org/js/telegram-widget.js?21" />
+      <Script
+        src="https://telegram.org/js/telegram-widget.js?22"
+        onLoad={() => {
+          if (typeof window.Telegram === 'undefined') {
+            console.log('Telegram is not defined in the script')
+            return
+          }
+          console.log('Telegram is defined in the script', window.Telegram)
+          window.Telegram.Login.init()
+        }}
+      />
 
       <div className="select-none">
         <span className={title({ className: '!text-2xl text-primary' })}>
