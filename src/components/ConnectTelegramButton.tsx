@@ -32,7 +32,7 @@ export const ConnectTelegramButton = ({
   const { data: telegramData, isLoading: telegramLoading } = useQuery({
     queryKey: ['user', 'telegram-id', isAuth],
     queryFn: async ({ signal }) => {
-      const response = await axios.get<{ telegramId?: string | number | null }>(
+      const response = await axios.get<{ telegramId?: string | null }>(
         '/user/telegram-id',
         { signal }
       )
@@ -47,7 +47,10 @@ export const ConnectTelegramButton = ({
         const response = await axios.post('/auth/telegram', { telegramId })
         return response.data
       },
-      onSuccess: () => {
+      onSuccess: (data: { success: string }) => {
+        if (data?.success !== 'success')
+          throw new Error('Failed to connect Telegram')
+
         setSuccess(true)
         if (onlyButton) toast.success('Telegram connected successfully.')
         queryClient.invalidateQueries({ queryKey: ['user', 'telegram-id'] })
@@ -107,7 +110,7 @@ export const ConnectTelegramButton = ({
               ? 'Telegram already connected'
               : undefined
         }
-        color={!isAuth ? 'danger' : 'secondary'}
+        color={!isAuth ? 'danger' : 'default'}
         isDisabled={!telegramData?.telegramId && !!isAuth}
       >
         <Button
