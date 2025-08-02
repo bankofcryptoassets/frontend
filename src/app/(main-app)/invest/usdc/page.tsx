@@ -30,6 +30,7 @@ import { publicClient } from '@/auth/client'
 import { sleep } from '@/utils/sleep'
 import { useDepositUSDC } from '@/hooks/useDepositUSDC'
 import { trackEvent } from '@/utils/trackEvent'
+import { ConnectTelegramButton } from '@/components/ConnectTelegramButton'
 
 const DEFAULT_USDC_BALANCE = 1_000_000
 const IS_USER_TELEGRAM_CONNECTED = false
@@ -354,10 +355,7 @@ export default function InvestUSDCPage() {
         title="Transaction Failed"
         description="Oops! Something went wrong. Please try again."
         primaryButtonText="Retry"
-        primaryButtonProps={{
-          onPress: handleRetryTx,
-          color: 'secondary',
-        }}
+        primaryButtonProps={{ onPress: handleRetryTx, color: 'secondary' }}
         secondaryButtonText="Exit"
         secondaryButtonProps={{
           onPress: () => {
@@ -446,6 +444,8 @@ export default function InvestUSDCPage() {
             </Link>
           </div>
         </Card>
+
+        <ConnectTelegramButton onlyButton className="min-h-10 w-full" />
       </div>
 
       <Card className="rounded-2xl border border-default-200 bg-default-100 px-7 pb-10 pt-[18px]">

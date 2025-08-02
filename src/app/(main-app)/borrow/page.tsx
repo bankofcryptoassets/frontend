@@ -34,6 +34,7 @@ import { sleep } from '@/utils/sleep'
 import { useLoanBTC } from '@/hooks/useLoanBTC'
 import { trackEvent } from '@/utils/trackEvent'
 import { FearGreedIndexChart } from '@/components/FearGreedIndexChart'
+import { ConnectTelegramButton } from '@/components/ConnectTelegramButton'
 
 const DEFAULT_USDC_BALANCE = 1_000_000
 const IS_USER_TELEGRAM_CONNECTED = false
@@ -642,6 +643,8 @@ export default function BorrowPage() {
             </Link>
           </div>
         </Card>
+
+        <ConnectTelegramButton onlyButton className="min-h-10 w-full" />
       </div>
 
       {step === 0 && (
