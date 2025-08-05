@@ -1,6 +1,5 @@
 'use client'
 import Image from 'next/image'
-import { title } from '../primitives'
 import { LuStar } from 'react-icons/lu'
 import { BitcoinHouse } from './BitcoinHouse'
 import { Button, Card, cn, Link } from '@heroui/react'
@@ -99,7 +98,7 @@ export const WhyBitcoin = () => {
     <section className="container py-20 max-lg:py-16" id="why">
       <div className="flex w-full flex-col items-center justify-center gap-12">
         <div className="flex w-full flex-col items-center justify-center gap-3 text-center">
-          <h2 className={title({ size: 'xs', className: 'text-primary' })}>
+          <h2 className="text-primary inline text-2xl font-bold tracking-tight lg:text-[32px]">
             Why Savvy Stackers Pick Bitmor
           </h2>
 
@@ -157,7 +156,9 @@ export const WhyBitcoin = () => {
       <div className="mt-32 flex items-center justify-between gap-8 max-lg:flex-col">
         <div className="flex flex-col gap-6">
           <div className="">
-            <h2 className={title({ size: 'xs' })}>Own Bitcoin with Bitmor</h2>
+            <h2 className="inline text-2xl font-bold tracking-tight lg:text-[32px]">
+              Own Bitcoin with Bitmor
+            </h2>
             <p className="text-default-a mt-0.5 text-base leading-tight">
               HODL Bitcoin for a Safer Future
             </p>

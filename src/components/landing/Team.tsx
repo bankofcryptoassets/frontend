@@ -2,7 +2,6 @@
 'use client'
 import { Card, cn } from '@heroui/react'
 import { useTheme } from 'next-themes'
-import { title } from '../primitives'
 import { MagicCard } from '../MagicCard'
 import { FaLinkedin, FaGithub, FaGlobe } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
@@ -87,7 +86,7 @@ export const Team = () => {
     <section className="container py-20 max-lg:py-16" id="team">
       <div className="flex w-full flex-col items-center justify-center gap-6">
         <div className="flex w-full flex-col items-center justify-center gap-3 text-center">
-          <h2 className={title({ size: 'xs', className: 'text-primary' })}>
+          <h2 className="text-primary inline text-2xl font-bold tracking-tight lg:text-[32px]">
             Built by Crypto Natives
           </h2>
 

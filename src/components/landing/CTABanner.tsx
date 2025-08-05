@@ -1,5 +1,4 @@
 'use client'
-import { subtitle, title } from '../primitives'
 import { JoinWishlist } from './JoinWishlist'
 
 export const CTABanner = () => {
@@ -22,16 +21,11 @@ export const CTABanner = () => {
       <div className="container py-16">
         <div className="flex flex-col items-center justify-center gap-8">
           <div className="inline-block max-w-4xl justify-center text-center">
-            <h1
-              className={title({
-                className: 'max-lg:text-balance',
-                size: 'sm',
-              })}
-            >
+            <h1 className="inline text-3xl font-bold tracking-tight max-lg:text-balance lg:text-4xl">
               Start your Bitcoin Ownership Journey Here.
             </h1>
 
-            <p className={subtitle({ class: 'mt-4' })}>
+            <p className="text-default-900 my-2 mt-4 block w-full! max-w-6xl text-lg md:w-1/2 lg:text-xl">
               Join 100M+ Bitcoin Owners today.
             </p>
           </div>

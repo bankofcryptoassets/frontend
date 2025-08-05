@@ -1,5 +1,4 @@
 'use client'
-import { subtitle, title } from '../primitives'
 import { JoinWishlist } from './JoinWishlist'
 
 export const Hero = () => {
@@ -23,16 +22,16 @@ export const Hero = () => {
         <div className="flex flex-col items-center justify-center gap-4 pt-8 md:pt-10">
           <div className="inline-block max-w-4xl justify-center text-center">
             <h1 className="max-lg:text-balance">
-              <span className={title({ size: 'lg' })}>Own Bitcoin Today, </span>
+              <span className="inline text-5xl font-bold tracking-tight lg:text-6xl">
+                Own Bitcoin Today,{' '}
+              </span>
               <br />
-              <span
-                className={title({ className: 'text-primary', size: 'lg' })}
-              >
+              <span className="text-primary inline text-5xl font-bold tracking-tight lg:text-6xl">
                 Pay Monthly
               </span>
             </h1>
 
-            <p className={subtitle({ class: 'mt-10 text-balance' })}>
+            <p className="text-default-900 my-2 mt-10 block w-full! max-w-6xl text-lg text-balance md:w-1/2 lg:text-xl">
               Start with just 20%. Earn yield while you repay.
             </p>
           </div>

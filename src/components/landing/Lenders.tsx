@@ -1,6 +1,5 @@
 'use client'
 import { Button, Chip } from '@heroui/react'
-import { title } from '../primitives'
 import { LuCircleCheckBig } from 'react-icons/lu'
 import Link from 'next/link'
 import { LendingChart } from './LendingChart'
@@ -38,7 +37,7 @@ export const Lenders = () => {
               For Lenders
             </Chip>
 
-            <h2 className={title({ size: 'xs' })}>
+            <h2 className="inline text-2xl font-bold tracking-tight lg:text-[32px]">
               Put Your Stablecoins to Work, Safely
             </h2>
           </div>

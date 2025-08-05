@@ -1,6 +1,5 @@
 'use client'
 import { Button } from '@heroui/react'
-import { title } from '../primitives'
 import { LuCircleCheckBig } from 'react-icons/lu'
 import Link from 'next/link'
 import { BorrowersCalculator } from './BorrowersCalculator'
@@ -30,7 +29,7 @@ export const Borrowers = () => {
       <div className="container flex items-center justify-between gap-8 py-24 max-lg:flex-col max-lg:py-16">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
-            <h2 className={title({ size: 'sm' })}>
+            <h2 className="inline text-3xl font-bold tracking-tight lg:text-4xl">
               Start with Less. Stack More.
             </h2>
           </div>

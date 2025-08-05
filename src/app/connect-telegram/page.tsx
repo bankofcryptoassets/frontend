@@ -1,6 +1,5 @@
 'use client'
 import { ConnectTelegramButton } from '@/components/ConnectTelegramButton'
-import { title } from '@/components/primitives'
 
 export default function ConnectTelegram() {
   return (
@@ -9,14 +8,10 @@ export default function ConnectTelegram() {
       id="connect-telegram"
     >
       <div className="select-none">
-        <span className={title({ className: 'text-primary text-2xl!' })}>
+        <span className="text-primary inline text-2xl leading-9 font-bold tracking-tight">
           Bit
         </span>
-        <span
-          className={title({
-            className: 'text-secondary dark:text-foreground text-2xl!',
-          })}
-        >
+        <span className="text-secondary dark:text-foreground inline text-2xl leading-9 font-bold tracking-tight">
           mor
         </span>
       </div>

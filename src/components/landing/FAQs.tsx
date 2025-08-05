@@ -1,6 +1,5 @@
 'use client'
 import { Accordion, AccordionItem } from '@heroui/react'
-import { title } from '../primitives'
 
 const FAQ_ITEMS = [
   {
@@ -76,7 +75,7 @@ export const FAQs = () => {
     <section className="container py-20 max-lg:py-16" id="faqs">
       <div className="flex w-full flex-col items-center justify-center gap-6">
         <div className="flex w-full flex-col items-center justify-center gap-3 text-center">
-          <h2 className={title({ size: 'xs', className: 'text-primary' })}>
+          <h2 className="text-primary inline text-2xl font-bold tracking-tight lg:text-[32px]">
             FAQs
           </h2>
 
