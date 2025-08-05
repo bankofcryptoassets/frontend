@@ -89,10 +89,10 @@ export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
         classNames={{
           mainWrapper: 'w-full',
           inputWrapper:
-            'h-[60px] rounded-xl w-full pl-5 pr-2 !bg-[#F5F5F5] max-sm:h-full max-sm:p-3',
+            'h-[60px] rounded-xl w-full pl-5 pr-2 bg-[#F5F5F5]! max-sm:h-full max-sm:p-3',
           innerWrapper: 'w-full max-sm:flex-col',
           input:
-            '!text-black placeholder:text-[#666666] max-sm:mb-4 max-sm:text-center',
+            'text-black! placeholder:text-[#666666] max-sm:mb-4 max-sm:text-center',
         }}
         size="lg"
         value={email}
@@ -117,7 +117,7 @@ export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
               />
             </Button>
 
-            <Divider orientation="vertical" className="h-8 w-px bg-default-d" />
+            <Divider orientation="vertical" className="bg-default-d h-8 w-px" />
 
             <Button
               className="h-11 w-[160px] rounded-lg text-sm font-bold"

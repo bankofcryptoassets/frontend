@@ -2,10 +2,7 @@ import { heroui } from '@heroui/react'
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './src/**/*.{html,js,jsx,ts,tsx}',
-    './node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
   theme: {
     extend: {
       fontFamily: { sans: ['var(--font-sans)'], mono: ['var(--font-mono)'] },

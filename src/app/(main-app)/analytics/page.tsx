@@ -1,5 +1,5 @@
 'use client'
-import { fullAnalysisBrowserEnhanced } from '@/scripts/typescript/btc_loan_vs_dca_browser'
+import { fullAnalysisBrowserEnhanced } from '@/scripts/LoanVsDCA'
 import { Card, CardBody, Spinner, Tab, Tabs, Tooltip } from '@heroui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useState, useMemo } from 'react'
@@ -111,7 +111,7 @@ export default function AnalyticsPage() {
   }, [analysisData, selectedPoint, loanAmount])
 
   return (
-    <div className="min-h-[calc(100vh-4.5rem)] bg-background">
+    <div className="bg-background min-h-[calc(100vh-4.5rem)]">
       <div className="container mx-auto flex h-full flex-col gap-5 px-4 py-6 lg:flex-row">
         {/* Sidebar */}
         <div className="flex h-full w-full flex-col gap-3 lg:w-[360px]">
@@ -148,7 +148,7 @@ export default function AnalyticsPage() {
         {/* Chart and Stats */}
         <div className="flex h-full flex-1 flex-col gap-3">
           {/* Chart Card */}
-          <Card className="h-full border border-default-200 lg:max-h-[640px]">
+          <Card className="border-default-200 h-full border lg:max-h-[640px]">
             <CardBody className="h-full p-6">
               {/* Mode Toggle */}
               <div className="mb-8 grid grid-cols-1 place-items-center justify-center gap-3 md:grid-cols-3">
@@ -170,10 +170,10 @@ export default function AnalyticsPage() {
                   </Tabs>
 
                   <Tooltip content="lorem ipsum dolor sit amet">
-                    <span className="absolute -right-8 top-1/2 -translate-y-1/2">
+                    <span className="absolute top-1/2 -right-8 -translate-y-1/2">
                       <LuInfo
                         size={20}
-                        className="cursor-pointer text-default"
+                        className="text-default cursor-pointer"
                       />
                     </span>
                   </Tooltip>
@@ -187,23 +187,23 @@ export default function AnalyticsPage() {
                     }}
                     content={
                       <div className="min-h-[164px] w-[280px] p-4">
-                        <div className="mb-5 flex items-center justify-between border-b border-default-200 pb-3.5 pl-1 text-base font-medium text-default-d">
+                        <div className="border-default-200 text-default-d mb-5 flex items-center justify-between border-b pb-3.5 pl-1 text-base font-medium">
                           Fear and Greed Index
                         </div>
 
                         <div className="flex items-center justify-center gap-6">
                           <div className="flex flex-col items-center">
-                            <span className="text-[32px] font-bold leading-tight text-default-d">
+                            <span className="text-default-d text-[32px] leading-tight font-bold">
                               {fgi?.value || 50}
                             </span>
-                            <span className="text-center text-sm font-medium leading-tight text-default-a">
+                            <span className="text-default-a text-center text-sm leading-tight font-medium">
                               {fgi?.valueText || 'Neutral'}
                             </span>
                           </div>
 
-                          <div className="h-12 w-px bg-default-300" />
+                          <div className="bg-default-300 h-12 w-px" />
 
-                          <div className="h-[62px] w-full max-w-[120px] [&>*]:pointer-events-none">
+                          <div className="h-[62px] w-full max-w-[120px] *:pointer-events-none">
                             <FearGreedIndexChart
                               needleValue={fgi?.value || 50}
                             />
@@ -212,8 +212,8 @@ export default function AnalyticsPage() {
                       </div>
                     }
                   >
-                    <div className="relative flex cursor-pointer items-center gap-2 rounded-[10px] bg-default-50 px-4 py-2 text-base font-bold text-default-d">
-                      <div className="absolute -left-9 top-1/2 h-[62px] w-full max-w-[120px] -translate-y-1/2 scale-[0.2] select-none [&>*]:pointer-events-none">
+                    <div className="bg-default-50 text-default-d relative flex cursor-pointer items-center gap-2 rounded-[10px] px-4 py-2 text-base font-bold">
+                      <div className="absolute top-1/2 -left-9 h-[62px] w-full max-w-[120px] -translate-y-1/2 scale-[0.2] select-none *:pointer-events-none">
                         <FearGreedIndexChart needleValue={fgi?.value || 50} />
                       </div>
                       <span className="ml-7">
@@ -230,7 +230,7 @@ export default function AnalyticsPage() {
                   <Spinner size="lg" color="primary" />
                 </div>
               ) : error ? (
-                <div className="flex h-full items-center justify-center text-danger">
+                <div className="text-danger flex h-full items-center justify-center">
                   Error:{' '}
                   {error instanceof Error ? error.message : String(error)}
                 </div>

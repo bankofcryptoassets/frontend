@@ -38,12 +38,7 @@ export const wagmiConfig = createConfig({
 })
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: false,
-    },
-  },
+  defaultOptions: { queries: { refetchOnWindowFocus: false, retry: false } },
 })
 
 type Props = {

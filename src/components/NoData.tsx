@@ -25,7 +25,7 @@ export const NoData = ({ message }: { message?: string }) => {
           </g>
         </g>
       </svg>
-      <div className="text-center text-sm text-default-600">
+      <div className="text-default-600 text-center text-sm">
         {message ?? 'No Data'}
       </div>
     </div>

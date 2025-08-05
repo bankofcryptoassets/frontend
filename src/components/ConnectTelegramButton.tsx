@@ -1,5 +1,6 @@
 'use client'
 import { useAuth } from '@/auth/useAuth'
+import { TELEGRAM_BOT_ID } from '@/utils/constants'
 import axios from '@/utils/axios'
 import { Alert, Button, cn, Tooltip } from '@heroui/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -81,7 +82,7 @@ export const ConnectTelegramButton = ({
     setConnectButtonLoading(true)
 
     window.Telegram.Login.auth(
-      { bot_id: '7818630903', request_access: 'write' },
+      { bot_id: TELEGRAM_BOT_ID, request_access: 'write' },
       (authData?: TelegramAuthData) => {
         if (authData?.id) connectTelegram(authData.id).catch(onError)
         else onError()

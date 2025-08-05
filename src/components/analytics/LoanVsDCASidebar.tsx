@@ -66,9 +66,9 @@ export function LoanVsDCASidebar({
   // const maxAmount = 1000000
 
   return (
-    <Card className="h-full border border-default-200 lg:max-h-[640px]">
+    <Card className="border-default-200 h-full border lg:max-h-[640px]">
       <CardHeader className="p-4 pb-0">
-        <h3 className="w-full border-b border-default-200 px-1 pb-3.5 text-base font-medium text-default-d">
+        <h3 className="border-default-200 text-default-d w-full border-b px-1 pb-3.5 text-base font-medium">
           Loan vs DCA Calculator
         </h3>
       </CardHeader>
@@ -93,7 +93,7 @@ export function LoanVsDCASidebar({
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-default-a">
+              <label className="text-default-a text-sm font-medium">
                 Time Period (in Months)
               </label>
               <NumberInput
@@ -112,13 +112,13 @@ export function LoanVsDCASidebar({
                 }}
               />
             </div>
-            <p className="text-right text-xs text-default-a">
+            <p className="text-default-a text-right text-xs">
               Between 12 - 60 Months
             </p>
           </div>
         </div>
 
-        <h4 className="mt-4 flex items-center justify-between gap-2 bg-default-200/70 px-5 py-1.5 text-sm font-medium text-default-a">
+        <h4 className="bg-default-200/70 text-default-a mt-4 flex items-center justify-between gap-2 px-5 py-1.5 text-sm font-medium">
           Advanced Options:{' '}
           <Chip size="sm" variant="flat" color="default">
             Coming Soon
@@ -128,7 +128,7 @@ export function LoanVsDCASidebar({
         <div className="space-y-4 px-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-default-a">
+              <label className="text-default-a text-sm font-medium">
                 Enter Down Payment
               </label>
               <NumberInput
@@ -160,7 +160,7 @@ export function LoanVsDCASidebar({
                 filler: 'bg-default-300',
               }}
             />
-            <div className="flex justify-between text-xs text-default-a">
+            <div className="text-default-a flex justify-between text-xs">
               <span>0 Min.</span>
               <span className="text-right">
                 {numeral((loanAmount || 0) * 0.5).format('0,0')} USDC Max.
@@ -217,7 +217,7 @@ export function LoanVsDCASidebar({
           />
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-default-a">
+            <label className="text-default-a text-sm font-medium">
               DCA Cadence:
             </label>
             <RadioGroup
@@ -238,7 +238,7 @@ export function LoanVsDCASidebar({
           </div>
 
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium text-default-a">
+            <label className="text-default-a text-sm font-medium">
               BTC Yield:
             </label>
             <NumberInput

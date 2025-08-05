@@ -76,9 +76,7 @@ export const authenticationAdapter = createAuthenticationAdapter({
           description: `We've funded your wallet with test usdc from our faucet for you to test out the platform.`,
         })
 
-      trackEvent('connected_wallet', {
-        wallet_address: getWalletAddress(),
-      })
+      trackEvent('connected_wallet', { wallet_address: getWalletAddress() })
 
       return true
     } catch {

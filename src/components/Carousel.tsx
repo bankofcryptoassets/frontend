@@ -50,10 +50,7 @@ function Carousel({
   ...props
 }: React.ComponentProps<'div'> & CarouselProps) {
   const [carouselRef, api] = useEmblaCarousel(
-    {
-      ...opts,
-      axis: orientation === 'horizontal' ? 'x' : 'y',
-    },
+    { ...opts, axis: orientation === 'horizontal' ? 'x' : 'y' },
     plugins
   )
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
@@ -185,7 +182,7 @@ function CarouselPrevious({
       className={cn(
         'absolute size-8 rounded-full',
         orientation === 'horizontal'
-          ? '-left-12 top-1/2 -translate-y-1/2'
+          ? 'top-1/2 -left-12 -translate-y-1/2'
           : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
         className
       )}
@@ -215,7 +212,7 @@ function CarouselNext({
       className={cn(
         'absolute size-8 rounded-full',
         orientation === 'horizontal'
-          ? '-right-12 top-1/2 -translate-y-1/2'
+          ? 'top-1/2 -right-12 -translate-y-1/2'
           : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',
         className
       )}
@@ -265,11 +262,7 @@ function useDotButton(api: CarouselApi | undefined) {
     }
   }, [api, onInit, onSelect])
 
-  return {
-    selectedIndex,
-    scrollSnaps,
-    onDotButtonClick,
-  }
+  return { selectedIndex, scrollSnaps, onDotButtonClick }
 }
 
 const DotButton: React.FC<
@@ -280,7 +273,7 @@ const DotButton: React.FC<
     className={cn(
       // base dot styles
       'mx-1 flex items-center justify-center rounded-full p-0 transition-all',
-      selected ? 'size-2 bg-primary' : 'size-1.5 bg-foreground/20',
+      selected ? 'bg-primary size-2' : 'bg-foreground/20 size-1.5',
       className
     )}
     aria-current={selected ? 'true' : 'false'}

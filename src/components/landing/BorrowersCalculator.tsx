@@ -28,11 +28,7 @@ export const BorrowersCalculator = () => {
 
   const calculateLoanAmounts = useMemo(() => {
     if (!btcAmount || loanTerm === 'all' || !loanTerm) {
-      return {
-        upfront: '0.00',
-        monthly: '0.00',
-        total: '0.00',
-      }
+      return { upfront: '0.00', monthly: '0.00', total: '0.00' }
     }
 
     // Get loan term in months from the selection
@@ -73,13 +69,13 @@ export const BorrowersCalculator = () => {
   }, [btcAmount, loanTerm])
 
   return (
-    <Card className="w-full max-w-md rounded-2xl bg-background">
+    <Card className="bg-background w-full max-w-md rounded-2xl">
       <MagicCard
         gradientColor={theme === 'dark' ? '#333333' : '#D9D9D9aa'}
         className="p-0"
       >
         <div className="px-6 py-5">
-          <div className="mb-4 text-base font-medium leading-tight text-default-d">
+          <div className="text-default-d mb-4 text-base leading-tight font-medium">
             Ownership Calculator
           </div>
 
@@ -94,9 +90,7 @@ export const BorrowersCalculator = () => {
               fullWidth
               minValue={0}
               value={btcAmount}
-              formatOptions={{
-                maximumFractionDigits: 8,
-              }}
+              formatOptions={{ maximumFractionDigits: 8 }}
               onChange={(value) => {
                 if (typeof value === 'number') setBtcAmount(value)
                 else if (value?.target)
@@ -114,9 +108,7 @@ export const BorrowersCalculator = () => {
               orientation="horizontal"
               value={loanTerm}
               onValueChange={setLoanTerm}
-              classNames={{
-                label: 'text-sm font-medium text-default-d',
-              }}
+              classNames={{ label: 'text-sm font-medium text-default-d' }}
             >
               {TIME_PERIOD.map((term) => (
                 <CustomRadio
@@ -134,9 +126,7 @@ export const BorrowersCalculator = () => {
               orientation="horizontal"
               value={loanTerm}
               onValueChange={setLoanTerm}
-              classNames={{
-                label: 'text-sm font-medium text-default-d',
-              }}
+              classNames={{ label: 'text-sm font-medium text-default-d' }}
             >
               {TIME_PERIOD.map((term) => (
                 <CustomRadio key={term.value} value={term.value}>
@@ -149,21 +139,21 @@ export const BorrowersCalculator = () => {
 
             <div className="flex flex-col gap-2">
               <div className="flex justify-between gap-2">
-                <div className="text-sm font-medium text-default-d">
+                <div className="text-default-d text-sm font-medium">
                   Down Payment
                 </div>
                 <Counter value={calculateLoanAmounts?.upfront} />
               </div>
 
               <div className="flex justify-between gap-2">
-                <div className="text-sm font-medium text-default-d">
+                <div className="text-default-d text-sm font-medium">
                   Monthly EMI
                 </div>
                 <Counter value={calculateLoanAmounts?.monthly} />
               </div>
 
               <div className="flex justify-between gap-2">
-                <div className="text-sm font-medium text-default-d">
+                <div className="text-default-d text-sm font-medium">
                   Total Paid
                 </div>
                 <Counter value={calculateLoanAmounts?.total} />
@@ -196,14 +186,14 @@ export const BorrowersCalculator = () => {
 
 const Counter = ({ value }: { value: string }) => {
   return (
-    <div className="flex select-none items-center gap-1">
+    <div className="flex items-center gap-1 select-none">
       <SlotCounter
         useMonospaceWidth
         value={value}
         charClassName="font-bold text-sm text-default-e"
         separatorClassName="font-bold text-sm text-default-e"
       />
-      <span className="text-sm font-bold text-default-e">USDC</span>
+      <span className="text-default-e text-sm font-bold">USDC</span>
     </div>
   )
 }

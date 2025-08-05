@@ -6,18 +6,14 @@ import pluginQuery from '@tanstack/eslint-plugin-query'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-})
+const compat = new FlatCompat({ baseDirectory: __dirname })
 
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   ...pluginQuery.configs['flat/recommended'],
   {
     // Add your own rules and overrides here
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-    },
+    rules: { '@typescript-eslint/no-explicit-any': 'off' },
   },
 ]
 

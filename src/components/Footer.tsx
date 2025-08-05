@@ -65,9 +65,9 @@ const SOCIAL_LINKS = [
 export const Footer = () => {
   return (
     <footer className="relative z-0 py-8" id="footer">
-      <div className="pointer-events-none absolute inset-2 top-0 -z-[1] select-none overflow-hidden rounded-xl border-2 border-default-200 bg-default-100"></div>
+      <div className="border-default-200 bg-default-100 pointer-events-none absolute inset-2 top-0 -z-1 overflow-hidden rounded-xl border-2 select-none"></div>
 
-      <div className="container text-default-800">
+      <div className="text-default-800 container">
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
           <div className="col-span-2 mb-8 lg:mb-0">
             <Logo />
@@ -83,7 +83,7 @@ export const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    'rounded-full p-1.5 text-sm text-default-800 transition-colors',
+                    'text-default-800 rounded-full p-1.5 text-sm transition-colors',
                     social.colors
                   )}
                 >
@@ -95,7 +95,7 @@ export const Footer = () => {
 
           {MENU_ITEMS.map((section, sectionIdx) => (
             <div key={sectionIdx}>
-              <h3 className="mb-3 text-sm font-bold text-default-900">
+              <h3 className="text-default-900 mb-3 text-sm font-bold">
                 {section.title}
               </h3>
 
@@ -119,7 +119,7 @@ export const Footer = () => {
           ))}
         </div>
 
-        <div className="mt-8 flex flex-col justify-between gap-4 border-t border-default/50 pt-6 text-sm md:flex-row md:items-center">
+        <div className="border-default/50 mt-8 flex flex-col justify-between gap-4 border-t pt-6 text-sm md:flex-row md:items-center">
           <p>© {new Date().getFullYear()} Bitmor. All rights reserved.</p>
           <ul className="flex gap-4">
             {BOTTOM_LINKS.map((link, linkIdx) => (

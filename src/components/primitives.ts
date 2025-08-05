@@ -20,13 +20,9 @@ export const title = tv({
       md: 'text-[2.3rem] lg:text-5xl leading-9',
       lg: 'text-5xl lg:text-6xl',
     },
-    fullWidth: {
-      true: 'w-full block',
-    },
+    fullWidth: { true: 'w-full block' },
   },
-  defaultVariants: {
-    size: 'md',
-  },
+  defaultVariants: { size: 'md' },
   compoundVariants: [
     {
       color: [
@@ -39,19 +35,13 @@ export const title = tv({
         'primary',
         'foreground',
       ],
-      class: 'bg-clip-text text-transparent bg-gradient-to-b',
+      class: 'bg-clip-text text-transparent bg-linear-to-b',
     },
   ],
 })
 
 export const subtitle = tv({
   base: 'w-full md:w-1/2 my-2 text-lg lg:text-xl text-default-900 block max-w-6xl',
-  variants: {
-    fullWidth: {
-      true: '!w-full',
-    },
-  },
-  defaultVariants: {
-    fullWidth: true,
-  },
+  variants: { fullWidth: { true: 'w-full!' } },
+  defaultVariants: { fullWidth: true },
 })

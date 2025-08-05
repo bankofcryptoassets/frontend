@@ -6,7 +6,7 @@ export const Hero = () => {
   return (
     <section className="relative z-0" id="hero">
       <div
-        className="pointer-events-none absolute inset-2 -z-[1] select-none overflow-hidden rounded-xl border-2 border-default-200"
+        className="border-default-200 pointer-events-none absolute inset-2 -z-1 overflow-hidden rounded-xl border-2 select-none"
         style={{
           background: `
               url("data:image/svg+xml,%3Csvg viewBox='0 0 1799 1799' opacity='0.4' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
@@ -37,7 +37,7 @@ export const Hero = () => {
             </p>
           </div>
 
-          <div className="mb-20 mt-8 w-full max-w-[720px]">
+          <div className="mt-8 mb-20 w-full max-w-[720px]">
             <JoinWishlist isInHero />
             {/* <Input
               placeholder="Early access = better terms"
@@ -45,9 +45,9 @@ export const Hero = () => {
               classNames={{
                 mainWrapper: 'w-full',
                 inputWrapper:
-                  'h-[60px] rounded-xl w-full pl-5 pr-2 !bg-[#F5F5F5] ',
+                  'h-[60px] rounded-xl w-full pl-5 pr-2 bg-[#F5F5F5]! ',
                 innerWrapper: 'w-full',
-                input: '!text-black placeholder:text-[#666666]',
+                input: 'text-black! placeholder:text-[#666666]',
               }}
               size="lg"
               endContent={
@@ -83,7 +83,7 @@ export const Hero = () => {
             /> */}
           </div>
 
-          <p className="mb-6 text-balance text-center text-sm text-default-d">
+          <p className="text-default-d mb-6 text-center text-sm text-balance">
             Bitmor Lets You Stack BTC. No Checks. No KYC.
           </p>
         </div>

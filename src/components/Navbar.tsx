@@ -14,7 +14,6 @@ import clsx from 'clsx'
 import { siteConfig } from '@/config/site'
 import { ThemeSwitch } from '@/components/ThemeSwitch'
 import NextLink from 'next/link'
-import { title } from './primitives'
 import { Button, Divider } from '@heroui/react'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -28,14 +27,10 @@ import numeral from 'numeral'
 export const Logo = () => {
   return (
     <NextLink href="/">
-      <span className={title({ className: '!text-2xl text-primary' })}>
+      <span className="text-primary inline text-2xl leading-9 font-bold tracking-tight">
         Bit
       </span>
-      <span
-        className={title({
-          className: '!text-2xl text-secondary dark:text-foreground',
-        })}
-      >
+      <span className="text-secondary dark:text-foreground inline text-2xl leading-9 font-bold tracking-tight">
         mor
       </span>
     </NextLink>
@@ -60,9 +55,7 @@ export const Navbar = () => {
 
   return (
     <HeroUINavbar
-      classNames={{
-        wrapper: '!container',
-      }}
+      classNames={{ wrapper: 'container!' }}
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       height="4.5rem"
@@ -84,8 +77,8 @@ export const Navbar = () => {
               <NextLink
                 className={clsx(
                   linkStyles({ color: 'foreground' }),
-                  'font-normal !text-default-700',
-                  'data-[active=true]:font-medium data-[active=true]:!text-default-900'
+                  '!text-default-700 font-normal',
+                  'data-[active=true]:!text-default-900 data-[active=true]:font-medium'
                 )}
                 color="foreground"
                 href={item.href}
@@ -118,7 +111,7 @@ export const Navbar = () => {
             </NavbarItem>
 
             <NavbarItem className="hidden gap-2 sm:flex">
-              <Divider orientation="vertical" className="h-10 bg-default-300" />
+              <Divider orientation="vertical" className="bg-default-300 h-10" />
             </NavbarItem>
           </>
         )}
@@ -143,7 +136,7 @@ export const Navbar = () => {
         )}
 
         {isMainApp && (
-          <NavbarItem className="hidden gap-2 sm:flex [&>div>button]:!font-sans [&>div>button]:!text-sm [&>div>button]:!font-medium [&>div>button_*]:!font-sans [&>div>button_*]:!text-sm [&>div>button_*]:!font-medium">
+          <NavbarItem className="hidden gap-2 sm:flex [&>div>button]:font-sans! [&>div>button]:text-sm! [&>div>button]:font-medium! [&>div>button_*]:font-sans! [&>div>button_*]:text-sm! [&>div>button_*]:font-medium!">
             <ConnectButton
               accountStatus="full"
               showBalance={false}
@@ -171,8 +164,8 @@ export const Navbar = () => {
                   size="lg"
                   onClick={onMenuItemClick}
                   className={clsx(
-                    'font-normal !text-default-700',
-                    'data-[active=true]:font-medium data-[active=true]:!text-default-900'
+                    '!text-default-700 font-normal',
+                    'data-[active=true]:!text-default-900 data-[active=true]:font-medium'
                   )}
                   data-active={pathname.startsWith(item.href)}
                 >
@@ -202,7 +195,7 @@ export const Navbar = () => {
                 </Button>
               )}
 
-              <Button className="p-0 [&>div>button]:!h-full [&>div>button]:!w-full [&>div>button]:!font-sans [&>div>button]:!text-sm [&>div>button]:!font-semibold [&>div]:!h-full [&>div]:!w-full [&_*]:!flex [&_*]:!items-center [&_*]:!justify-center [&_*]:!gap-2 [&_[style='height:_24px;_width:_24px;']]:overflow-hidden [&_[style='height:_24px;_width:_24px;']]:!rounded-full">
+              <Button className="p-0 **:flex! **:items-center! **:justify-center! **:gap-2! [&_[style='height:_24px;_width:_24px;']]:overflow-hidden [&_[style='height:_24px;_width:_24px;']]:rounded-full! [&>div]:h-full! [&>div]:w-full! [&>div>button]:h-full! [&>div>button]:w-full! [&>div>button]:font-sans! [&>div>button]:text-sm! [&>div>button]:font-semibold!">
                 <ConnectButton
                   accountStatus="avatar"
                   showBalance={false}

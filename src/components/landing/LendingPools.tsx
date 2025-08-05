@@ -7,7 +7,7 @@ import { LuCircleDollarSign } from 'react-icons/lu'
 const LENDING_POOLS = [
   {
     icon: (
-      <div className="inline-block rounded-full bg-secondary/20 p-2">
+      <div className="bg-secondary/20 inline-block rounded-full p-2">
         <LuCircleDollarSign className="text-secondary" size={24} />
       </div>
     ),
@@ -19,7 +19,7 @@ const LENDING_POOLS = [
   },
   {
     icon: (
-      <div className="inline-block rounded-full bg-success/20 p-2">
+      <div className="bg-success/20 inline-block rounded-full p-2">
         <LuCircleDollarSign className="text-success" size={24} />
       </div>
     ),
@@ -35,7 +35,7 @@ export const LendingPools = () => {
   const { resolvedTheme: theme } = useTheme()
 
   return (
-    <Card className="w-full max-w-lg bg-background" radius="md">
+    <Card className="bg-background w-full max-w-lg" radius="md">
       <MagicCard
         gradientColor={theme === 'dark' ? '#333333' : '#D9D9D9aa'}
         className="p-0"
@@ -45,13 +45,13 @@ export const LendingPools = () => {
             {LENDING_POOLS.map((pool) => (
               <div
                 key={pool.name}
-                className="flex w-full flex-col gap-2 rounded-lg bg-default/35 p-4 transition-colors hover:bg-default/50"
+                className="bg-default/35 hover:bg-default/50 flex w-full flex-col gap-2 rounded-lg p-4 transition-colors"
               >
                 <div className="w-full">{pool.icon}</div>
                 <div className="text-lg font-semibold">{pool.name}</div>
 
                 <div className="space-y-0.5">
-                  <div className="text-sm text-default-700">Current APY</div>
+                  <div className="text-default-700 text-sm">Current APY</div>
                   <div className="text-3xl font-bold">{pool.currentAPY}</div>
                 </div>
 

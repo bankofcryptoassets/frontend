@@ -9,12 +9,12 @@ export default function ConnectTelegram() {
       id="connect-telegram"
     >
       <div className="select-none">
-        <span className={title({ className: '!text-2xl text-primary' })}>
+        <span className={title({ className: 'text-primary text-2xl!' })}>
           Bit
         </span>
         <span
           className={title({
-            className: '!text-2xl text-secondary dark:text-foreground',
+            className: 'text-secondary dark:text-foreground text-2xl!',
           })}
         >
           mor
