@@ -1,33 +1,42 @@
 'use client'
 import { fullAnalysisBrowserEnhanced } from '@/scripts/LoanVsDCA'
-import { Card, CardBody, Spinner, Tab, Tabs, Tooltip } from '@heroui/react'
+import {
+  Alert,
+  Card,
+  CardBody,
+  Spinner,
+  Tab,
+  Tabs,
+  Tooltip,
+} from '@heroui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useState, useMemo } from 'react'
 import { LoanVsDCAChart } from '@/components/analytics/LoanVsDCAChart'
 import { LoanVsDCASidebar } from '@/components/analytics/LoanVsDCASidebar'
 import { EMIStats, StrategyStats } from '@/components/analytics/LoanVsDCAStats'
-import { FearGreedIndexChart } from '@/components/FearGreedIndexChart'
 import { LuInfo } from 'react-icons/lu'
 import { LoanAvailabilityType } from '@/types'
 import axios from '@/utils/axios'
 
-const DEFAULT_LOAN_AMOUNT = 100000
+const DEFAULT_LOAN_AMOUNT = 100_000
 
 export default function AnalyticsPage() {
   const [mode, setMode] = useState<'btc' | 'usd'>('btc')
-  const [loanAmount, setLoanAmount] = useState<number | undefined>(undefined)
+  const [loanAmount, setLoanAmount] = useState<number | undefined>(
+    DEFAULT_LOAN_AMOUNT
+  )
   const [timePeriod, setTimePeriod] = useState<number>(60)
-  const [downPayment, setDownPayment] = useState(0)
+  const [downPayment, setDownPayment] = useState(
+    0.2 * (loanAmount || DEFAULT_LOAN_AMOUNT)
+  )
   const [loanAPR, setLoanAPR] = useState(10)
-  const [startDate, setStartDate] = useState('2017-08-17')
-  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0])
   const [selectedPoint, setSelectedPoint] = useState<any>(null)
   const [liquidationInsuranceCost, setLiquidationInsuranceCost] = useState(0)
   const [dcaCadence, setDcaCadence] = useState<'daily' | 'weekly' | 'monthly'>(
     'daily'
   )
   const [btcYield, setBtcYield] = useState(1)
-  const [dcaWithoutDownPayment, setDcaWithoutDownPayment] = useState(true)
+  const [dcaWithoutDownPayment, setDcaWithoutDownPayment] = useState(false)
 
   const { data: borrowStats } = useQuery({
     queryKey: ['/initialisation/loanavailability'],
@@ -42,7 +51,7 @@ export default function AnalyticsPage() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['btc-loan-vs-dca-enhanced', loanAmount, timePeriod, startDate],
+    queryKey: ['btc-loan-vs-dca-enhanced', loanAmount, timePeriod],
     queryFn: async () => {
       // Fetch the CSV data
       const response = await fetch('/data/BTCUSDT_1h.csv', {
@@ -57,14 +66,9 @@ export default function AnalyticsPage() {
 
       // Run enhanced analysis
       const result = await fullAnalysisBrowserEnhanced(csvContent, {
-        start: startDate,
         loanAmount: loanAmount || DEFAULT_LOAN_AMOUNT,
         timePeriod,
       })
-
-      // Store full results in window for debugging
-      // ;(window as any).btcLoanVsDcaResults = result.results
-      // ;(window as any).btcLoanVsDcaChartData = result.chartData
 
       return result
     },
@@ -86,11 +90,12 @@ export default function AnalyticsPage() {
   }, [analysisData, mode])
 
   // Calculate stats for selected point or average
+  const point = useMemo(
+    () => selectedPoint || analysisData?.chartData?.[0],
+    [selectedPoint, analysisData]
+  )
   const statsData = useMemo(() => {
-    if (!analysisData) return null
-
-    const point = selectedPoint || analysisData.chartData[0]
-    if (!point) return null
+    if (!analysisData || !point) return null
 
     const finalLoanAmount = loanAmount || DEFAULT_LOAN_AMOUNT
     const loanReturns =
@@ -108,7 +113,11 @@ export default function AnalyticsPage() {
       loanCostPerBTC,
       dcaCostPerBTC,
     }
-  }, [analysisData, selectedPoint, loanAmount])
+  }, [analysisData, point, loanAmount])
+
+  const handleStartDateChange = (date: string) => {
+    setSelectedPoint(analysisData?.chartData.find((p) => p.date === date))
+  }
 
   return (
     <div className="bg-background min-h-[calc(100vh-4.5rem)]">
@@ -124,10 +133,10 @@ export default function AnalyticsPage() {
             onDownPaymentChange={setDownPayment}
             loanAPR={loanAPR}
             onLoanAPRChange={setLoanAPR}
-            startDate={startDate}
-            onStartDateChange={setStartDate}
-            endDate={endDate}
-            onEndDateChange={setEndDate}
+            startDate={point?.date}
+            onStartDateChange={handleStartDateChange}
+            endDate={point?.valDate}
+            // onEndDateChange={setEndDate}
             liquidationInsuranceCost={liquidationInsuranceCost}
             onLiquidationInsuranceCostChange={setLiquidationInsuranceCost}
             dcaCadence={dcaCadence}
@@ -180,7 +189,7 @@ export default function AnalyticsPage() {
                 </div>
 
                 {/* Fear and Greed Index */}
-                <div className="md:ml-auto">
+                {/* <div className="md:ml-auto">
                   <Tooltip
                     classNames={{
                       content: 'shadow-large border-default-200 border',
@@ -221,6 +230,18 @@ export default function AnalyticsPage() {
                       </span>
                     </div>
                   </Tooltip>
+                </div> */}
+
+                <div className="md:ml-auto">
+                  <Alert
+                    className="max-w-[214px] gap-0 px-3 py-1.5"
+                    classNames={{
+                      title: 'text-xs text-default-d',
+                      alertIcon: 'h-4 w-4 text-default-d',
+                      iconWrapper: 'h-4 w-4',
+                    }}
+                    title="Click anywhere on the graph to choose a starting date."
+                  />
                 </div>
               </div>
 

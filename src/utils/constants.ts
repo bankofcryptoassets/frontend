@@ -23,3 +23,6 @@ export const TIME_PERIOD_AND_INTEREST_RATES = [
   { timePeriod: '12', interestRate: '10' },
   { timePeriod: '18', interestRate: '15' },
 ] as const
+
+export const MIN_DATE = '2017-08-17'
+export const MAX_DATE = '2025-05-08'

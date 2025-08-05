@@ -1,10 +1,8 @@
 'use client'
-
 import {
   Card,
   CardBody,
   CardHeader,
-  Input,
   Slider,
   Checkbox,
   NumberInput,
@@ -12,10 +10,13 @@ import {
   RadioGroup,
   RadioProps,
   cn,
-  Chip,
+  DatePicker,
 } from '@heroui/react'
-import { LuCalendar, LuInfo } from 'react-icons/lu'
+import { LuInfo } from 'react-icons/lu'
 import numeral from 'numeral'
+import { parseDate } from '@internationalized/date'
+import { MIN_DATE, MAX_DATE } from '@/utils/constants'
+import { I18nProvider } from '@react-aria/i18n'
 
 interface Props {
   loanAmount: number | undefined
@@ -26,10 +27,10 @@ interface Props {
   onDownPaymentChange: (value: number) => void
   loanAPR: number
   onLoanAPRChange: (value: number) => void
-  startDate: string
-  onStartDateChange: (value: string) => void
-  endDate: string
-  onEndDateChange: (value: string) => void
+  startDate?: string
+  onStartDateChange?: (value: string) => void
+  endDate?: string
+  // onEndDateChange: (value: string) => void
   liquidationInsuranceCost: number
   onLiquidationInsuranceCostChange: (value: number) => void
   dcaCadence: 'daily' | 'weekly' | 'monthly'
@@ -45,15 +46,15 @@ export function LoanVsDCASidebar({
   onLoanAmountChange,
   timePeriod,
   onTimePeriodChange,
-  // downPayment,
+  downPayment,
   onDownPaymentChange,
-  // loanAPR,
+  loanAPR,
   onLoanAPRChange,
-  // startDate,
+  startDate,
   onStartDateChange,
-  // endDate,
-  onEndDateChange,
-  // liquidationInsuranceCost,
+  endDate,
+  // onEndDateChange,
+  liquidationInsuranceCost,
   onLiquidationInsuranceCostChange,
   dcaCadence,
   onDcaCadenceChange,
@@ -62,9 +63,6 @@ export function LoanVsDCASidebar({
   dcaWithoutDownPayment,
   onDcaWithoutDownPaymentChange,
 }: Props) {
-  // const minAmount = 1000
-  // const maxAmount = 1000000
-
   return (
     <Card className="border-default-200 h-full border lg:max-h-[640px]">
       <CardHeader className="p-4 pb-0">
@@ -73,12 +71,12 @@ export function LoanVsDCASidebar({
         </h3>
       </CardHeader>
 
-      <CardBody className="gap-4 px-0 py-4">
-        <div className="space-y-4 px-4">
+      <CardBody className="gap-6 px-0 py-4">
+        <div className="space-y-6 px-4">
           <NumberInput
             hideStepper
             isWheelDisabled
-            placeholder="Loan Amount in USD"
+            label="Loan Amount in USD"
             value={loanAmount}
             onChange={(value) => {
               if (typeof value === 'number') {
@@ -87,12 +85,13 @@ export function LoanVsDCASidebar({
             }}
             classNames={{
               inputWrapper:
-                'dark:bg-[#1F1F1F] dark:data-[hover=true]:[#1F1F1F] text-default-600 border border-default-300/50',
+                'bg-default-200 data-[hover=true]:bg-default-300/70 group-data-[focus=true]:bg-default-200 text-default-700 border border-default-300/50',
+              label: 'text-default-700!',
             }}
           />
 
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <label className="text-default-a text-sm font-medium">
                 Time Period (in Months)
               </label>
@@ -107,8 +106,7 @@ export function LoanVsDCASidebar({
                 }}
                 classNames={{
                   inputWrapper:
-                    'dark:bg-[#1F1F1F] dark:data-[hover=true]:[#1F1F1F] text-default-600 border border-default-300/50 w-28',
-                  input: 'text-center',
+                    'bg-default-200 data-[hover=true]:bg-default-300/70 group-data-[focus=true]:bg-default-200 text-default-700 border border-default-300/50',
                 }}
               />
             </div>
@@ -116,49 +114,75 @@ export function LoanVsDCASidebar({
               Between 12 - 60 Months
             </p>
           </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <I18nProvider>
+              <DatePicker
+                label="Start Date"
+                classNames={{
+                  inputWrapper:
+                    'bg-default-200 hover:bg-default-300/70! focus-within:hover:bg-default-300/70! text-default-700 border border-default-300/50',
+                  label: 'text-default-700!',
+                  selectorIcon: 'text-default-600!',
+                }}
+                value={startDate ? parseDate(startDate) : undefined}
+                onChange={(value) =>
+                  value && onStartDateChange?.(value.toString())
+                }
+                showMonthAndYearPickers
+                calendarProps={{
+                  minValue: parseDate(MIN_DATE),
+                  maxValue: parseDate(MAX_DATE),
+                }}
+              />
+              <DatePicker
+                label="End Date"
+                classNames={{
+                  inputWrapper:
+                    'bg-default-200 hover:bg-default-300/70! focus-within:hover:bg-default-300/70! text-default-700 border border-default-300/50',
+                  label: 'text-default-700!',
+                }}
+                value={endDate ? parseDate(endDate) : undefined}
+                calendarProps={{ isDisabled: true }}
+              />
+            </I18nProvider>
+          </div>
         </div>
 
-        <h4 className="bg-default-200/70 text-default-a mt-4 flex items-center justify-between gap-2 px-5 py-1.5 text-sm font-medium">
-          Advanced Options:{' '}
-          <Chip size="sm" variant="flat" color="default">
-            Coming Soon
-          </Chip>
+        <h4 className="bg-default-200/70 text-default-a mt-2 flex items-center justify-between gap-2 px-5 py-1.5 text-sm font-medium">
+          Advanced Options:
         </h4>
 
-        <div className="space-y-4 px-4">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
+        <div className="space-y-6 px-4">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between gap-4">
               <label className="text-default-a text-sm font-medium">
                 Enter Down Payment
               </label>
               <NumberInput
                 hideStepper
-                isDisabled
-                // value={downPayment}
+                minValue={0}
+                maxValue={(loanAmount || 0) * 0.5}
+                value={downPayment}
                 className="flex-1 text-right"
-                onChange={(v) =>
-                  typeof v === 'number' && onDownPaymentChange(v)
-                }
+                onChange={(value) => {
+                  if (typeof value === 'number') onDownPaymentChange(value)
+                }}
                 classNames={{
-                  inputWrapper: 'bg-transparent w-20',
-                  input: 'text-right',
+                  inputWrapper:
+                    'bg-default-200 data-[hover=true]:bg-default-300/70 group-data-[focus=true]:bg-default-200 text-default-700 border border-default-300/50',
                 }}
               />
             </div>
+
             <Slider
               size="sm"
               step={1}
               minValue={0}
               maxValue={(loanAmount || 0) * 0.5}
-              // value={downPayment}
+              value={downPayment}
               onChange={(value) => onDownPaymentChange(value as number)}
               className="w-full"
-              isDisabled
-              classNames={{
-                thumb: 'bg-default-300',
-                track: 'bg-default-200',
-                filler: 'bg-default-300',
-              }}
             />
             <div className="text-default-a flex justify-between text-xs">
               <span>0 Min.</span>
@@ -168,58 +192,44 @@ export function LoanVsDCASidebar({
             </div>
           </div>
 
-          <Input
-            placeholder="Enter Loan APR"
-            isDisabled
-            // value={loanAPR.toString()}
-            onChange={(e) => onLoanAPRChange(parseFloat(e.target.value) || 0)}
-            endContent={<span className="text-default-a">%</span>}
+          <NumberInput
+            hideStepper
+            isWheelDisabled
+            label="Enter Loan APR"
+            value={loanAPR}
+            onChange={(value) => {
+              if (typeof value === 'number') {
+                onLoanAPRChange(value)
+              }
+            }}
             classNames={{
-              inputWrapper: 'bg-default/35 data-[hover=true]:bg-default/50',
+              inputWrapper:
+                'bg-default-200 data-[hover=true]:bg-default-300/70 group-data-[focus=true]:bg-default-200 text-default-700 border border-default-300/50',
+              label: 'text-default-700!',
             }}
           />
 
-          <div className="grid grid-cols-2 gap-3">
-            <Input
-              // type="date"
-              placeholder="Start Date"
-              // value={startDate}
-              onChange={(e) => onStartDateChange(e.target.value)}
-              startContent={<LuCalendar className="text-default-a" size={16} />}
-              isDisabled
-              classNames={{
-                inputWrapper: 'bg-default/35 data-[hover=true]:bg-default/50',
-              }}
-            />
-            <Input
-              // type="date"
-              placeholder="End Date"
-              // value={endDate}
-              onChange={(e) => onEndDateChange(e.target.value)}
-              startContent={<LuCalendar className="text-default-a" size={16} />}
-              isDisabled
-              classNames={{
-                inputWrapper: 'bg-default/35 data-[hover=true]:bg-default/50',
-              }}
-            />
-          </div>
-
-          <Input
-            placeholder="Liquidation Insurance Cost"
-            isDisabled
-            // value={liquidationInsuranceCost.toString()}
-            onChange={(e) =>
-              onLiquidationInsuranceCostChange(parseFloat(e.target.value) || 0)
-            }
+          <NumberInput
+            hideStepper
+            isWheelDisabled
+            label="Liquidation Insurance Cost"
+            value={liquidationInsuranceCost}
+            onChange={(value) => {
+              if (typeof value === 'number') {
+                onLiquidationInsuranceCostChange(value)
+              }
+            }}
             classNames={{
-              inputWrapper: 'bg-default/35 data-[hover=true]:bg-default/50',
+              inputWrapper:
+                'bg-default-200 data-[hover=true]:bg-default-300/70 group-data-[focus=true]:bg-default-200 text-default-700 border border-default-300/50',
+              label: 'text-default-700!',
             }}
           />
 
           <div className="space-y-2">
-            <label className="text-default-a text-sm font-medium">
+            <div className="text-default-a text-sm font-medium">
               DCA Cadence:
-            </label>
+            </div>
             <RadioGroup
               orientation="horizontal"
               value={dcaCadence}
@@ -227,7 +237,6 @@ export function LoanVsDCASidebar({
                 onDcaCadenceChange(value as 'daily' | 'weekly' | 'monthly')
               }
               classNames={{ wrapper: 'gap-2' }}
-              isDisabled
             >
               {(['daily', 'weekly', 'monthly'] as const).map((cadence) => (
                 <CustomRadio key={cadence} value={cadence}>
@@ -237,22 +246,24 @@ export function LoanVsDCASidebar({
             </RadioGroup>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <label className="text-default-a text-sm font-medium">
               BTC Yield:
             </label>
+
             <NumberInput
               hideStepper
-              isWheelDisabled
+              minValue={0}
+              maxValue={10}
               value={btcYield}
-              onChange={(v) => typeof v === 'number' && onBtcYieldChange(v)}
-              endContent={<span className="text-default-a">%</span>}
-              isDisabled
               className="flex-1 text-right"
+              endContent={<span className="text-default-a">%</span>}
+              onChange={(value) => {
+                if (typeof value === 'number') onBtcYieldChange(value)
+              }}
               classNames={{
                 inputWrapper:
-                  'bg-default/35 data-[hover=true]:bg-default/50 w-28',
-                input: 'text-center',
+                  'bg-default-200 data-[hover=true]:bg-default-300/70 group-data-[focus=true]:bg-default-200 text-default-700 border border-default-300/50',
               }}
             />
           </div>
@@ -261,10 +272,9 @@ export function LoanVsDCASidebar({
             <Checkbox
               isSelected={dcaWithoutDownPayment}
               onValueChange={onDcaWithoutDownPaymentChange}
-              isDisabled
               classNames={{
                 base: 'items-start',
-                wrapper: 'mr-3 mt-1',
+                wrapper: 'mr-3 mt-0',
                 label: 'text-default-a text-sm',
               }}
             >

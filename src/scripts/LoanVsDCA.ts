@@ -73,7 +73,7 @@ interface CommandOptions {
 // ────────────────────────────────────────────────────────────────
 // Parameters – adjust at will
 // ────────────────────────────────────────────────────────────────
-const ANNUAL_RATE = 0.1
+const ANNUAL_RATE = 0.1 // 10%
 const MONTHLY_RATE = ANNUAL_RATE / 12
 
 // ────────────────────────────────────────────────────────────────
@@ -183,8 +183,8 @@ function simulateStart(
   loanAmount: number = 100_000,
   timePeriod: number = 60
 ): SimulationResult {
-  const cashUpfront = loanAmount * 0.2
-  const loanPrincipal = loanAmount * 0.8
+  const cashUpfront = loanAmount * 0.2 // 20% down payment
+  const loanPrincipal = loanAmount * 0.8 // 80% loan
   const monthlyPayment =
     (loanPrincipal * MONTHLY_RATE * Math.pow(1 + MONTHLY_RATE, timePeriod)) /
     (Math.pow(1 + MONTHLY_RATE, timePeriod) - 1)
