@@ -24,5 +24,6 @@ export const TIME_PERIOD_AND_INTEREST_RATES = [
   { timePeriod: '18', interestRate: '15' },
 ] as const
 
+export const DEFAULT_LOAN_AMOUNT = 100_000
 export const MIN_DATE = '2017-08-17'
 export const MAX_DATE = '2025-05-08'

@@ -10,15 +10,12 @@ import {
   Tooltip,
 } from '@heroui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { LoanVsDCAChart } from '@/components/analytics/LoanVsDCAChart'
 import { LoanVsDCASidebar } from '@/components/analytics/LoanVsDCASidebar'
 import { EMIStats, StrategyStats } from '@/components/analytics/LoanVsDCAStats'
 import { LuInfo } from 'react-icons/lu'
-import { LoanAvailabilityType } from '@/types'
-import axios from '@/utils/axios'
-
-const DEFAULT_LOAN_AMOUNT = 100_000
+import { DEFAULT_LOAN_AMOUNT } from '@/utils/constants'
 
 export default function AnalyticsPage() {
   const [mode, setMode] = useState<'btc' | 'usd'>('btc')
@@ -33,25 +30,50 @@ export default function AnalyticsPage() {
   const [selectedPoint, setSelectedPoint] = useState<any>(null)
   const [liquidationInsuranceCost, setLiquidationInsuranceCost] = useState(0)
   const [dcaCadence, setDcaCadence] = useState<'daily' | 'weekly' | 'monthly'>(
-    'daily'
+    'monthly'
   )
   const [btcYield, setBtcYield] = useState(1)
   const [dcaWithoutDownPayment, setDcaWithoutDownPayment] = useState(false)
+  const isInitialMount = useRef(true)
 
-  const { data: borrowStats } = useQuery({
-    queryKey: ['/initialisation/loanavailability'],
-    queryFn: () =>
-      axios.get<LoanAvailabilityType>(`/initialisation/loanavailability`),
-    staleTime: Infinity,
-  })
-  const fgi = borrowStats?.data?.data?.fgi
+  // Maintain down payment percentage when loan amount changes
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
+
+    const finalLoanAmount = loanAmount || DEFAULT_LOAN_AMOUNT
+    const currentPercentage = downPayment / finalLoanAmount
+    const newDownPayment = currentPercentage * finalLoanAmount
+    setDownPayment(newDownPayment)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loanAmount])
+
+  // const { data: borrowStats } = useQuery({
+  //   queryKey: ['/initialisation/loanavailability'],
+  //   queryFn: () =>
+  //     axios.get<LoanAvailabilityType>(`/initialisation/loanavailability`),
+  //   staleTime: Infinity,
+  // })
+  // const fgi = borrowStats?.data?.data?.fgi
 
   const {
     data: analysisData,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['btc-loan-vs-dca-enhanced', loanAmount, timePeriod],
+    queryKey: [
+      'btc-loan-vs-dca-enhanced',
+      loanAmount,
+      timePeriod,
+      downPayment,
+      loanAPR,
+      liquidationInsuranceCost,
+      dcaWithoutDownPayment,
+      btcYield,
+      dcaCadence,
+    ],
     queryFn: async () => {
       // Fetch the CSV data
       const response = await fetch('/data/BTCUSDT_1h.csv', {
@@ -64,10 +86,20 @@ export default function AnalyticsPage() {
 
       const csvContent = await response.text()
 
+      // Calculate down payment percentage
+      const finalLoanAmount = loanAmount || DEFAULT_LOAN_AMOUNT
+      const downPaymentPercentage = downPayment / finalLoanAmount
+
       // Run enhanced analysis
       const result = await fullAnalysisBrowserEnhanced(csvContent, {
-        loanAmount: loanAmount || DEFAULT_LOAN_AMOUNT,
+        loanAmount: finalLoanAmount,
         timePeriod,
+        downPayment: downPaymentPercentage,
+        loanAPR,
+        liquidationInsuranceCost,
+        dcaWithoutDownPayment,
+        btcYield,
+        dcaCadence,
       })
 
       return result
@@ -98,11 +130,12 @@ export default function AnalyticsPage() {
     if (!analysisData || !point) return null
 
     const finalLoanAmount = loanAmount || DEFAULT_LOAN_AMOUNT
+    const totalLoanCost = finalLoanAmount + liquidationInsuranceCost
     const loanReturns =
       point.loanReturns || point.profitLoan + point.btcLoan * point.price
     const dcaReturns =
       point.dcaReturns || point.profitDca + point.btcDca * point.price
-    const loanCostPerBTC = finalLoanAmount / point.btcLoan
+    const loanCostPerBTC = totalLoanCost / point.btcLoan
     const dcaCostPerBTC = point.dollarsIn / point.btcDca
 
     return {
@@ -113,7 +146,7 @@ export default function AnalyticsPage() {
       loanCostPerBTC,
       dcaCostPerBTC,
     }
-  }, [analysisData, point, loanAmount])
+  }, [analysisData, point, loanAmount, liquidationInsuranceCost])
 
   const handleStartDateChange = (date: string) => {
     setSelectedPoint(analysisData?.chartData.find((p) => p.date === date))

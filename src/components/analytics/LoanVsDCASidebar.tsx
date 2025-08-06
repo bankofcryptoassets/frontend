@@ -11,6 +11,7 @@ import {
   RadioProps,
   cn,
   DatePicker,
+  Tooltip,
 } from '@heroui/react'
 import { LuInfo } from 'react-icons/lu'
 import numeral from 'numeral'
@@ -76,13 +77,14 @@ export function LoanVsDCASidebar({
           <NumberInput
             hideStepper
             isWheelDisabled
-            label="Loan Amount in USD"
+            label="Loan Amount"
             value={loanAmount}
             onChange={(value) => {
               if (typeof value === 'number') {
                 onLoanAmountChange(value)
               }
             }}
+            startContent={<span className="text-default-a -mb-0.5">$</span>}
             classNames={{
               inputWrapper:
                 'bg-default-200 data-[hover=true]:bg-default-300/70 group-data-[focus=true]:bg-default-200 text-default-700 border border-default-300/50',
@@ -92,10 +94,14 @@ export function LoanVsDCASidebar({
 
           <div className="space-y-2">
             <div className="flex items-center justify-between gap-4">
-              <label className="text-default-a text-sm font-medium">
+              <label
+                htmlFor="time-period"
+                className="text-default-a text-sm font-medium"
+              >
                 Time Period (in Months)
               </label>
               <NumberInput
+                id="time-period"
                 step={1}
                 minValue={12}
                 maxValue={60}
@@ -154,12 +160,16 @@ export function LoanVsDCASidebar({
         </h4>
 
         <div className="space-y-6 px-4">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between gap-4">
-              <label className="text-default-a text-sm font-medium">
+          <div>
+            <div className="mb-3 flex items-center justify-between gap-4">
+              <label
+                htmlFor="down-payment"
+                className="text-default-a text-sm font-medium"
+              >
                 Enter Down Payment
               </label>
               <NumberInput
+                id="down-payment"
                 hideStepper
                 minValue={0}
                 maxValue={(loanAmount || 0) * 0.5}
@@ -168,6 +178,7 @@ export function LoanVsDCASidebar({
                 onChange={(value) => {
                   if (typeof value === 'number') onDownPaymentChange(value)
                 }}
+                startContent={<span className="text-default-a -mb-0.5">$</span>}
                 classNames={{
                   inputWrapper:
                     'bg-default-200 data-[hover=true]:bg-default-300/70 group-data-[focus=true]:bg-default-200 text-default-700 border border-default-300/50',
@@ -183,8 +194,9 @@ export function LoanVsDCASidebar({
               value={downPayment}
               onChange={(value) => onDownPaymentChange(value as number)}
               className="w-full"
+              showTooltip
             />
-            <div className="text-default-a flex justify-between text-xs">
+            <div className="text-default-a mt-1 flex justify-between text-xs">
               <span>0 Min.</span>
               <span className="text-right">
                 {numeral((loanAmount || 0) * 0.5).format('0,0')} USDC Max.
@@ -196,12 +208,15 @@ export function LoanVsDCASidebar({
             hideStepper
             isWheelDisabled
             label="Enter Loan APR"
+            minValue={1}
+            maxValue={100}
             value={loanAPR}
             onChange={(value) => {
               if (typeof value === 'number') {
                 onLoanAPRChange(value)
               }
             }}
+            endContent={<span className="text-default-a -mb-0.5">%</span>}
             classNames={{
               inputWrapper:
                 'bg-default-200 data-[hover=true]:bg-default-300/70 group-data-[focus=true]:bg-default-200 text-default-700 border border-default-300/50',
@@ -219,6 +234,7 @@ export function LoanVsDCASidebar({
                 onLiquidationInsuranceCostChange(value)
               }
             }}
+            startContent={<span className="text-default-a -mb-0.5">$</span>}
             classNames={{
               inputWrapper:
                 'bg-default-200 data-[hover=true]:bg-default-300/70 group-data-[focus=true]:bg-default-200 text-default-700 border border-default-300/50',
@@ -247,11 +263,15 @@ export function LoanVsDCASidebar({
           </div>
 
           <div className="flex items-center justify-between gap-4">
-            <label className="text-default-a text-sm font-medium">
+            <label
+              htmlFor="btc-yield"
+              className="text-default-a text-sm font-medium"
+            >
               BTC Yield:
             </label>
 
             <NumberInput
+              id="btc-yield"
               hideStepper
               minValue={0}
               maxValue={10}
@@ -280,7 +300,10 @@ export function LoanVsDCASidebar({
             >
               DCA without Down Payment
             </Checkbox>
-            <LuInfo className="text-default-400" size={16} />
+
+            <Tooltip content="DCA without Down Payment" placement="top">
+              <LuInfo className="text-default-600" size={16} />
+            </Tooltip>
           </div>
         </div>
       </CardBody>
