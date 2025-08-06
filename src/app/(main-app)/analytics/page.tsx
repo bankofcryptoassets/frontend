@@ -267,7 +267,7 @@ export default function AnalyticsPage() {
 
                 <div className="md:ml-auto">
                   <Alert
-                    className="max-w-[214px] gap-0 px-3 py-1.5"
+                    className="max-w-[214px] gap-0 px-3 py-1"
                     classNames={{
                       title: 'text-xs text-default-d',
                       alertIcon: 'h-4 w-4 text-default-d',

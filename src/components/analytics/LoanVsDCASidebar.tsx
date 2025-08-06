@@ -156,7 +156,7 @@ export function LoanVsDCASidebar({
         </div>
 
         <h4 className="bg-default-200/70 text-default-a mt-2 flex items-center justify-between gap-2 px-5 py-1.5 text-sm font-medium">
-          Advanced Options:
+          Advanced Options
         </h4>
 
         <div className="space-y-6 px-4">
@@ -197,9 +197,9 @@ export function LoanVsDCASidebar({
               showTooltip
             />
             <div className="text-default-a mt-1 flex justify-between text-xs">
-              <span>0 Min.</span>
+              <span>$0 Min.</span>
               <span className="text-right">
-                {numeral((loanAmount || 0) * 0.5).format('0,0')} USDC Max.
+                ${numeral((loanAmount || 0) * 0.5).format('0,0')} Max.
               </span>
             </div>
           </div>
@@ -244,7 +244,7 @@ export function LoanVsDCASidebar({
 
           <div className="space-y-2">
             <div className="text-default-a text-sm font-medium">
-              DCA Cadence:
+              DCA Cadence
             </div>
             <RadioGroup
               orientation="horizontal"
@@ -267,7 +267,7 @@ export function LoanVsDCASidebar({
               htmlFor="btc-yield"
               className="text-default-a text-sm font-medium"
             >
-              BTC Yield:
+              BTC Yield
             </label>
 
             <NumberInput
