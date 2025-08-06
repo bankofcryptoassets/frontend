@@ -106,7 +106,7 @@ export default function InvestPage() {
               Connect with Bitmor via Telegram to receive latest updates of your
               investments
             </p>
-            <p className="mt-2 text-sm text-default-a">
+            <p className="text-default-a mt-2 text-sm">
               You&apos;ll be redirected to our telegram bot, please start a chat
               to start receiving notifications. we can&apos;t send you
               notifications if you don&apos;t start a chat with us.
@@ -121,43 +121,43 @@ export default function InvestPage() {
       />
 
       <div className="flex h-full w-full flex-col gap-4">
-        <Card className="min-h-fit w-full space-y-6 rounded-2xl border border-default-200/40 bg-default-100/80 p-7 pb-[30px]">
+        <Card className="border-default-200/40 bg-default-100/80 min-h-fit w-full space-y-6 rounded-2xl border p-7 pb-[30px]">
           <div>
-            <div className="text-xs text-default-a">Your USDC Balance</div>
-            <div className="mt-0.5 text-[28px] font-bold leading-tight text-secondary">
+            <div className="text-default-a text-xs">Your USDC Balance</div>
+            <div className="text-secondary mt-0.5 text-[28px] leading-tight font-bold">
               {formattedUsdcBalance}
               <span className="text-xl"> USDC</span>
             </div>
           </div>
 
           <div>
-            <div className="text-xs text-default-a">Your BTC Balance</div>
-            <div className="mt-0.5 text-[28px] font-bold leading-tight text-default-d">
+            <div className="text-default-a text-xs">Your BTC Balance</div>
+            <div className="text-default-d mt-0.5 text-[28px] leading-tight font-bold">
               {formattedBtcBalance} <span className="text-xl">BTC</span>
             </div>
           </div>
 
           <div>
-            <div className="text-xs text-default-a">
+            <div className="text-default-a text-xs">
               Your Earnings on Bitmor
             </div>
-            <div className="mt-0.5 text-[28px] font-bold leading-tight text-default-d">
+            <div className="text-default-d mt-0.5 text-[28px] leading-tight font-bold">
               {formattedEarningsOnBitmor}
             </div>
           </div>
         </Card>
 
-        <Card className="h-full w-full rounded-2xl border border-default-200/40 bg-default-100/80 p-4">
-          <div className="mb-[18px] border-b border-default-200 pb-3.5 pl-1 text-base font-medium text-default-d">
+        <Card className="border-default-200/40 bg-default-100/80 h-full w-full rounded-2xl border p-4">
+          <div className="border-default-200 text-default-d mb-[18px] border-b pb-3.5 pl-1 text-base font-medium">
             Bitmor Stats
           </div>
 
-          <div className="!mb-[18px] space-y-6">
+          <div className="mb-[18px]! space-y-6">
             <div className="flex items-center gap-2">
-              <div className="rounded-full bg-success-50 p-[5px]">
+              <div className="bg-success-50 rounded-full p-[5px]">
                 <LuCircleDollarSign className="text-success" size={18} />
               </div>
-              <div className="text-sm text-default-d">
+              <div className="text-default-d text-sm">
                 Lenders in Bitmor have made more money than Aave
               </div>
             </div>
@@ -170,13 +170,13 @@ export default function InvestPage() {
                   strokeWidth={3}
                 />
               </div>
-              <div className="text-sm text-default-d">
+              <div className="text-default-d text-sm">
                 99% of BTC loaned on Bitmor is earning interest in Aave
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="min-w-7 rounded-full bg-primary-50 p-[5px]">
+              <div className="bg-primary-50 min-w-7 rounded-full p-[5px]">
                 <Image
                   src="/icons/btc-outline.svg"
                   alt="Bitcoin"
@@ -185,13 +185,13 @@ export default function InvestPage() {
                   className="size-[18px] min-w-[18px]"
                 />
               </div>
-              <div className="text-sm text-default-d">
+              <div className="text-default-d text-sm">
                 Earn yield on 100% of your borrowed BTC from Day 1
               </div>
             </div>
           </div>
 
-          <div className="!mt-auto flex w-full border-t border-default-200 pb-0.5 pt-4">
+          <div className="border-default-200 mt-auto! flex w-full border-t pt-4 pb-0.5">
             <Link
               as={NextLink}
               href="/"
@@ -204,20 +204,20 @@ export default function InvestPage() {
         </Card>
       </div>
 
-      <Card className="rounded-2xl border border-default-200 bg-default-100 px-7 pb-5 pt-[18px]">
-        <div className="mb-7 border-b border-default-200 pb-4 pl-1 text-base font-medium text-default-d">
+      <Card className="border-default-200 bg-default-100 rounded-2xl border px-7 pt-[18px] pb-5 max-sm:px-4">
+        <div className="border-default-200 text-default-d mb-7 border-b pb-4 pl-1 text-base font-medium">
           Investment Opportunities
         </div>
 
-        <div className="!mb-7 flex flex-wrap gap-[60px] px-2">
-          <div className="group w-[360px] rounded-xl border border-default-300/50 bg-default-200/40 px-5 pb-7 pt-[18px] transition hover:border-default-300 hover:bg-default-200 max-sm:w-full">
-            <div className="mb-7 border-b border-default-200 pb-3.5 pl-1 text-base font-medium text-default-d transition-[border-color] group-hover:border-default-300">
+        <div className="mb-7! flex flex-wrap gap-[60px] px-2 max-sm:gap-6 max-sm:px-0">
+          <div className="group border-default-300/50 bg-default-200/40 hover:border-default-300 hover:bg-default-200 w-[360px] rounded-xl border px-5 pt-[18px] pb-7 transition max-sm:w-full">
+            <div className="border-default-200 text-default-d group-hover:border-default-300 mb-7 border-b pb-3.5 pl-1 text-base font-medium transition-[border-color]">
               Be a Lender on Bitmor
             </div>
 
             <div className="mb-10 px-3">
-              <div className="mb-1 text-lg text-default-a">APR on USDC</div>
-              <div className="text-[32px] font-bold leading-tight text-default-e">
+              <div className="text-default-a mb-1 text-lg">APR on USDC</div>
+              <div className="text-default-e text-[32px] leading-tight font-bold">
                 {formattedAvgAPR}
               </div>
             </div>
@@ -233,8 +233,8 @@ export default function InvestPage() {
             </Button>
           </div>
 
-          <div className="group w-[360px] rounded-xl border border-default-300/50 bg-default-200/40 px-5 pb-7 pt-[18px] transition hover:border-default-300 hover:bg-default-200 max-sm:w-full">
-            <div className="mb-7 flex items-center justify-between gap-2 border-b border-default-200 pb-3.5 pl-1 text-base font-medium text-default-d transition-[border-color] group-hover:border-default-300">
+          <div className="group border-default-300/50 bg-default-200/40 hover:border-default-300 hover:bg-default-200 w-[360px] rounded-xl border px-5 pt-[18px] pb-7 transition max-sm:w-full">
+            <div className="border-default-200 text-default-d group-hover:border-default-300 mb-7 flex items-center justify-between gap-2 border-b pb-3.5 pl-1 text-base font-medium transition-[border-color]">
               <span>Earn from Aave</span>
 
               <Image
@@ -247,8 +247,8 @@ export default function InvestPage() {
             </div>
 
             <div className="mb-10 px-3">
-              <div className="mb-1 text-lg text-default-a">APR on BTC</div>
-              <div className="text-[32px] font-bold leading-tight text-default-e">
+              <div className="text-default-a mb-1 text-lg">APR on BTC</div>
+              <div className="text-default-e text-[32px] leading-tight font-bold">
                 0.3%
               </div>
             </div>
@@ -263,7 +263,7 @@ export default function InvestPage() {
               Start Investment on Aave
             </Button> */}
             <Button
-              className="pointer-events-auto mx-1 w-full !cursor-not-allowed font-medium text-default-d"
+              className="text-default-d pointer-events-auto mx-1 w-full cursor-not-allowed! font-medium"
               size="lg"
               color="default"
               as={NextLink}
@@ -275,18 +275,18 @@ export default function InvestPage() {
           </div>
         </div>
 
-        <div className="mx-2 mt-auto flex items-center gap-2.5 rounded-xl border border-default-300/50 bg-default-200/40 px-3.5 py-2.5">
-          <div className="rounded-full bg-secondary-50 p-[5px]">
+        <div className="border-default-300/50 bg-default-200/40 mx-2 mt-auto flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 max-sm:mx-0">
+          <div className="bg-secondary-50 rounded-full p-[5px]">
             <LiaHourglassSolid className="text-secondary" size={18} />
           </div>
 
-          <div className="text-sm text-default-a">
+          <div className="text-default-a text-sm">
             We&apos;ll be adding more investment opportunities soon. Stay tuned
             to updates by connecting{' '}
             <Button
               variant="light"
               color="secondary"
-              className="mx-auto h-auto w-auto min-w-0 p-0 text-sm font-medium underline hover:bg-transparent hover:text-secondary-300 data-[hover]:bg-transparent data-[hover]:text-secondary-300"
+              className="hover:text-secondary-300 data-[hover]:text-secondary-300 mx-auto h-auto w-auto min-w-0 p-0 text-sm font-medium underline hover:bg-transparent data-hover:bg-transparent"
               onPress={() => setIsTelegramModalOpen(true)}
             >
               Telegram

@@ -66,13 +66,13 @@ export const BTCGoal = ({
   refetchLoanSummary,
 }: BTCGoalProps) => {
   return (
-    <Card className="rounded-2xl border border-default-200 bg-default-100 px-7 pb-5 pt-[18px]">
-      <div className="mb-7 border-b border-default-200 pb-4 pl-1 text-base font-medium text-default-d">
+    <Card className="border-default-200 bg-default-100 rounded-2xl border px-7 pt-[18px] pb-5 max-sm:px-4">
+      <div className="border-default-200 text-default-d mb-7 border-b pb-4 pl-1 text-base font-medium">
         Set BTC Goal
       </div>
 
       <div className="flex w-full justify-between gap-16 max-xl:flex-col">
-        <div className="h-full w-full space-y-8 px-2 sm:min-w-[400px]">
+        <div className="h-full w-full space-y-8 px-2 max-sm:px-0 sm:min-w-[400px]">
           <NumberInput
             hideStepper
             isWheelDisabled
@@ -106,7 +106,7 @@ export const BTCGoal = ({
             }}
             description={
               <span className="flex flex-col gap-1">
-                <span className="text-sm text-default-a">
+                <span className="text-default-a text-sm">
                   Available to be Borrowed:{' '}
                   <strong className="text-default-d">
                     {numeral(availableLoanAmountInBTC).format('0,0.000[0000]')}{' '}
@@ -119,10 +119,10 @@ export const BTCGoal = ({
 
           <RadioGroup
             label={
-              <span className="mb-1 flex items-center gap-2 text-sm font-medium text-default-d">
+              <span className="text-default-d mb-1 flex items-center gap-2 text-sm font-medium">
                 <span>Select Loan Duration:</span>
                 <Tooltip content="Select the duration of the loan">
-                  <LuInfo className="cursor-pointer text-default-600 outline-none" />
+                  <LuInfo className="text-default-600 cursor-pointer outline-none" />
                 </Tooltip>
               </span>
             }
@@ -140,11 +140,11 @@ export const BTCGoal = ({
             ))}
           </RadioGroup>
 
-          <div className="rounded-xl border border-default-300/50 bg-[#eaeaee] p-5 pb-4 pt-[18px] dark:bg-[#1F1F1F] max-sm:w-full">
-            <div className="mb-4 flex items-center justify-between gap-2 pb-3.5 pl-1 text-base font-medium text-default-d">
+          <div className="border-default-300/50 rounded-xl border bg-[#eaeaee] p-5 pt-[18px] pb-4 max-sm:w-full dark:bg-[#1F1F1F]">
+            <div className="text-default-d mb-4 flex items-center justify-between gap-2 pb-3.5 pl-1 text-base font-medium">
               <span>Select Down Payment:</span>
               <Tooltip content="Enter how much down payment you want to make">
-                <LuInfo className="cursor-pointer text-default-600 outline-none" />
+                <LuInfo className="text-default-600 cursor-pointer outline-none" />
               </Tooltip>
             </div>
 
@@ -152,7 +152,7 @@ export const BTCGoal = ({
               <div className="relative">
                 <div className="mb-2 w-full">
                   {sliderInputInsufficient && (
-                    <span className="absolute -top-5 left-1.5 mb-2 text-xs text-danger">
+                    <span className="text-danger absolute -top-5 left-1.5 mb-2 text-xs">
                       Insufficient Balance
                     </span>
                   )}
@@ -162,7 +162,7 @@ export const BTCGoal = ({
                     name="usdc"
                     size="sm"
                     endContent={
-                      <span className="mb-0.5 mt-auto text-base font-bold">
+                      <span className="mt-auto mb-0.5 text-base font-bold">
                         USDC
                       </span>
                     }
@@ -231,11 +231,11 @@ export const BTCGoal = ({
                 />
               </div>
 
-              <div className="flex items-start justify-between font-medium text-default-500">
-                <div className="text-sm text-default-a">
+              <div className="text-default-500 flex items-start justify-between font-medium">
+                <div className="text-default-a text-sm">
                   {numeral(minUsdcAmount).format('0,0.[00]')}
                 </div>
-                <div className="flex flex-col items-end text-left text-sm text-default-a">
+                <div className="text-default-a flex flex-col items-end text-left text-sm">
                   <div className="text-left">
                     {numeral(maxUsdcAmount).format('0,0.[00]')}{' '}
                     <span className="text-xs">USDC</span>
@@ -248,10 +248,10 @@ export const BTCGoal = ({
           <div className="flex flex-wrap items-center justify-between gap-4">
             <RadioGroup
               label={
-                <span className="mb-1 flex items-center gap-2 text-sm font-medium text-default-d">
+                <span className="text-default-d mb-1 flex items-center gap-2 text-sm font-medium">
                   <span>Interest Rate:</span>
                   <Tooltip content="Select the interest rate of the loan">
-                    <LuInfo className="cursor-pointer text-default-600 outline-none" />
+                    <LuInfo className="text-default-600 cursor-pointer outline-none" />
                   </Tooltip>
                 </span>
               }
@@ -271,7 +271,7 @@ export const BTCGoal = ({
               <div className="ml-2 flex items-center justify-center">
                 <Tooltip content="Coming Soon">
                   <FaGear
-                    className="cursor-not-allowed text-default-500 outline-none"
+                    className="text-default-500 cursor-not-allowed outline-none"
                     size={18}
                   />
                 </Tooltip>
@@ -283,7 +283,7 @@ export const BTCGoal = ({
             <Checkbox
               isSelected
               isDisabled
-              className="!pointer-events-auto !mt-6 !cursor-not-allowed"
+              className="pointer-events-auto! cursor-not-allowed!"
             >
               Opt in for Liquidation Insurance
             </Checkbox>
@@ -291,27 +291,27 @@ export const BTCGoal = ({
         </div>
 
         <div className="w-full sm:min-w-[360px]">
-          <div className="w-full rounded-xl border border-default-200 bg-[#eaeaee] p-5 dark:bg-[#1F1F22]">
-            <div className="mb-5 border-b border-default-300 px-1 pb-3.5 text-base font-medium text-default-d">
+          <div className="border-default-200 w-full rounded-xl border bg-[#eaeaee] p-5 dark:bg-[#1F1F22]">
+            <div className="border-default-300 text-default-d mb-5 border-b px-1 pb-3.5 text-base font-medium">
               Loan Breakdown
             </div>
 
-            <div className="space-y-3 px-1 text-sm text-default-a">
+            <div className="text-default-a space-y-3 px-1 text-sm">
               <div className="flex items-center justify-between gap-2">
                 <span>Total Paid</span>
-                <span className="text-right font-bold text-default-d">
+                <span className="text-default-d text-right font-bold">
                   {formatUSDC(loanSummary?.totalPayment)} USDC
                 </span>
               </div>
               <div className="relative ml-7 flex items-center justify-between gap-2">
-                <span className="absolute -left-6 -top-2.5 size-5 border-b border-l border-default-300" />
+                <span className="border-default-300 absolute -top-2.5 -left-6 size-5 border-b border-l" />
                 <span>Principal</span>
                 <span className="text-right">
                   {formatUSDC(loanSummary?.principal)} USDC
                 </span>
               </div>
               <div className="relative ml-7 flex items-center justify-between gap-2">
-                <span className="absolute -left-6 -top-6 size-5 h-9 border-b border-l border-default-300" />
+                <span className="border-default-300 absolute -top-6 -left-6 size-5 h-9 border-b border-l" />
                 <span>Interest ({loanSummary?.interestRate}%)</span>
                 <span className="text-right">
                   {formatUSDC(loanSummary?.totalInterest)} USDC
@@ -319,21 +319,21 @@ export const BTCGoal = ({
               </div>
               <div className="flex items-center justify-between gap-2">
                 <span>Loan Origination Fees (1%)</span>
-                <span className="text-right font-bold text-default-d">
+                <span className="text-default-d text-right font-bold">
                   {formatUSDC(loanSummary?.openingFee)} USDC
                 </span>
               </div>
               <div className="flex items-center justify-between gap-2">
                 <span>Down Payment + Fees</span>
-                <span className="text-right font-bold text-default-d">
+                <span className="text-default-d text-right font-bold">
                   {formatUSDC(loanSummary?.firstTransaction?.amountSent)} USDC
                 </span>
               </div>
             </div>
 
-            <div className="mt-7 flex items-center justify-between border-t border-default-300 px-1 pt-4 text-base font-medium text-default-d">
+            <div className="border-default-300 text-default-d mt-7 flex items-center justify-between border-t px-1 pt-4 text-base font-medium">
               <span>Monthly Payment</span>
-              <span className="text-right text-xl font-bold text-primary">
+              <span className="text-primary text-right text-xl font-bold">
                 {formatUSDC(loanSummary?.monthlyPayment)} USDC
               </span>
             </div>

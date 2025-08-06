@@ -56,24 +56,24 @@ export const LoanConditions = ({
   loanSummary,
 }: LoanConditionsProps) => {
   return (
-    <Card className="rounded-2xl border border-default-200 bg-default-100 px-7 pb-5 pt-[18px]">
-      <div className="mb-7 border-b border-default-200 pb-4 pl-1 text-base font-medium text-default-d">
+    <Card className="border-default-200 bg-default-100 rounded-2xl border px-7 pt-[18px] pb-5 max-sm:px-4">
+      <div className="border-default-200 text-default-d mb-7 border-b pb-4 pl-1 text-base font-medium">
         Loan Conditions
       </div>
 
       <div className="mb-8 flex w-full justify-between gap-16 max-xl:flex-col">
         <div className="w-full sm:min-w-[360px]">
-          <div className="w-full rounded-xl border border-default-200 bg-[#eaeaee] p-5 dark:bg-[#1F1F22]">
-            <div className="mb-5 border-b border-default-300 px-1 pb-3.5 text-base font-medium text-default-d">
+          <div className="border-default-200 w-full rounded-xl border bg-[#eaeaee] p-5 dark:bg-[#1F1F22]">
+            <div className="border-default-300 text-default-d mb-5 border-b px-1 pb-3.5 text-base font-medium">
               Loan Summary
             </div>
 
-            <div className="mb-5 flex items-center gap-12 border-b border-default-300 px-1 pb-4">
+            <div className="border-default-300 mb-5 flex items-center gap-12 border-b px-1 pb-4">
               <div className="flex flex-col gap-0.5">
-                <div className="text-xs leading-tight text-default-d">
+                <div className="text-default-d text-xs leading-tight">
                   Borrowed Amount
                 </div>
-                <div className="text-[32px] font-bold leading-tight text-primary">
+                <div className="text-primary text-[32px] leading-tight font-bold">
                   {numeral(loanSummary?.initialBtcCollateral).format(
                     '0,0.000[0000]'
                   )}{' '}
@@ -81,10 +81,10 @@ export const LoanConditions = ({
                 </div>
               </div>
               <div className="flex flex-col gap-0.5">
-                <div className="text-xs leading-tight text-default-d">
+                <div className="text-default-d text-xs leading-tight">
                   Loan Duration
                 </div>
-                <div className="text-[32px] font-bold leading-tight text-default-d">
+                <div className="text-default-d text-[32px] leading-tight font-bold">
                   {TIME_PERIOD.find(
                     (item) => item.value === loanSummary?.term?.toString()
                   )?.y || 0}
@@ -93,22 +93,22 @@ export const LoanConditions = ({
               </div>
             </div>
 
-            <div className="space-y-3 px-1 text-sm text-default-a">
+            <div className="text-default-a space-y-3 px-1 text-sm">
               <div className="flex items-center justify-between gap-2">
                 <span>Total Paid</span>
-                <span className="text-right font-bold text-default-d">
+                <span className="text-default-d text-right font-bold">
                   {formatUSDC(loanSummary?.totalPayment)} USDC
                 </span>
               </div>
               <div className="relative ml-7 flex items-center justify-between gap-2">
-                <span className="absolute -left-6 -top-2.5 size-5 border-b border-l border-default-300" />
+                <span className="border-default-300 absolute -top-2.5 -left-6 size-5 border-b border-l" />
                 <span>Principal</span>
                 <span className="text-right">
                   {formatUSDC(loanSummary?.principal)} USDC
                 </span>
               </div>
               <div className="relative ml-7 flex items-center justify-between gap-2">
-                <span className="absolute -left-6 -top-6 size-5 h-9 border-b border-l border-default-300" />
+                <span className="border-default-300 absolute -top-6 -left-6 size-5 h-9 border-b border-l" />
                 <span>Interest ({loanSummary?.interestRate}%)</span>
                 <span className="text-right">
                   {formatUSDC(loanSummary?.totalInterest)} USDC
@@ -116,32 +116,32 @@ export const LoanConditions = ({
               </div>
               <div className="flex items-center justify-between gap-2">
                 <span>Loan Origination Fees (1%)</span>
-                <span className="text-right font-bold text-default-d">
+                <span className="text-default-d text-right font-bold">
                   {formatUSDC(loanSummary?.openingFee)} USDC
                 </span>
               </div>
               <div className="flex items-center justify-between gap-2">
                 <span>Down Payment + Fees</span>
-                <span className="text-right font-bold text-default-d">
+                <span className="text-default-d text-right font-bold">
                   {formatUSDC(loanSummary?.firstTransaction?.amountSent)} USDC
                 </span>
               </div>
             </div>
 
-            <div className="mt-7 flex items-center justify-between border-t border-default-300 px-1 pt-4 text-base font-medium text-default-d">
+            <div className="border-default-300 text-default-d mt-7 flex items-center justify-between border-t px-1 pt-4 text-base font-medium">
               <span>Monthly Payment</span>
-              <span className="text-right text-xl font-bold text-primary">
+              <span className="text-primary text-right text-xl font-bold">
                 {formatUSDC(loanSummary?.monthlyPayment)} USDC
               </span>
             </div>
-            <div className="mt-1 px-1 text-xs text-default-a">
+            <div className="text-default-a mt-1 px-1 text-xs">
               starting 10th May 2025
             </div>
           </div>
         </div>
 
-        <div className="h-full w-full px-2 sm:min-w-[400px]">
-          <div className="mb-4 border-b border-default-300 px-1 pb-3.5 text-base font-medium text-default-d">
+        <div className="h-full w-full px-2 max-sm:px-0 sm:min-w-[400px]">
+          <div className="border-default-300 text-default-d mb-4 border-b px-1 pb-3.5 text-base font-medium">
             Loan Conditions
           </div>
 
@@ -192,10 +192,10 @@ export const LoanConditions = ({
             }
           />
 
-          <div className="mt-4 border-t border-default-300 pl-3.5 pt-5">
+          <div className="border-default-300 mt-4 border-t pt-5 pl-3.5">
             <Checkbox
               color="primary"
-              className="!m-0 p-0"
+              className="m-0! p-0"
               classNames={{
                 base: 'items-start',
                 wrapper: 'mr-3 mt-0 before:border-primary',
@@ -227,7 +227,7 @@ export const LoanConditions = ({
           size="lg"
           startContent={<LuArrowLeft />}
           variant="light"
-          className="px-0 text-[#777777] hover:!bg-transparent hover:text-default-d"
+          className="hover:text-default-d px-0 text-[#777777] hover:bg-transparent!"
           onPress={() => setStep(0)}
           isLoading={isLoading}
         >
@@ -310,13 +310,13 @@ const LoanConditionItem = ({
         <div
           ref={ref}
           className={cn(
-            'aria-expanded:scale-1 flex rounded-[10px] px-3.5 py-2.5 pr-2.5 transition hover:bg-default-200/70 aria-expanded:opacity-100',
+            'hover:bg-default-200/70 flex rounded-[10px] px-3.5 py-2.5 pr-2.5 transition aria-expanded:scale-100 aria-expanded:opacity-100',
             isOtherOpen && 'blur-sm'
           )}
         >
           <Checkbox
             color="primary"
-            className="!m-0 p-0"
+            className="m-0! p-0"
             classNames={{
               base: 'items-start',
               wrapper: 'mr-3 mt-0.5',
@@ -328,16 +328,16 @@ const LoanConditionItem = ({
             {text}
           </Checkbox>
 
-          <span className="mt-0.5 p-1 text-default-a" role="button">
+          <span className="text-default-a mt-0.5 min-w-6 p-1" role="button">
             {isOpen ? <BsCaretUpFill /> : <BsCaretDownFill />}
           </span>
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-[--content-width] bg-default-100 px-2 dark:bg-[#1F1F22]">
-        <div className="mb-3 flex border-b border-default-300 px-1.5 py-2.5 pr-0.5 transition">
+      <PopoverContent className="bg-default-100 w-(--content-width) px-2 dark:bg-[#1F1F22]">
+        <div className="border-default-300 mb-3 flex border-b px-1.5 py-2.5 pr-0.5 transition">
           <Checkbox
             color="primary"
-            className="!m-0 p-0"
+            className="m-0! p-0"
             classNames={{
               base: 'items-start',
               wrapper: 'mr-3 mt-0.5',
@@ -350,7 +350,7 @@ const LoanConditionItem = ({
           </Checkbox>
 
           <span
-            className="mt-0.5 p-1 text-default-a"
+            className="text-default-a mt-0.5 min-w-6 p-1"
             role="button"
             onClick={() => setIsOpen(false)}
           >
@@ -358,7 +358,7 @@ const LoanConditionItem = ({
           </span>
         </div>
 
-        <div className="px-6 pb-4 text-sm text-default-d">
+        <div className="text-default-d px-6 pb-4 text-sm">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
           minim veniam, quis nostrud exe ullamco laboris nisi ut aliquip ex ea

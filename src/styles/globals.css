@@ -1,6 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin './hero.mts';
+@config '../../tailwind.config.mjs';
+@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+
+@custom-variant dark (&:is(.dark *));
 
 ::selection {
   background: hsl(var(--heroui-primary));
@@ -23,4 +26,9 @@
 }
 ::-webkit-scrollbar-thumb {
   background-color: hsl(var(--heroui-default-600));
+}
+
+button,
+[role='button'] {
+  cursor: pointer;
 }

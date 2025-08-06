@@ -1,9 +1,7 @@
 export const API_BASE_URL = 'https://backend.xefi.ai/api'
 // export const API_BASE_URL = 'http://localhost:5001/api'
 
-export const COOKIE_KEYS = {
-  JWT: 'auth:jwt',
-}
+export const COOKIE_KEYS = { JWT: 'auth:jwt' }
 
 export const CONTRACT_ADDRESSES = {
   USDC: '0xe270578586FA80B627a0B84a3D86169B4B515730',
@@ -17,3 +15,16 @@ export const TIME_PERIOD = [
   { value: '84', label: '7 Years', y: 7, interestForLandingPage: 10 },
 ]
 export const INTEREST_RATE = ['8']
+
+// export const TELEGRAM_BOT_ID = '7818630903' // @bitmore_test_bot
+export const TELEGRAM_BOT_ID = '7910535529' // @BitMor_Notifier_bot
+
+export const TIME_PERIOD_AND_INTEREST_RATES = [
+  { timePeriod: '6', interestRate: '7' },
+  { timePeriod: '12', interestRate: '10' },
+  { timePeriod: '18', interestRate: '15' },
+] as const
+
+export const DEFAULT_LOAN_AMOUNT = 100_000
+export const MIN_DATE = '2017-08-17'
+export const MAX_DATE = '2025-05-08'

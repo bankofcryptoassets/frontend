@@ -3,9 +3,7 @@ import { useCookies } from 'react-cookie'
 import { jwtDecode } from 'jwt-decode'
 
 export const useAuth = () => {
-  const [cookies] = useCookies([COOKIE_KEYS.JWT], {
-    doNotParse: true,
-  })
+  const [cookies] = useCookies([COOKIE_KEYS.JWT], { doNotParse: true })
 
   const token = cookies[COOKIE_KEYS.JWT]
 

@@ -19,38 +19,32 @@ const chartData = [
 ]
 
 const chartConfig = {
-  bitmor: {
-    label: 'Bitmor',
-    color: 'hsl(var(--heroui-primary))',
-  },
-  aave: {
-    label: 'Aave',
-    color: 'hsl(var(--heroui-secondary))',
-  },
+  bitmor: { label: 'Bitmor', color: 'hsl(var(--heroui-primary))' },
+  aave: { label: 'Aave', color: 'hsl(var(--heroui-secondary))' },
 } satisfies ChartConfig
 
 export const LendingChart = () => {
   const { resolvedTheme: theme } = useTheme()
 
   return (
-    <Card className="w-full max-w-md rounded-2xl bg-background">
+    <Card className="bg-background w-full max-w-md rounded-2xl">
       <MagicCard
         gradientColor={theme === 'dark' ? '#333333' : '#D9D9D9aa'}
         className="p-3"
       >
-        <div className="rounded-xl bg-default-200/70 px-5 py-6">
+        <div className="bg-default-200/70 rounded-xl px-5 py-6">
           <div className="mb-6 flex items-start justify-between gap-4">
-            <div className="text-base font-semibold text-default-d">
+            <div className="text-default-d text-base font-semibold">
               USDC Yield
             </div>
 
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
-                <span className="size-2 rounded-full bg-primary"></span>
+                <span className="bg-primary size-2 rounded-full"></span>
                 <span className="text-xs font-medium">Bitmor</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="size-2 rounded-full bg-secondary"></span>
+                <span className="bg-secondary size-2 rounded-full"></span>
                 <span className="text-xs font-medium">Aave</span>
               </div>
             </div>

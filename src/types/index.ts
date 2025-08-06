@@ -1,17 +1,12 @@
 import { SVGProps } from 'react'
 
-export type IconSvgProps = SVGProps<SVGSVGElement> & {
-  size?: number
-}
+export type IconSvgProps = SVGProps<SVGSVGElement> & { size?: number }
 
 export type LoanAvailabilityType = {
   status?: string
   data?: {
     availableLoanAmountInBTC?: number
-    fgi: {
-      value: number
-      valueText: string
-    }
+    fgi: { value: number; valueText: string }
     btcBorrowers: number
     totalLoanInBTC: number
     totalLoanInUSD: number
@@ -20,9 +15,7 @@ export type LoanAvailabilityType = {
 
 export type LoanSummaryResponse = {
   status: string
-  data: {
-    loanSummary: LoanSummary
-  }
+  data: { loanSummary: LoanSummary }
 }
 
 export type LoanSummary = {
@@ -40,10 +33,7 @@ export type LoanSummary = {
   amortizationSchedule: AmortizationSchedule[]
   firstTransaction: FirstTransaction
   currentBtcPrice: string
-  liquidationChart: {
-    months: number[]
-    liquidationPrices: number[]
-  }
+  liquidationChart: { months: number[]; liquidationPrices: number[] }
   basisPoints: string
   initialBtcCollateral: string
   contract: {
@@ -60,15 +50,9 @@ export type AmortizationSchedule = {
   remainingBalance: string
 }
 
-export type FirstTransaction = {
-  amountSent: string
-  breakdown: Breakdown
-}
+export type FirstTransaction = { amountSent: string; breakdown: Breakdown }
 
-export type Breakdown = {
-  downPayment: string
-  loanOpeningFee: string
-}
+export type Breakdown = { downPayment: string; loanOpeningFee: string }
 
 export type LoanRequestPayload = {
   _id: string
@@ -134,15 +118,9 @@ export type ReceivableAmountMonthlyByLender = {
   remaining_amount: number
 }
 
-export type UserID = {
-  _id: string
-  user_address: string
-}
+export type UserID = { _id: string; user_address: string }
 
-export type WithdrawableByUser = {
-  user_id: string
-  amount: number
-}
+export type WithdrawableByUser = { user_id: string; amount: number }
 
 export type LendingListData = {
   lendings: {

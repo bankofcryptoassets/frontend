@@ -9,21 +9,21 @@ interface EMIStatsProps {
 
 export function EMIStats({ emiAmount, dcaAmount }: EMIStatsProps) {
   return (
-    <Card className="border border-default-200">
+    <Card className="border-default-200 border">
       <CardBody className="flex flex-row flex-wrap items-center justify-between gap-6 p-6">
         <div>
-          <p className="mb-1 text-sm font-medium text-default-d">
+          <p className="text-default-d mb-1 text-sm font-medium">
             EMI (Monthly)
           </p>
-          <p className="text-[28px] font-bold text-primary">
+          <p className="text-primary text-[28px] font-bold">
             {emiAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}{' '}
             <span className="text-lg">USDC</span>
           </p>
         </div>
 
         <div>
-          <p className="mb-1 text-sm font-medium text-default-d">DCA</p>
-          <p className="text-[28px] font-bold text-secondary">
+          <p className="text-default-d mb-1 text-sm font-medium">DCA</p>
+          <p className="text-secondary text-[28px] font-bold">
             {dcaAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}{' '}
             <span className="text-lg">USDC</span>
           </p>
@@ -51,45 +51,45 @@ export function StrategyStats({
   dcaCostPerBTC,
 }: StrategyStatsProps) {
   return (
-    <Card className="border border-default-200 max-lg:overflow-x-auto">
+    <Card className="border-default-200 border max-lg:overflow-x-auto">
       <CardBody className="px-5 py-4 max-lg:min-w-[640px]">
         <table className="w-full">
           <thead>
-            <tr className="divide-x divide-default-200 border-b border-default-200 text-sm">
-              <th className="pb-3.5 pl-3 font-medium text-default-a">
+            <tr className="divide-default-200 border-default-200 divide-x border-b text-sm">
+              <th className="text-default-a pb-3.5 pl-3 font-medium">
                 Strategy
               </th>
-              <th className="pb-3.5 pl-5 font-medium text-default-a">
+              <th className="text-default-a pb-3.5 pl-5 font-medium">
                 Total BTC Owned
               </th>
-              <th className="pb-3.5 pl-5 font-medium text-default-a">
+              <th className="text-default-a pb-3.5 pl-5 font-medium">
                 Dollar Value of BTC Held
               </th>
-              <th className="pb-3.5 pl-5 font-medium text-default-a">
+              <th className="text-default-a pb-3.5 pl-5 font-medium">
                 Cost per BTC
               </th>
             </tr>
           </thead>
 
           <tbody>
-            <tr className="divide-x divide-default-200">
-              <td className="pl-3 pt-4 text-base font-medium text-default-d">
+            <tr className="divide-default-200 divide-x">
+              <td className="text-default-d pt-4 pl-3 text-base font-medium">
                 Loan
               </td>
-              <td className="pl-5 pt-4 text-lg font-bold text-primary">
+              <td className="text-primary pt-4 pl-5 text-lg font-bold">
                 {loanBTC?.toLocaleString(undefined, {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 4,
                 })}{' '}
                 BTC
               </td>
-              <td className="pl-5 pt-4 text-lg font-bold text-primary">
+              <td className="text-primary pt-4 pl-5 text-lg font-bold">
                 {loanReturns.toLocaleString(undefined, {
                   maximumFractionDigits: 0,
                 })}{' '}
                 USDC
               </td>
-              <td className="pl-5 pt-4 text-lg font-bold text-primary">
+              <td className="text-primary pt-4 pl-5 text-lg font-bold">
                 {loanCostPerBTC.toLocaleString(undefined, {
                   maximumFractionDigits: 0,
                 })}{' '}
@@ -97,24 +97,24 @@ export function StrategyStats({
               </td>
             </tr>
 
-            <tr className="divide-x divide-default-200">
-              <td className="pb-2 pl-3 pt-3.5 text-base font-medium text-default-d">
+            <tr className="divide-default-200 divide-x">
+              <td className="text-default-d pt-3.5 pb-2 pl-3 text-base font-medium">
                 DCA
               </td>
-              <td className="pb-2 pl-5 pt-3.5 text-lg font-bold text-secondary">
+              <td className="text-secondary pt-3.5 pb-2 pl-5 text-lg font-bold">
                 {dcaBTC?.toLocaleString(undefined, {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 4,
                 })}{' '}
                 BTC
               </td>
-              <td className="pb-2 pl-5 pt-3.5 text-lg font-bold text-secondary">
+              <td className="text-secondary pt-3.5 pb-2 pl-5 text-lg font-bold">
                 {dcaReturns.toLocaleString(undefined, {
                   maximumFractionDigits: 0,
                 })}{' '}
                 USDC
               </td>
-              <td className="pb-2 pl-5 pt-3.5 text-lg font-bold text-secondary">
+              <td className="text-secondary pt-3.5 pb-2 pl-5 text-lg font-bold">
                 {dcaCostPerBTC.toLocaleString(undefined, {
                   maximumFractionDigits: 0,
                 })}{' '}

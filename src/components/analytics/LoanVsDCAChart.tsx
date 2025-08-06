@@ -87,11 +87,11 @@ export function LoanVsDCAChart({
       <div className="mb-3 flex flex-wrap items-center justify-between gap-4">
         {!!winPercentage && (
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            <div className="flex items-center rounded-lg border border-success/20 bg-success/5 px-4 py-2 text-xs font-bold text-success">
+            <div className="border-success/20 bg-success/5 text-success flex items-center rounded-lg border px-4 py-2 text-xs font-bold">
               Loan Strategy Win% = {winPercentage}%
             </div>
 
-            <div className="flex items-center rounded-lg border border-danger/20 bg-danger/5 px-4 py-2 text-xs font-bold text-danger">
+            <div className="border-danger/20 bg-danger/5 text-danger flex items-center rounded-lg border px-4 py-2 text-xs font-bold">
               DCA Strategy Win% = {(100 - parseFloat(winPercentage)).toFixed(1)}
               %
             </div>
@@ -212,23 +212,23 @@ export function LoanVsDCAChart({
               pointerEvents: 'none',
             }}
             content={
-              <div className="absolute left-32 top-6 flex flex-col gap-2 text-xs">
+              <div className="absolute top-6 left-32 flex flex-col gap-2 text-xs">
                 <div className="flex items-center gap-2.5">
-                  <div className="size-2 rounded-full bg-success" />
+                  <div className="bg-success size-2 rounded-full" />
                   <span className="text-default-a">Loan Strategy Wins</span>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <div className="size-2 rounded-full bg-danger" />
+                  <div className="bg-danger size-2 rounded-full" />
                   <span className="text-default-a">DCA Strategy Wins</span>
                 </div>
                 {showMA && (
                   <>
                     <div className="flex items-center gap-2.5">
-                      <div className="h-0.5 w-2.5 rounded-full bg-secondary" />
+                      <div className="bg-secondary h-0.5 w-2.5 rounded-full" />
                       <span className="text-default-a">200-day MA</span>
                     </div>
                     <div className="flex items-center gap-2.5">
-                      <div className="h-0.5 w-2.5 rounded-full bg-primary" />
+                      <div className="bg-primary h-0.5 w-2.5 rounded-full" />
                       <span className="text-default-a">500-day MA</span>
                     </div>
                   </>

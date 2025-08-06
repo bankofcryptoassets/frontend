@@ -1,5 +1,4 @@
 import { NoData } from '@/components/NoData'
-import { title } from '@/components/primitives'
 
 export default function PortfolioPage() {
   return (
@@ -9,7 +8,7 @@ export default function PortfolioPage() {
     >
       <div className="mb-8 flex items-center justify-between gap-4 max-lg:flex-col max-lg:text-center">
         <div>
-          <h1 className={title({ size: 'sm', className: 'text-primary' })}>
+          <h1 className="text-primary inline text-3xl font-bold tracking-tight lg:text-4xl">
             My Portfolio
           </h1>
         </div>

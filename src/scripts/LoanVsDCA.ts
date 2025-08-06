@@ -68,13 +68,18 @@ interface CommandOptions {
   futureScenario?: boolean
   loanAmount?: number
   timePeriod?: number
+  downPayment?: number
+  loanAPR?: number
+  liquidationInsuranceCost?: number
+  dcaWithoutDownPayment?: boolean
+  btcYield?: number
+  dcaCadence?: 'daily' | 'weekly' | 'monthly'
 }
 
 // ────────────────────────────────────────────────────────────────
 // Parameters – adjust at will
 // ────────────────────────────────────────────────────────────────
-const ANNUAL_RATE = 0.1
-const MONTHLY_RATE = ANNUAL_RATE / 12
+// Note: APR is now passed as a parameter to functions
 
 // ────────────────────────────────────────────────────────────────
 // Load price data from CSV string
@@ -181,16 +186,54 @@ function simulateStart(
   priceSeries: Map<string, number>,
   crashPx?: number,
   loanAmount: number = 100_000,
-  timePeriod: number = 60
+  timePeriod: number = 60,
+  downPayment: number = 0.2,
+  loanAPR: number = 10,
+  liquidationInsuranceCost: number = 0,
+  dcaWithoutDownPayment: boolean = false,
+  btcYield: number = 0,
+  dcaCadence: 'daily' | 'weekly' | 'monthly' = 'daily'
 ): SimulationResult {
-  const cashUpfront = loanAmount * 0.2
-  const loanPrincipal = loanAmount * 0.8
+  const cashUpfront = loanAmount * downPayment // Dynamic down payment
+  const loanPrincipal = loanAmount * (1 - downPayment) // Dynamic loan principal
+  const annualRate = loanAPR / 100 // Convert percentage to decimal
+  const monthlyRate = annualRate / 12
   const monthlyPayment =
-    (loanPrincipal * MONTHLY_RATE * Math.pow(1 + MONTHLY_RATE, timePeriod)) /
-    (Math.pow(1 + MONTHLY_RATE, timePeriod) - 1)
+    (loanPrincipal * monthlyRate * Math.pow(1 + monthlyRate, timePeriod)) /
+    (Math.pow(1 + monthlyRate, timePeriod) - 1)
+
+  // Calculate DCA payment amount based on cadence
+  const getDcaPaymentAmount = (cadence: 'daily' | 'weekly' | 'monthly') => {
+    switch (cadence) {
+      case 'daily':
+        return monthlyPayment / 30 // Approximate daily payment
+      case 'weekly':
+        return monthlyPayment / 4 // Approximate weekly payment
+      case 'monthly':
+        return monthlyPayment
+      default:
+        return monthlyPayment
+    }
+  }
+
+  const dcaPaymentAmount = getDcaPaymentAmount(dcaCadence)
 
   const px0 = priceOn(startDate, priceSeries)
   const fullBtc = loanAmount / px0
+
+  // BTC Yield calculation
+  const BTC_YIELD_COMPOUNDING = false // Hardcoded flag to enable/disable compounding
+  const btcYieldRate = btcYield / 100 // Convert percentage to decimal
+  const yearsInPeriod = timePeriod / 12 // Convert months to years
+
+  let btcYieldAmount = 0
+  if (BTC_YIELD_COMPOUNDING) {
+    // Compound yield (yearly compounding)
+    btcYieldAmount = fullBtc * (Math.pow(1 + btcYieldRate, yearsInPeriod) - 1)
+  } else {
+    // Simple yield (no compounding)
+    btcYieldAmount = fullBtc * btcYieldRate * yearsInPeriod
+  }
 
   // Get last available price date
   const sortedDates = Array.from(priceSeries.keys()).sort()
@@ -203,34 +246,54 @@ function simulateStart(
     : potentialEvalDate
 
   // Build ledger
-  let btcDca = cashUpfront / px0
+  const dcaUpfront = dcaWithoutDownPayment ? 0 : cashUpfront
+  let btcDca = dcaUpfront / px0
   const rows: LedgerRow[] = [
     {
       Date: format(startDate, 'yyyy-MM-dd'),
-      Payment_USD: cashUpfront,
+      Payment_USD: dcaUpfront,
       BTC_Price: px0,
-      BTC_Added_DCA: cashUpfront / px0,
+      BTC_Added_DCA: dcaUpfront / px0,
       Cum_BTC_DCA: btcDca,
     },
   ]
 
-  let paidMonths = 0
+  // let paymentCount = 0
   let payDate = new Date(startDate)
+  let totalDcaPayments = 0
+
+  // Helper function to get next payment date based on cadence
+  const getNextPaymentDate = (
+    currentDate: Date,
+    cadence: 'daily' | 'weekly' | 'monthly'
+  ) => {
+    switch (cadence) {
+      case 'daily':
+        return addDays(currentDate, 1)
+      case 'weekly':
+        return addDays(currentDate, 7)
+      case 'monthly':
+        return addMonths(currentDate, 1)
+      default:
+        return addDays(currentDate, 1)
+    }
+  }
 
   while (true) {
-    payDate = addMonths(payDate, 1)
-    if (isAfter(payDate, evalDate) || paidMonths >= timePeriod) {
+    payDate = getNextPaymentDate(payDate, dcaCadence)
+    if (isAfter(payDate, evalDate)) {
       break
     }
 
     const btcPrice = priceOn(payDate, priceSeries)
-    const btcAdded = monthlyPayment / btcPrice
+    const btcAdded = dcaPaymentAmount / btcPrice
     btcDca += btcAdded
-    paidMonths += 1
+    totalDcaPayments += dcaPaymentAmount
+    // paymentCount += 1
 
     rows.push({
       Date: format(payDate, 'yyyy-MM-dd'),
-      Payment_USD: monthlyPayment,
+      Payment_USD: dcaPaymentAmount,
       BTC_Price: btcPrice,
       BTC_Added_DCA: btcAdded,
       Cum_BTC_DCA: btcDca,
@@ -241,13 +304,18 @@ function simulateStart(
   const evalPx = priceOn(evalDate, priceSeries)
   const valuationPx = crashPx !== undefined ? crashPx : evalPx
   const valDate = crashPx !== undefined ? addDays(evalDate, 1) : evalDate
-  const dollarsIn = cashUpfront + monthlyPayment * paidMonths
+  const dollarsIn = dcaUpfront + totalDcaPayments
 
-  const profitLoan = fullBtc * valuationPx - loanAmount
+  // Calculate total loan cost including liquidation insurance
+  const totalLoanCost = loanAmount + liquidationInsuranceCost
+
+  // Calculate loan profit including BTC yield
+  const totalBtcLoan = fullBtc + btcYieldAmount // BTC amount + yield
+  const profitLoan = totalBtcLoan * valuationPx - totalLoanCost
   const profitDca = btcDca * valuationPx - dollarsIn
 
   // Calculate returns (total value of holdings)
-  const loanReturns = fullBtc * valuationPx
+  const loanReturns = totalBtcLoan * valuationPx
   const dcaReturns = btcDca * valuationPx
 
   return {
@@ -258,7 +326,7 @@ function simulateStart(
     ledger: rows,
     evalDate,
     valDate,
-    btcLoan: fullBtc,
+    btcLoan: totalBtcLoan, // Updated to include yield
     btcDca,
     dollarsIn,
     valPx: valuationPx,
@@ -427,7 +495,13 @@ export async function fullAnalysisBrowserEnhanced(
       priceSeries,
       options.flashCrash,
       options.loanAmount,
-      options.timePeriod
+      options.timePeriod,
+      options.downPayment,
+      options.loanAPR,
+      options.liquidationInsuranceCost,
+      options.dcaWithoutDownPayment,
+      options.btcYield,
+      options.dcaCadence
     )
 
     const usdWinner =

@@ -6,6 +6,4 @@ const NoSSRWrapper = ({ children }: PropsWithChildren) => (
   <Fragment>{children}</Fragment>
 )
 
-export default dynamic(() => Promise.resolve(NoSSRWrapper), {
-  ssr: false,
-})
+export default dynamic(() => Promise.resolve(NoSSRWrapper), { ssr: false })

@@ -1,6 +1,5 @@
 'use client'
 import Image from 'next/image'
-import { title } from '../primitives'
 import { LuStar } from 'react-icons/lu'
 import { BitcoinHouse } from './BitcoinHouse'
 import { Button, Card, cn, Link } from '@heroui/react'
@@ -54,7 +53,7 @@ const WHY_OWN_BTC_1 = [
 const WHY_OWN_BTC_2 = [
   {
     icon: (
-      <div className="inline-block min-w-10 select-none rounded-full bg-[#d4bdea] p-[9px_6.5px_7px_9.5px] dark:bg-[#2C1542]">
+      <div className="inline-block min-w-10 rounded-full bg-[#d4bdea] p-[9px_6.5px_7px_9.5px] select-none dark:bg-[#2C1542]">
         <Image
           src="/icons/money-trend-up.png"
           alt="Money Trend Up"
@@ -68,7 +67,7 @@ const WHY_OWN_BTC_2 = [
   },
   {
     icon: (
-      <div className="inline-block min-w-10 select-none rounded-full bg-secondary-50 px-[11px] pb-2.5 pt-2">
+      <div className="bg-secondary-50 inline-block min-w-10 rounded-full px-[11px] pt-2 pb-2.5 select-none">
         <Image
           src="/icons/money-up.png"
           alt="Money Up"
@@ -83,7 +82,7 @@ const WHY_OWN_BTC_2 = [
   },
   {
     icon: (
-      <div className="inline-block min-w-10 rounded-full bg-success-50 p-2.5">
+      <div className="bg-success-50 inline-block min-w-10 rounded-full p-2.5">
         <LuStar className="text-success" size={20} />
       </div>
     ),
@@ -99,11 +98,11 @@ export const WhyBitcoin = () => {
     <section className="container py-20 max-lg:py-16" id="why">
       <div className="flex w-full flex-col items-center justify-center gap-12">
         <div className="flex w-full flex-col items-center justify-center gap-3 text-center">
-          <h2 className={title({ size: 'xs', className: 'text-primary' })}>
+          <h2 className="text-primary inline text-2xl font-bold tracking-tight lg:text-[32px]">
             Why Savvy Stackers Pick Bitmor
           </h2>
 
-          <p className="text-balance text-center text-lg text-default-d">
+          <p className="text-default-d text-center text-lg text-balance">
             Start from $170/month and build towards 10M Sats.
           </p>
         </div>
@@ -111,7 +110,7 @@ export const WhyBitcoin = () => {
         <div className="grid max-w-5xl grid-cols-2 gap-x-7 gap-y-8 max-lg:grid-cols-1">
           {WHY_OWN_BTC_1.map((item) => (
             <Card
-              className="w-full rounded-2xl bg-default/35 shadow-[2px_4px_16px_0px_hsl(var(--heroui-default-200))_inset]"
+              className="bg-default/35 w-full rounded-2xl shadow-[2px_4px_16px_0px_hsl(var(--heroui-default-200))_inset]"
               key={item.title}
             >
               <MagicCard
@@ -121,7 +120,7 @@ export const WhyBitcoin = () => {
                 <div className="flex h-full w-full flex-row items-center gap-7">
                   <div
                     className={cn(
-                      'grid size-[104px] flex-shrink-0 place-items-center rounded-xl',
+                      'grid size-[104px] shrink-0 place-items-center rounded-xl',
                       item.iconBgClassName
                     )}
                   >
@@ -129,10 +128,10 @@ export const WhyBitcoin = () => {
                   </div>
 
                   <div className="flex flex-col gap-1">
-                    <div className="text-xl font-bold leading-tight text-default-e lg:text-2xl">
+                    <div className="text-default-e text-xl leading-tight font-bold lg:text-2xl">
                       {item.title}
                     </div>
-                    <div className="text-base leading-tight text-default-a">
+                    <div className="text-default-a text-base leading-tight">
                       {item.description}
                     </div>
                   </div>
@@ -157,8 +156,10 @@ export const WhyBitcoin = () => {
       <div className="mt-32 flex items-center justify-between gap-8 max-lg:flex-col">
         <div className="flex flex-col gap-6">
           <div className="">
-            <h2 className={title({ size: 'xs' })}>Own Bitcoin with Bitmor</h2>
-            <p className="mt-0.5 text-base leading-tight text-default-a">
+            <h2 className="inline text-2xl font-bold tracking-tight lg:text-[32px]">
+              Own Bitcoin with Bitmor
+            </h2>
+            <p className="text-default-a mt-0.5 text-base leading-tight">
               HODL Bitcoin for a Safer Future
             </p>
           </div>
@@ -171,10 +172,10 @@ export const WhyBitcoin = () => {
               >
                 {item.icon}
                 <div className="flex flex-col gap-1">
-                  <h3 className="text-xl font-medium leading-tight text-primary lg:text-2xl">
+                  <h3 className="text-primary text-xl leading-tight font-medium lg:text-2xl">
                     {item.title}
                   </h3>
-                  <p className="max-w-[420px] text-base leading-tight text-default-e">
+                  <p className="text-default-e max-w-[420px] text-base leading-tight">
                     {item.description}
                   </p>
                 </div>

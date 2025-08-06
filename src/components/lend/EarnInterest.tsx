@@ -14,7 +14,6 @@ import {
 } from '@heroui/react'
 import numeral from 'numeral'
 import { useMemo, useState } from 'react'
-import { TIME_PERIOD_AND_INTEREST_RATES } from '../_borrow/data'
 import { Summary } from './Summary'
 import { LuInfo } from 'react-icons/lu'
 import { useAuth } from '@/auth/useAuth'
@@ -26,7 +25,10 @@ import { toast } from 'sonner'
 import { publicClient } from '@/auth/client'
 import { useRouter } from 'next/navigation'
 import { sleep } from '@/utils/sleep'
-import { CONTRACT_ADDRESSES } from '@/utils/constants'
+import {
+  CONTRACT_ADDRESSES,
+  TIME_PERIOD_AND_INTEREST_RATES,
+} from '@/utils/constants'
 import { formatUnits } from 'viem'
 
 type LendingPostData = {
@@ -265,9 +267,7 @@ export const EarnInterest = () => {
             fullWidth
             minValue={0}
             value={usdcAmount}
-            formatOptions={{
-              maximumFractionDigits: 8,
-            }}
+            formatOptions={{ maximumFractionDigits: 8 }}
             onChange={(value) => {
               if (typeof value === 'number') setUsdcAmount(value)
               else if (value?.target)
@@ -282,7 +282,7 @@ export const EarnInterest = () => {
             }}
             color="secondary"
             description={
-              <span className="text-sm text-foreground">
+              <span className="text-foreground text-sm">
                 Available Balance:{' '}
                 <strong>
                   {numeral(

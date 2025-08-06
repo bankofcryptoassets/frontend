@@ -1,6 +1,5 @@
 'use client'
 import { Accordion, AccordionItem } from '@heroui/react'
-import { title } from '../primitives'
 
 const FAQ_ITEMS = [
   {
@@ -76,11 +75,11 @@ export const FAQs = () => {
     <section className="container py-20 max-lg:py-16" id="faqs">
       <div className="flex w-full flex-col items-center justify-center gap-6">
         <div className="flex w-full flex-col items-center justify-center gap-3 text-center">
-          <h2 className={title({ size: 'xs', className: 'text-primary' })}>
+          <h2 className="text-primary inline text-2xl font-bold tracking-tight lg:text-[32px]">
             FAQs
           </h2>
 
-          <p className="text-balance text-center text-lg text-default-d">
+          <p className="text-default-d text-center text-lg text-balance">
             Everything you need to know about Bitmor’s services.
           </p>
         </div>
@@ -99,6 +98,7 @@ export const FAQs = () => {
                 title={item.question}
                 classNames={{
                   base: 'mb-3 text-default-900 dark:text-default-800 mb-3',
+                  trigger: 'cursor-pointer',
                   title: 'font-semibold text-foreground',
                   indicator: 'text-default-700',
                   content: 'pt-0 pb-6',

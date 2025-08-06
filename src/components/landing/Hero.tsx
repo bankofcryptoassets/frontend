@@ -1,12 +1,11 @@
 'use client'
-import { subtitle, title } from '../primitives'
 import { JoinWishlist } from './JoinWishlist'
 
 export const Hero = () => {
   return (
     <section className="relative z-0" id="hero">
       <div
-        className="pointer-events-none absolute inset-2 -z-[1] select-none overflow-hidden rounded-xl border-2 border-default-200"
+        className="border-default-200 pointer-events-none absolute inset-2 -z-1 overflow-hidden rounded-xl border-2 select-none"
         style={{
           background: `
               url("data:image/svg+xml,%3Csvg viewBox='0 0 1799 1799' opacity='0.4' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
@@ -23,21 +22,21 @@ export const Hero = () => {
         <div className="flex flex-col items-center justify-center gap-4 pt-8 md:pt-10">
           <div className="inline-block max-w-4xl justify-center text-center">
             <h1 className="max-lg:text-balance">
-              <span className={title({ size: 'lg' })}>Own Bitcoin Today, </span>
+              <span className="inline text-5xl font-bold tracking-tight lg:text-6xl">
+                Own Bitcoin Today,{' '}
+              </span>
               <br />
-              <span
-                className={title({ className: 'text-primary', size: 'lg' })}
-              >
+              <span className="text-primary inline text-5xl font-bold tracking-tight lg:text-6xl">
                 Pay Monthly
               </span>
             </h1>
 
-            <p className={subtitle({ class: 'mt-10 text-balance' })}>
+            <p className="text-default-900 my-2 mt-10 block w-full! max-w-6xl text-lg text-balance md:w-1/2 lg:text-xl">
               Start with just 20%. Earn yield while you repay.
             </p>
           </div>
 
-          <div className="mb-20 mt-8 w-full max-w-[720px]">
+          <div className="mt-8 mb-20 w-full max-w-[720px]">
             <JoinWishlist isInHero />
             {/* <Input
               placeholder="Early access = better terms"
@@ -45,9 +44,9 @@ export const Hero = () => {
               classNames={{
                 mainWrapper: 'w-full',
                 inputWrapper:
-                  'h-[60px] rounded-xl w-full pl-5 pr-2 !bg-[#F5F5F5] ',
+                  'h-[60px] rounded-xl w-full pl-5 pr-2 bg-[#F5F5F5]! ',
                 innerWrapper: 'w-full',
-                input: '!text-black placeholder:text-[#666666]',
+                input: 'text-black! placeholder:text-[#666666]',
               }}
               size="lg"
               endContent={
@@ -83,7 +82,7 @@ export const Hero = () => {
             /> */}
           </div>
 
-          <p className="mb-6 text-balance text-center text-sm text-default-d">
+          <p className="text-default-d mb-6 text-center text-sm text-balance">
             Bitmor Lets You Stack BTC. No Checks. No KYC.
           </p>
         </div>

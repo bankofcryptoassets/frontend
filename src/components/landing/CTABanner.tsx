@@ -1,12 +1,11 @@
 'use client'
-import { subtitle, title } from '../primitives'
 import { JoinWishlist } from './JoinWishlist'
 
 export const CTABanner = () => {
   return (
     <section className="relative z-0" id="cta">
       <div
-        className="pointer-events-none absolute inset-2 -z-[1] select-none overflow-hidden rounded-xl border-2 border-default-200"
+        className="border-default-200 pointer-events-none absolute inset-2 -z-1 overflow-hidden rounded-xl border-2 select-none"
         style={{
           background: `
               url("data:image/svg+xml,%3Csvg viewBox='0 0 1799 1799' opacity='0.4' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
@@ -22,21 +21,16 @@ export const CTABanner = () => {
       <div className="container py-16">
         <div className="flex flex-col items-center justify-center gap-8">
           <div className="inline-block max-w-4xl justify-center text-center">
-            <h1
-              className={title({
-                className: 'max-lg:text-balance',
-                size: 'sm',
-              })}
-            >
+            <h1 className="inline text-3xl font-bold tracking-tight max-lg:text-balance lg:text-4xl">
               Start your Bitcoin Ownership Journey Here.
             </h1>
 
-            <p className={subtitle({ class: 'mt-4' })}>
+            <p className="text-default-900 my-2 mt-4 block w-full! max-w-6xl text-lg md:w-1/2 lg:text-xl">
               Join 100M+ Bitcoin Owners today.
             </p>
           </div>
 
-          <div className="mb-8 mt-1 w-full max-w-[720px]">
+          <div className="mt-1 mb-8 w-full max-w-[720px]">
             <JoinWishlist />
             {/* <Input
               placeholder="Early access = better terms"
@@ -44,9 +38,9 @@ export const CTABanner = () => {
               classNames={{
                 mainWrapper: 'w-full',
                 inputWrapper:
-                  'h-[60px] rounded-xl w-full pl-5 pr-2 !bg-[#F5F5F5] ',
+                  'h-[60px] rounded-xl w-full pl-5 pr-2 bg-[#F5F5F5]! ',
                 innerWrapper: 'w-full',
-                input: '!text-black placeholder:text-[#666666]',
+                input: 'text-black! placeholder:text-[#666666]',
               }}
               size="lg"
               endContent={

@@ -41,49 +41,49 @@ export default function InvestAavePage() {
       id="invest-page"
     >
       <div className="flex h-full w-full flex-col gap-4">
-        <Card className="min-h-fit w-full space-y-6 rounded-2xl border border-default-200/40 bg-default-100/80 p-7 pb-[30px]">
-          <div className="border-b border-default-200 pb-3.5 pl-1 text-base font-medium text-default-d">
+        <Card className="border-default-200/40 bg-default-100/80 min-h-fit w-full space-y-6 rounded-2xl border p-7 pb-[30px]">
+          <div className="border-default-200 text-default-d border-b pb-3.5 pl-1 text-base font-medium">
             <InlineSVG
               src="/icons/aave.svg"
-              className="h-4 w-24 [&_*]:fill-default-d"
+              className="[&_*]:fill-default-d h-4 w-24"
             />
           </div>
 
           <div>
-            <div className="text-xs text-default-a">Your BTC Balance</div>
-            <div className="mt-0.5 text-[28px] font-bold leading-tight text-primary">
+            <div className="text-default-a text-xs">Your BTC Balance</div>
+            <div className="text-primary mt-0.5 text-[28px] leading-tight font-bold">
               1.54 <span className="text-xl">BTC</span>
             </div>
           </div>
 
           <div>
-            <div className="text-xs text-default-a">APR on BTC</div>
-            <div className="mt-0.5 text-[28px] font-bold leading-tight text-default-d">
+            <div className="text-default-a text-xs">APR on BTC</div>
+            <div className="text-default-d mt-0.5 text-[28px] leading-tight font-bold">
               5%
             </div>
           </div>
 
           <div>
-            <div className="text-xs text-default-a">
+            <div className="text-default-a text-xs">
               Bitmor Investors on Aave
             </div>
-            <div className="mt-0.5 text-[28px] font-bold leading-tight text-default-d">
+            <div className="text-default-d mt-0.5 text-[28px] leading-tight font-bold">
               12,375
             </div>
           </div>
         </Card>
 
-        <Card className="h-full w-full rounded-2xl border border-default-200/40 bg-default-100/80 p-4">
-          <div className="mb-[18px] border-b border-default-200 pb-3.5 pl-1 text-base font-medium text-default-d">
+        <Card className="border-default-200/40 bg-default-100/80 h-full w-full rounded-2xl border p-4">
+          <div className="border-default-200 text-default-d mb-[18px] border-b pb-3.5 pl-1 text-base font-medium">
             Bitmor Stats
           </div>
 
-          <div className="!mb-[18px] space-y-6">
+          <div className="mb-[18px]! space-y-6">
             <div className="flex items-center gap-2">
-              <div className="rounded-full bg-success-50 p-[5px]">
+              <div className="bg-success-50 rounded-full p-[5px]">
                 <LuCircleDollarSign className="text-success" size={18} />
               </div>
-              <div className="text-sm text-default-d">
+              <div className="text-default-d text-sm">
                 Lenders in Bitmor have made more money than Aave
               </div>
             </div>
@@ -96,13 +96,13 @@ export default function InvestAavePage() {
                   strokeWidth={3}
                 />
               </div>
-              <div className="text-sm text-default-d">
+              <div className="text-default-d text-sm">
                 99% of BTC loaned on Bitmor is earning interest in Aave
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="min-w-7 rounded-full bg-primary-50 p-[5px]">
+              <div className="bg-primary-50 min-w-7 rounded-full p-[5px]">
                 <Image
                   src="/icons/btc-outline.svg"
                   alt="Bitcoin"
@@ -111,13 +111,13 @@ export default function InvestAavePage() {
                   className="size-[18px] min-w-[18px]"
                 />
               </div>
-              <div className="text-sm text-default-d">
+              <div className="text-default-d text-sm">
                 Earn yield on 100% of your borrowed BTC from Day 1
               </div>
             </div>
           </div>
 
-          <div className="!mt-auto flex w-full border-t border-default-200 pb-0.5 pt-4">
+          <div className="border-default-200 mt-auto! flex w-full border-t pt-4 pb-0.5">
             <Link
               as={NextLink}
               href="/"
@@ -130,14 +130,14 @@ export default function InvestAavePage() {
         </Card>
       </div>
 
-      <Card className="rounded-2xl border border-default-200 bg-default-100 px-7 pb-5 pt-[18px]">
-        <div className="mb-7 border-b border-default-200 pb-4 pl-1 text-base font-medium text-default-d">
+      <Card className="border-default-200 bg-default-100 rounded-2xl border px-7 pt-[18px] pb-5">
+        <div className="border-default-200 text-default-d mb-7 border-b pb-4 pl-1 text-base font-medium">
           Investment on Aave
         </div>
 
         <div className="w-full space-y-8 px-2 sm:w-[456px]">
-          <div className="rounded-xl border border-default-300/50 bg-[#eaeaee] p-5 pb-4 pt-[18px] dark:bg-[#1F1F1F] max-sm:w-full">
-            <div className="mb-16 pb-3.5 pl-1 text-base font-medium text-default-d">
+          <div className="border-default-300/50 rounded-xl border bg-[#eaeaee] p-5 pt-[18px] pb-4 max-sm:w-full dark:bg-[#1F1F1F]">
+            <div className="text-default-d mb-16 pb-3.5 pl-1 text-base font-medium">
               How Much BTC?
             </div>
 
@@ -151,7 +151,7 @@ export default function InvestAavePage() {
                   }}
                 >
                   {sliderInputInsufficient && (
-                    <span className="absolute -top-5 left-1.5 mb-2 text-xs text-danger">
+                    <span className="text-danger absolute -top-5 left-1.5 mb-2 text-xs">
                       Insufficient Balance
                     </span>
                   )}
@@ -161,7 +161,7 @@ export default function InvestAavePage() {
                     name="btc"
                     size="sm"
                     endContent={
-                      <span className="mb-0.5 mt-auto text-base font-bold">
+                      <span className="mt-auto mb-0.5 text-base font-bold">
                         BTC
                       </span>
                     }
@@ -219,7 +219,7 @@ export default function InvestAavePage() {
                 />
               </div>
 
-              <div className="flex items-center justify-between font-medium text-default-500">
+              <div className="text-default-500 flex items-center justify-between font-medium">
                 <div className="text-sm">0</div>
                 <div className="text-sm">
                   1.54 <span className="text-xs">BTC</span>
@@ -227,15 +227,15 @@ export default function InvestAavePage() {
               </div>
             </div>
 
-            <div className="border-t border-default-300 pt-[18px]">
-              <div className="mb-1 flex items-center gap-2 text-lg text-default-a">
+            <div className="border-default-300 border-t pt-[18px]">
+              <div className="text-default-a mb-1 flex items-center gap-2 text-lg">
                 Expected Yield{' '}
                 <Tooltip content="lorem ipsum dolor sit amet">
-                  <LuInfo className="pointer-events-auto cursor-pointer text-default-600 outline-none" />
+                  <LuInfo className="text-default-600 pointer-events-auto cursor-pointer outline-none" />
                 </Tooltip>
               </div>
-              <div className="text-[32px] font-bold leading-tight text-default-e">
-                <div className="mt-0.5 text-[32px] font-bold leading-tight text-default-d">
+              <div className="text-default-e text-[32px] leading-tight font-bold">
+                <div className="text-default-d mt-0.5 text-[32px] leading-tight font-bold">
                   0.12 <span className="text-2xl font-medium">BTC</span>{' '}
                   <span className="text-base font-normal">
                     (~12,000,000 sats)

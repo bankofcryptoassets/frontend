@@ -3,10 +3,15 @@
 import confetti from 'canvas-confetti'
 import { useEffect } from 'react'
 
-export const useConfettiFireworks = (isExploding: boolean) => {
+export const useConfettiFireworks = (
+  isExploding: boolean,
+  continueIndefinitely = false
+) => {
   useEffect(() => {
     if (isExploding) {
-      const duration = 10 * 1000
+      const duration = continueIndefinitely
+        ? Number.MAX_SAFE_INTEGER
+        : 10 * 1000
       const animationEnd = Date.now() + duration
       const defaults = {
         startVelocity: 30,
@@ -42,5 +47,5 @@ export const useConfettiFireworks = (isExploding: boolean) => {
         clearInterval(interval)
       }
     }
-  }, [isExploding])
+  }, [isExploding, continueIndefinitely])
 }

@@ -7,10 +7,7 @@ import {
 import { CookiesProvider } from 'react-cookie'
 import { Toaster } from 'sonner'
 
-type Props = {
-  children: React.ReactNode
-  themeProps?: ThemeProviderProps
-}
+type Props = { children: React.ReactNode; themeProps?: ThemeProviderProps }
 
 export const ThemeProviders = ({ children, themeProps }: Props) => {
   return (

@@ -34,6 +34,8 @@ import { sleep } from '@/utils/sleep'
 import { useLoanBTC } from '@/hooks/useLoanBTC'
 import { trackEvent } from '@/utils/trackEvent'
 import { FearGreedIndexChart } from '@/components/FearGreedIndexChart'
+import { ConnectTelegramButton } from '@/components/ConnectTelegramButton'
+import { ShareButtons } from '@/components/ShareButtons'
 
 const DEFAULT_USDC_BALANCE = 1_000_000
 const IS_USER_TELEGRAM_CONNECTED = false
@@ -447,7 +449,7 @@ export default function BorrowPage() {
               Connect with Bitmor via Telegram to receive latest updates of your
               loans and investments
             </p>
-            <p className="mt-2 text-sm text-default-a">
+            <p className="text-default-a mt-2 text-sm">
               You&apos;ll be redirected to our telegram bot, please start a chat
               to start receiving notifications. we can&apos;t send you
               notifications if you don&apos;t start a chat with us.
@@ -466,7 +468,15 @@ export default function BorrowPage() {
         onOpenChange={setIsTxSuccessModalOpen}
         iconSrc="/icons/success.png"
         title="Transaction Successful"
-        description="Congratulations! Your loan has been approved successfully."
+        description={
+          <>
+            <p>Congratulations! Your loan has been approved successfully.</p>
+
+            <div className="mt-6 -mb-10 flex w-full flex-col gap-2">
+              <ShareButtons type="loan" amount={btcAmount} />
+            </div>
+          </>
+        }
         primaryButtonText="View My Portfolio"
         primaryButtonProps={{
           as: NextLink,
@@ -474,6 +484,7 @@ export default function BorrowPage() {
           color: 'primary',
         }}
         showConfetti
+        continueConfettiIndefinitely
       />
 
       <StyledModal
@@ -493,59 +504,59 @@ export default function BorrowPage() {
       />
 
       <div className="flex h-full w-full flex-col gap-4">
-        <Card className="min-h-fit w-full space-y-6 rounded-2xl border border-default-200/40 bg-default-100/80 p-7 pb-[30px]">
+        <Card className="border-default-200/40 bg-default-100/80 min-h-fit w-full space-y-6 rounded-2xl border p-7 pb-[30px]">
           <div>
-            <div className="text-xs text-default-a">Your BTC Balance</div>
-            <div className="mt-0.5 text-[28px] font-bold leading-tight text-primary">
+            <div className="text-default-a text-xs">Your BTC Balance</div>
+            <div className="text-primary mt-0.5 text-[28px] leading-tight font-bold">
               {formattedBtcBalance} <span className="text-xl">BTC</span>
             </div>
           </div>
 
           <div>
-            <div className="text-xs text-default-a">
+            <div className="text-default-a text-xs">
               BTC Borrowers on Bitmor
             </div>
-            <div className="mt-0.5 text-[28px] font-bold leading-tight text-default-d">
+            <div className="text-default-d mt-0.5 text-[28px] leading-tight font-bold">
               {formattedBtcBorrowers}
             </div>
           </div>
 
           <div>
-            <div className="text-xs text-default-a">BTC Borrowed on Bitmor</div>
-            <div className="mt-0.5 text-[28px] font-bold leading-tight text-default-d">
+            <div className="text-default-a text-xs">BTC Borrowed on Bitmor</div>
+            <div className="text-default-d mt-0.5 text-[28px] leading-tight font-bold">
               {formattedTotalLoanInBTC} <span className="text-xl">BTC</span>
             </div>
           </div>
         </Card>
 
-        <Card className="min-h-fit w-full rounded-2xl border border-default-200/40 bg-default-100/80 p-4 pb-6">
-          <div className="mb-5 flex items-center justify-between border-b border-default-200 pb-3.5 pl-1 text-base font-medium text-default-d">
+        <Card className="border-default-200/40 bg-default-100/80 min-h-fit w-full rounded-2xl border p-4 pb-6">
+          <div className="border-default-200 text-default-d mb-5 flex items-center justify-between border-b pb-3.5 pl-1 text-base font-medium">
             <span>Fear and Greed Index</span>
             <Tooltip content="Fear and Greed Index">
-              <LuInfo size={14} className="cursor-pointer text-default-600" />
+              <LuInfo size={14} className="text-default-600 cursor-pointer" />
             </Tooltip>
           </div>
 
           <div className="flex items-center justify-center gap-6">
             <div className="flex flex-col items-center">
-              <span className="text-[32px] font-bold leading-tight text-default-d">
+              <span className="text-default-d text-[32px] leading-tight font-bold">
                 {fgi?.value || 50}
               </span>
-              <span className="text-center text-sm font-medium leading-tight text-default-a">
+              <span className="text-default-a text-center text-sm leading-tight font-medium">
                 {fgi?.valueText || 'Neutral'}
               </span>
             </div>
 
-            <div className="h-12 w-px bg-default-300" />
+            <div className="bg-default-300 h-12 w-px" />
 
-            <div className="h-[62px] w-full max-w-[120px] [&>*]:pointer-events-none">
+            <div className="h-[62px] w-full max-w-[120px] *:pointer-events-none">
               <FearGreedIndexChart needleValue={fgi?.value || 50} />
             </div>
           </div>
         </Card>
 
-        <Card className="h-full w-full rounded-2xl border border-default-200/40 bg-default-100/80 p-4">
-          <div className="mb-[18px] border-b border-default-200 pb-3.5 pl-1 text-base font-medium text-default-d">
+        <Card className="border-default-200/40 bg-default-100/80 h-full w-full rounded-2xl border p-4">
+          <div className="border-default-200 text-default-d mb-[18px] border-b pb-3.5 pl-1 text-base font-medium">
             Bitmor Way
           </div>
 
@@ -557,7 +568,7 @@ export default function BorrowPage() {
             <CarouselContent>
               <CarouselItem>
                 <div className="flex items-center gap-3 max-lg:justify-center">
-                  <div className="rounded-full bg-success-50 p-[5px]">
+                  <div className="bg-success-50 rounded-full p-[5px]">
                     <Image
                       src="/icons/shield-money.png"
                       alt="Shield Money Icon"
@@ -566,7 +577,7 @@ export default function BorrowPage() {
                       className="size-[18px] min-w-[18px]"
                     />
                   </div>
-                  <div className="text-sm text-default-d">
+                  <div className="text-default-d text-sm">
                     Transparent monthly
                     <br />
                     payments, no hidden fees
@@ -584,7 +595,7 @@ export default function BorrowPage() {
                       className="size-[18px] min-w-[18px]"
                     />
                   </div>
-                  <div className="text-sm text-default-d">
+                  <div className="text-default-d text-sm">
                     Failed to Pay a month?
                     <br />
                     Micro Liquidation.
@@ -593,7 +604,7 @@ export default function BorrowPage() {
               </CarouselItem>
               <CarouselItem>
                 <div className="flex items-center gap-3 max-lg:justify-center">
-                  <div className="min-w-7 rounded-full bg-primary-50 p-[5px]">
+                  <div className="bg-primary-50 min-w-7 rounded-full p-[5px]">
                     <Image
                       src="/icons/btc-outline.svg"
                       alt="Bitcoin"
@@ -602,7 +613,7 @@ export default function BorrowPage() {
                       className="size-[18px] min-w-[18px]"
                     />
                   </div>
-                  <div className="text-sm text-default-d">
+                  <div className="text-default-d text-sm">
                     Yield on 100% BTC from
                     <br />
                     Day 1
@@ -611,7 +622,7 @@ export default function BorrowPage() {
               </CarouselItem>
               <CarouselItem>
                 <div className="flex items-center gap-3 max-lg:justify-center">
-                  <div className="rounded-full bg-secondary-50 p-[5px]">
+                  <div className="bg-secondary-50 rounded-full p-[5px]">
                     <Image
                       src="/icons/clock.png"
                       alt="Clock Icon"
@@ -620,7 +631,7 @@ export default function BorrowPage() {
                       className="size-[18px] min-w-[18px]"
                     />
                   </div>
-                  <div className="text-sm text-default-d">
+                  <div className="text-default-d text-sm">
                     No complex paperwork.
                     <br />
                     Own Bitcoin in minutes
@@ -631,7 +642,7 @@ export default function BorrowPage() {
             <CarouselPagination />
           </Carousel>
 
-          <div className="!mt-auto flex w-full border-t border-default-200 pb-0.5 pt-4">
+          <div className="border-default-200 mt-auto! flex w-full border-t pt-4 pb-0.5">
             <Link
               as={NextLink}
               href="/"
@@ -642,6 +653,8 @@ export default function BorrowPage() {
             </Link>
           </div>
         </Card>
+
+        <ConnectTelegramButton onlyButton className="min-h-10 w-full" />
       </div>
 
       {step === 0 && (

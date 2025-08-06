@@ -37,7 +37,7 @@ export const LoanConditions = ({
   return (
     <Card className="relative w-full">
       {isLoading && (
-        <div className="absolute inset-0 z-[1] grid place-items-center bg-default/50 p-4 backdrop-blur-sm">
+        <div className="bg-default/50 absolute inset-0 z-1 grid place-items-center p-4 backdrop-blur-sm">
           <Spinner color="secondary" />
         </div>
       )}
@@ -48,7 +48,7 @@ export const LoanConditions = ({
 
       <CardBody className="grid grid-cols-1 gap-6 p-4 text-sm xl:grid-cols-2">
         <Card className="h-full w-full">
-          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
+          <CardHeader className="bg-default-300 z-0 flex items-center gap-2 px-3 py-1.5 font-bold">
             <span>Yield Over Time</span>
 
             <Tooltip content="Yield Over Time">
@@ -62,7 +62,7 @@ export const LoanConditions = ({
         </Card>
 
         <Card className="h-full w-full">
-          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
+          <CardHeader className="bg-default-300 z-0 flex items-center gap-2 px-3 py-1.5 font-bold">
             <span>Wallet Funds Withdrawal Condition</span>
 
             <Tooltip content="Wallet Funds Withdrawal Condition">
@@ -76,7 +76,7 @@ export const LoanConditions = ({
         </Card>
 
         <Card className="h-full w-full">
-          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
+          <CardHeader className="bg-default-300 z-0 flex items-center gap-2 px-3 py-1.5 font-bold">
             <span>Unlock Schedule</span>
 
             <Tooltip content="Unlock Schedule">
@@ -84,15 +84,13 @@ export const LoanConditions = ({
             </Tooltip>
           </CardHeader>
 
-          <CardBody className="h-full bg-default-200/50">
+          <CardBody className="bg-default-200/50 h-full">
             {!!unlockScheduleData?.length ? (
               <Table
                 removeWrapper
                 maxTableHeight={240}
                 isHeaderSticky
-                classNames={{
-                  base: 'max-h-[240px]',
-                }}
+                classNames={{ base: 'max-h-[240px]' }}
               >
                 <TableHeader>
                   <TableColumn align="end">Month</TableColumn>
@@ -104,7 +102,7 @@ export const LoanConditions = ({
                   {unlockScheduleData?.map((item) => (
                     <TableRow
                       key={item.month}
-                      className="transition hover:bg-default-200"
+                      className="hover:bg-default-200 transition"
                     >
                       <TableCell className="font-mono text-xs">
                         {item.month}
@@ -129,7 +127,7 @@ export const LoanConditions = ({
         </Card>
 
         <Card className="h-full w-full">
-          <CardHeader className="z-0 flex items-center gap-2 bg-default-300 px-3 py-1.5 font-bold">
+          <CardHeader className="bg-default-300 z-0 flex items-center gap-2 px-3 py-1.5 font-bold">
             <span>Early Exit</span>
 
             <Tooltip content="Liquidation Threshold">
@@ -138,7 +136,7 @@ export const LoanConditions = ({
           </CardHeader>
 
           <CardBody className="bg-default-200/50 py-4">
-            <p className="m-auto max-w-60 text-balance text-center text-base font-medium">
+            <p className="m-auto max-w-60 text-center text-base font-medium text-balance">
               Early Exit is Subjected to Available Liquidity
             </p>
           </CardBody>
@@ -146,7 +144,7 @@ export const LoanConditions = ({
       </CardBody>
 
       <CardFooter className="flex w-full gap-4 p-0">
-        <div className="flex w-full flex-col items-center justify-between gap-3 bg-default-300 p-4">
+        <div className="bg-default-300 flex w-full flex-col items-center justify-between gap-3 p-4">
           <Checkbox
             color="secondary"
             checked={isAccepted}

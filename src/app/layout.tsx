@@ -8,10 +8,7 @@ import { Providers } from '@/Providers'
 import { cn } from '@heroui/react'
 
 export const metadata: Metadata = {
-  title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
-  },
+  title: { default: siteConfig.name, template: `%s - ${siteConfig.name}` },
   description: siteConfig.description,
   icons: {
     icon: '/favicon.ico',
@@ -50,7 +47,7 @@ export default async function RootLayout({
       <head />
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased',
+          'bg-background min-h-screen font-sans antialiased',
           fontSans.variable,
           fontMono.variable
         )}
