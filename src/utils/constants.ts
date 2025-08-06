@@ -16,7 +16,8 @@ export const TIME_PERIOD = [
 ]
 export const INTEREST_RATE = ['8']
 
-export const TELEGRAM_BOT_ID = '7818630903'
+// export const TELEGRAM_BOT_ID = '7818630903' // @bitmore_test_bot
+export const TELEGRAM_BOT_ID = '7910535529' // @BitMor_Notifier_bot
 
 export const TIME_PERIOD_AND_INTEREST_RATES = [
   { timePeriod: '6', interestRate: '7' },

@@ -27,6 +27,9 @@ export const ShareButtons = ({
     },
   })
 
+  // TODO: Uncomment this when we have the social sharing working
+  return null
+
   return (
     <>
       <Button
