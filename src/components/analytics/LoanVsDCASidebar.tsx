@@ -12,6 +12,7 @@ import {
   cn,
   DatePicker,
   Tooltip,
+  Spinner,
 } from '@heroui/react'
 import { LuInfo } from 'react-icons/lu'
 import numeral from 'numeral'
@@ -40,6 +41,7 @@ interface Props {
   onBtcYieldChange: (value: number) => void
   dcaWithoutDownPayment: boolean
   onDcaWithoutDownPaymentChange: (value: boolean) => void
+  isFetching?: boolean
 }
 
 export function LoanVsDCASidebar({
@@ -63,6 +65,7 @@ export function LoanVsDCASidebar({
   onBtcYieldChange,
   dcaWithoutDownPayment,
   onDcaWithoutDownPaymentChange,
+  isFetching,
 }: Props) {
   return (
     <Card className="border-default-200 h-full border lg:max-h-[640px]">
@@ -70,6 +73,7 @@ export function LoanVsDCASidebar({
         <h3 className="border-default-200 text-default-d w-full border-b px-1 pb-3.5 text-base font-medium">
           Loan vs DCA Calculator
         </h3>
+        {isFetching && <Spinner size="sm" className="pb-3.5" />}
       </CardHeader>
 
       <CardBody className="gap-6 px-0 py-4">

@@ -9,7 +9,7 @@ import {
   Tabs,
   Tooltip,
 } from '@heroui/react'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useState, useMemo } from 'react'
 import { LoanVsDCAChart } from '@/components/analytics/LoanVsDCAChart'
 import { LoanVsDCASidebar } from '@/components/analytics/LoanVsDCASidebar'
@@ -47,6 +47,7 @@ export default function AnalyticsPage() {
     data: analysisData,
     isLoading,
     error,
+    isFetching,
   } = useQuery({
     queryKey: [
       'btc-loan-vs-dca-enhanced',
@@ -91,6 +92,7 @@ export default function AnalyticsPage() {
     },
     refetchOnWindowFocus: false,
     staleTime: Infinity,
+    placeholderData: keepPreviousData,
   })
 
   // Calculate summary stats
@@ -163,13 +165,20 @@ export default function AnalyticsPage() {
             onBtcYieldChange={setBtcYield}
             dcaWithoutDownPayment={dcaWithoutDownPayment}
             onDcaWithoutDownPaymentChange={setDcaWithoutDownPayment}
+            isFetching={isFetching}
           />
 
           {/* EMI Stats */}
-          <EMIStats
-            emiAmount={analysisData?.averageMetrics.avgMonthlyPaymentLoan || 0}
-            dcaAmount={analysisData?.averageMetrics.avgMonthlyPaymentDCA || 0}
-          />
+          {!!analysisData?.averageMetrics && (
+            <EMIStats
+              emiAmount={
+                analysisData?.averageMetrics?.avgMonthlyPaymentLoan || 0
+              }
+              dcaAmount={
+                analysisData?.averageMetrics?.avgMonthlyPaymentDCA || 0
+              }
+            />
+          )}
         </div>
 
         {/* Chart and Stats */}
