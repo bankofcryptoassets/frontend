@@ -82,6 +82,7 @@ export function LoanVsDCASidebar({
             onChange={(value) => {
               if (typeof value === 'number') {
                 onLoanAmountChange(value)
+                onDownPaymentChange(value * 0.2)
               }
             }}
             startContent={<span className="text-default-a -mb-0.5">$</span>}

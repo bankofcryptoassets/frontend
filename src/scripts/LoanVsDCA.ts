@@ -453,8 +453,8 @@ export async function fullAnalysisBrowserEnhanced(
   averageMetrics: {
     avgMonthlyPaymentLoan: number
     avgMonthlyPaymentDCA: number
-    avgBTCAccumulatedLoan: number
-    avgBTCAccumulatedDCA: number
+    // avgBTCAccumulatedLoan: number
+    // avgBTCAccumulatedDCA: number
   }
 }> {
   // Load price data from CSV string
@@ -482,11 +482,11 @@ export async function fullAnalysisBrowserEnhanced(
 
   // Run simulations for all start dates
   const results: AnalysisResult[] = []
-  let totalMonthlyPaymentLoan = 0
-  let totalMonthlyPaymentDCA = 0
-  let totalBTCLoan = 0
-  let totalBTCDCA = 0
-  let validResultsCount = 0
+  // let totalMonthlyPaymentLoan = 0
+  // let totalMonthlyPaymentDCA = 0
+  // let totalBTCLoan = 0
+  // let totalBTCDCA = 0
+  // let validResultsCount = 0
 
   for (const dateStr of startDates) {
     const startDate = parseISO(dateStr)
@@ -525,12 +525,12 @@ export async function fullAnalysisBrowserEnhanced(
       valDate: format(simulation.valDate, 'yyyy-MM-dd'),
     })
 
-    // Accumulate for averages
-    totalMonthlyPaymentLoan += simulation.monthlyPayment
-    totalMonthlyPaymentDCA += simulation.monthlyPayment
-    totalBTCLoan += simulation.btcLoan
-    totalBTCDCA += simulation.btcDca
-    validResultsCount++
+    // Accumulate for averages (not used anymore since we calculate averages directly)
+    // totalMonthlyPaymentLoan += simulation.monthlyPayment
+    // totalMonthlyPaymentDCA += simulation.monthlyPayment
+    // totalBTCLoan += simulation.btcLoan
+    // totalBTCDCA += simulation.btcDca
+    // validResultsCount++
   }
 
   // Prepare chart data with MA values
@@ -554,16 +554,27 @@ export async function fullAnalysisBrowserEnhanced(
     }
   })
 
-  // Calculate averages
+  // Calculate averages based on the specified calculation method
+  const loanAmount = options.loanAmount || 100_000
+  const timePeriod = options.timePeriod || 60
+  const downPayment = options.downPayment || 0.2
+  const dcaWithoutDownPayment = options.dcaWithoutDownPayment || false
+
+  // Loan monthly payment: (loanAmount * (1 - downPayment)) / timePeriod
+  const avgMonthlyPaymentLoan = (loanAmount * (1 - downPayment)) / timePeriod
+
+  // DCA monthly payment: if dcaWithoutDownPayment is true, use full loan amount, otherwise same as loan
+  const avgMonthlyPaymentDCA = dcaWithoutDownPayment
+    ? loanAmount / timePeriod
+    : avgMonthlyPaymentLoan
+
   const averageMetrics = {
-    avgMonthlyPaymentLoan:
-      validResultsCount > 0 ? totalMonthlyPaymentLoan / validResultsCount : 0,
-    avgMonthlyPaymentDCA:
-      validResultsCount > 0 ? totalMonthlyPaymentDCA / validResultsCount : 0,
-    avgBTCAccumulatedLoan:
-      validResultsCount > 0 ? totalBTCLoan / validResultsCount : 0,
-    avgBTCAccumulatedDCA:
-      validResultsCount > 0 ? totalBTCDCA / validResultsCount : 0,
+    avgMonthlyPaymentLoan,
+    avgMonthlyPaymentDCA,
+    // avgBTCAccumulatedLoan:
+    //   validResultsCount > 0 ? totalBTCLoan / validResultsCount : 0,
+    // avgBTCAccumulatedDCA:
+    //   validResultsCount > 0 ? totalBTCDCA / validResultsCount : 0,
   }
 
   return { results, chartData, averageMetrics }

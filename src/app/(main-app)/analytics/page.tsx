@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from '@heroui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useState, useMemo } from 'react'
 import { LoanVsDCAChart } from '@/components/analytics/LoanVsDCAChart'
 import { LoanVsDCASidebar } from '@/components/analytics/LoanVsDCASidebar'
 import { EMIStats, StrategyStats } from '@/components/analytics/LoanVsDCAStats'
@@ -34,21 +34,6 @@ export default function AnalyticsPage() {
   )
   const [btcYield, setBtcYield] = useState(1)
   const [dcaWithoutDownPayment, setDcaWithoutDownPayment] = useState(false)
-  const isInitialMount = useRef(true)
-
-  // Maintain down payment percentage when loan amount changes
-  useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false
-      return
-    }
-
-    const finalLoanAmount = loanAmount || DEFAULT_LOAN_AMOUNT
-    const currentPercentage = downPayment / finalLoanAmount
-    const newDownPayment = currentPercentage * finalLoanAmount
-    setDownPayment(newDownPayment)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loanAmount])
 
   // const { data: borrowStats } = useQuery({
   //   queryKey: ['/initialisation/loanavailability'],
