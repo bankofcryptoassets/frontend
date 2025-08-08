@@ -372,10 +372,11 @@ export default function BorrowPage() {
   }
 
   const handleTelegramConnect = () => {
-    if (IS_USER_TELEGRAM_CONNECTED) {
-      setIsTelegramModalOpen(false)
-      return
-    }
+    window.open(
+      `${window.location.origin}/connect-telegram`,
+      'connect-telegram',
+      'width=500,height=500'
+    )
   }
 
   const handleRetryTx = () => {

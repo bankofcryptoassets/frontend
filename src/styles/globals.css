@@ -12,7 +12,8 @@
 
 #lend-page *::selection,
 #lenders *::selection,
-#invest-page *::selection {
+#invest-page *::selection,
+#connect-telegram *::selection {
   background: hsl(var(--heroui-secondary));
   color: white;
 }

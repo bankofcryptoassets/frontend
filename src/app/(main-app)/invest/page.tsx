@@ -87,7 +87,11 @@ export default function InvestPage() {
   const [isTelegramModalOpen, setIsTelegramModalOpen] = useState(false)
 
   const handleTelegramConnect = () => {
-    setIsTelegramModalOpen(false)
+    window.open(
+      `${window.location.origin}/connect-telegram`,
+      'connect-telegram',
+      'width=500,height=500'
+    )
   }
 
   return (
