@@ -7,13 +7,8 @@ import {
   Testimonials,
   FAQs,
   CTABanner,
-  // Borrowers,
-  // CTABanner,
-  // Lenders,
-  // Stats,
-  // Team,
-  // WhyBitcoin,
 } from '@/components/landing'
+import { SmoothScroll } from '@/components/SmoothScroll'
 
 export default function Home() {
   return (
@@ -25,12 +20,8 @@ export default function Home() {
       <Testimonials />
       <FAQs />
       <CTABanner />
-      {/* <Stats />
-      <Borrowers />
-      <WhyBitcoin />
-      <Lenders />
-      <Team /> */}
       <Footer />
+      <SmoothScroll />
     </>
   )
 }
