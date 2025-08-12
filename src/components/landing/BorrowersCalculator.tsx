@@ -66,7 +66,7 @@ export const BorrowersCalculator = () => {
 
   return (
     <Card className="bg-default-50/90 border-default-100 w-full max-w-md rounded-2xl border shadow-[0px_1px_0px_0px_#FEFEFE1A,0px_0px_4px_0px_#FFFFFF1F]">
-      <div className="p-6">
+      <div className="p-6 max-sm:px-2.5">
         <div className="text-foreground/90 mb-4 text-center text-xl leading-[1] font-medium">
           Ownership Calculator
         </div>
@@ -202,7 +202,7 @@ export const CustomRadio = (
         base: 'm-0 rounded-lg bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] border border-default-100 transition-colors hover:bg-primary/10 data-[selected=true]:bg-primary/10  data-[selected=true]:border-primary/30',
         wrapper: 'hidden',
         labelWrapper: cn(
-          'ml-0 ms-0 px-8 [&>span]:group-data-[selected=true]:text-primary/80 [&>span]:text-default-a [&>span]:font-medium [&>span]:group-data-[selected=true]:font-semibold',
+          'ml-0 ms-0 px-8 [&>span]:group-data-[selected=true]:text-primary/80 [&>span]:text-default-a [&>span]:font-medium [&>span]:group-data-[selected=true]:font-semibold max-lg:px-5',
           labelClassName
         ),
       }}

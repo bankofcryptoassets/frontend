@@ -3,22 +3,25 @@ import { Glow } from './Glow'
 
 export const Testimonials = () => {
   return (
-    <section className="relative container mb-50" id="borrower-lender">
+    <section
+      className="relative container mb-50 max-lg:mb-30"
+      id="borrower-lender"
+    >
       <>
         <Glow className="absolute top-0 right-1/2 h-[158px] w-[72px] -translate-x-full -rotate-37 blur-[120px]" />
         <Glow className="absolute bottom-0 left-1/2 h-[158px] w-[72px] translate-x-[200%] rotate-24 blur-[140px]" />
       </>
 
-      <div className="flex flex-col items-center justify-center gap-20">
-        <h1 className="text-foreground text-center text-5xl leading-[1.15] font-medium">
+      <div className="flex flex-col items-center justify-center gap-20 max-lg:gap-10">
+        <h1 className="text-foreground text-center text-5xl leading-[1.15] font-medium max-lg:text-[32px]">
           Testimonials
         </h1>
 
-        <div className="grid grid-cols-3 gap-10 max-md:grid-cols-1">
+        <div className="grid grid-cols-3 gap-10 max-lg:grid-cols-1">
           {TESTIMONIALS.map((item) => (
             <div
               key={item.id}
-              className="border-default-100 flex max-w-80 flex-col items-start gap-10 rounded-lg border bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-8"
+              className="border-default-100 flex max-w-80 flex-col items-start gap-10 rounded-lg border bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-8 max-lg:max-w-full"
             >
               <div className="leading-tight">
                 &quot;{item.testimonial}&quot;

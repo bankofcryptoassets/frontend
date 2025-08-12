@@ -17,10 +17,10 @@ export const AboutBitmore = () => {
     >
       <Glow className="absolute top-0 left-full h-[127px] w-[58px] rotate-22 blur-[85px]" />
 
-      <div className="border-default-100 relative z-1 flex w-full justify-between gap-4 rounded-xl border bg-[linear-gradient(86.84deg,_rgba(254,_254,_254,_0.08)_17.87%,_rgba(255,_255,_255,_0.04)_52.56%,_rgba(255,_255,_255,_0.06)_77.29%)] px-20 max-md:flex-col">
-        <div className="flex flex-1 flex-col gap-2 pt-22">
-          <h1 className="text-foreground text-5xl leading-[1.15] font-medium">
-            About Bitmore
+      <div className="border-default-100 relative z-1 flex w-full justify-between gap-4 rounded-xl border bg-[linear-gradient(86.84deg,_rgba(254,_254,_254,_0.08)_17.87%,_rgba(255,_255,_255,_0.04)_52.56%,_rgba(255,_255,_255,_0.06)_77.29%)] px-20 max-lg:flex-col max-lg:px-4">
+        <div className="flex flex-1 flex-col gap-2 pt-22 max-lg:pt-10">
+          <h1 className="text-foreground text-5xl leading-[1.15] font-medium max-lg:text-[32px]">
+            About Bitmor
           </h1>
 
           <p className="text-foreground/70 max-w-sm text-base leading-tight font-normal">
@@ -46,11 +46,11 @@ export const AboutBitmore = () => {
             alt="Borrow page"
             width={570}
             height={317}
-            className="mt-12 bg-black/90 dark:bg-transparent"
+            className="mt-auto bg-black/90 max-lg:hidden dark:bg-transparent"
           />
         </div>
 
-        <div className="flex max-w-md flex-1 flex-col gap-6 py-20">
+        <div className="flex max-w-md flex-1 flex-col gap-6 py-20 max-lg:max-w-full max-lg:py-10 max-lg:pb-0">
           {ABOUT.map((item) => (
             <div
               key={item.title}
@@ -58,7 +58,7 @@ export const AboutBitmore = () => {
             >
               <div className="size-8 flex-shrink-0">{item.icon}</div>
               <div className="flex flex-col gap-4">
-                <div className="text-foreground/90 text-xl leading-[1] font-medium">
+                <div className="text-foreground/90 text-xl leading-[1] font-medium max-lg:text-lg">
                   {item.title}
                 </div>
                 <div className="text-foreground/70 text-sm leading-[1.15] font-normal">
@@ -68,6 +68,14 @@ export const AboutBitmore = () => {
             </div>
           ))}
         </div>
+
+        <Image
+          src="/extras/borrow-page.png"
+          alt="Borrow page"
+          width={570}
+          height={317}
+          className="mx-auto mt-10 bg-black/90 lg:hidden dark:bg-transparent"
+        />
       </div>
     </section>
   )

@@ -1,4 +1,4 @@
-import { Button, Divider, Input } from '@heroui/react'
+import { Button, Input } from '@heroui/react'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -82,7 +82,7 @@ export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
   const isSuccess = joinWaitlistMutation.isSuccess
 
   return (
-    <div className="flex w-full max-w-[720px] items-center gap-2">
+    <div className="flex w-full max-w-[720px] items-center gap-2 max-lg:flex-col">
       <Input
         placeholder="Early access = earn bonus sats"
         className="h-13 w-full rounded-xl max-sm:h-full"

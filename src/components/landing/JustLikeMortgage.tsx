@@ -7,10 +7,10 @@ import { Glow } from './Glow'
 
 export const JustLikeMortgage = () => {
   return (
-    <section className="container my-50" id="just-like-mortgage">
-      <div className="flex flex-col items-center justify-center gap-20">
+    <section className="container my-50 max-lg:my-30" id="just-like-mortgage">
+      <div className="flex flex-col items-center justify-center gap-20 max-lg:gap-16">
         <div className="flex flex-col items-center justify-center gap-4">
-          <h1 className="text-foreground text-center text-5xl leading-[1.15] font-medium">
+          <h1 className="text-foreground text-center text-5xl leading-[1.15] font-medium max-lg:text-[32px]">
             Just Like Owning a Mortgage
           </h1>
           <p className="text-foreground/70 max-w-[606px] text-center text-base leading-tight font-normal">
@@ -25,15 +25,15 @@ export const JustLikeMortgage = () => {
           <BitcoinHouse />
         </div>
 
-        <div className="grid grid-cols-3 gap-6 max-md:grid-cols-1">
+        <div className="grid grid-cols-3 gap-6 max-lg:w-full max-lg:grid-cols-1">
           {JUST_LIKE_MORTGAGE.map((item) => (
             <div
               key={item.title}
-              className="border-default-100 flex max-w-80 items-start gap-4 rounded-lg border bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-4 shadow-[0px_0px_4px_0px_#FFFFFF1F,0px_1px_0px_0px_#FFFFFF1F]"
+              className="border-default-100 flex max-w-80 items-start gap-4 rounded-lg border bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-4 shadow-[0px_0px_4px_0px_#FFFFFF1F,0px_1px_0px_0px_#FFFFFF1F] max-lg:max-w-full"
             >
               <div className="size-8 flex-shrink-0">{item.icon}</div>
               <div className="flex flex-col gap-4">
-                <div className="text-foreground/90 text-xl leading-[1] font-medium">
+                <div className="text-foreground/90 text-xl leading-[1] font-medium max-lg:text-lg">
                   {item.title}
                 </div>
                 <div className="text-foreground/70 text-sm leading-[1.15] font-normal">

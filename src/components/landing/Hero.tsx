@@ -6,10 +6,13 @@ import { HeroBitcoinAnimation } from './HeroBitcoinAnimation'
 
 export const Hero = () => {
   return (
-    <section className="container pt-36 pb-60" id="hero">
-      <div className="flex items-center justify-between gap-4 pt-8 max-md:flex-col md:pt-10">
+    <section
+      className="container pt-36 pb-60 max-lg:pt-14 max-lg:pb-30"
+      id="hero"
+    >
+      <div className="flex items-center justify-between gap-20 max-lg:flex-col">
         <div className="flex w-full max-w-lg flex-1 flex-col gap-4">
-          <div className="text-foreground text-[56px] leading-[1.15] font-bold">
+          <div className="text-foreground text-[56px] leading-[1.15] font-bold max-lg:text-4xl">
             Own 1 Bitcoin {DASH}
             <br />
             Without Buying It
@@ -17,7 +20,7 @@ export const Hero = () => {
             All at Once
           </div>
 
-          <div className="text-foreground/70 mb-6 text-base leading-tight font-normal">
+          <div className="text-foreground/70 mb-6 text-base leading-tight font-normal max-lg:mb-4">
             A smarter more secure way to build Bitcoin ownership over time.{' '}
             Backed by on-chain proof and built for everyday investors like you.
           </div>

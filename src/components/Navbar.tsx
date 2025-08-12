@@ -31,10 +31,10 @@ const HIDE_NAVBAR_PATHS = ['/connect-telegram']
 export const Logo = () => {
   return (
     <>
-      <span className="text-primary inline text-3xl leading-none font-bold tracking-tight">
+      <span className="text-primary inline text-3xl leading-[1] font-bold tracking-tight max-lg:text-2xl">
         Bit
       </span>
-      <span className="text-secondary dark:text-foreground inline text-3xl leading-none font-bold tracking-tight">
+      <span className="text-secondary dark:text-foreground inline text-3xl leading-[1] font-bold tracking-tight max-lg:text-2xl">
         mor
       </span>
     </>
@@ -66,12 +66,11 @@ export const Navbar = () => {
   return (
     <HeroUINavbar
       classNames={{
-        wrapper: 'container!',
+        wrapper: 'container! h-24 max-lg:h-16',
         base: isMainApp && 'bg-transparent! backdrop-saturate-100',
       }}
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-      height="6rem"
     >
       <NavbarContent
         className="basis-1/5 gap-12 max-xl:gap-8 sm:basis-full"
@@ -98,7 +97,7 @@ export const Navbar = () => {
                 className={cn(
                   linkStyles({ color: 'foreground' }),
                   'text-default-800 font-normal',
-                  'data-[active=true]:!text-default-900 hover:text-primary animate-underline transition-colors data-[active=true]:font-medium'
+                  'data-[active=true]:text-primary hover:text-primary animate-underline transition-colors data-[active=true]:font-medium'
                 )}
                 color="foreground"
                 href={item.href}
@@ -172,8 +171,8 @@ export const Navbar = () => {
                   size="lg"
                   onClick={onMenuItemClick}
                   className={clsx(
-                    '!text-default-700 font-normal',
-                    'data-[active=true]:!text-default-900 data-[active=true]:font-medium'
+                    'text-default-700 font-normal',
+                    'data-[active=true]:text-primary hover:text-primary animate-underline transition-colors data-[active=true]:font-medium'
                   )}
                   data-active={pathname.startsWith(item.href)}
                 >

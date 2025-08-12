@@ -14,7 +14,7 @@ export const BorrowerLender = () => {
 
   return (
     <section
-      className="relative container mb-50 max-w-[1360px] min-[87.5rem]:px-0!"
+      className="relative container mb-50 max-w-[1360px] max-lg:mb-30 min-[87.5rem]:px-0!"
       id="borrower-lender"
     >
       <>
@@ -32,7 +32,7 @@ export const BorrowerLender = () => {
         />
       </>
 
-      <div className="border-default-100 relative z-1 w-full gap-4 rounded-xl border bg-[linear-gradient(86.84deg,_rgba(254,_254,_254,_0.08)_17.87%,_rgba(255,_255,_255,_0.04)_52.56%,_rgba(255,_255,_255,_0.06)_77.29%)] px-20 py-20">
+      <div className="border-default-100 relative z-1 w-full gap-4 rounded-xl border bg-[linear-gradient(86.84deg,_rgba(254,_254,_254,_0.08)_17.87%,_rgba(255,_255,_255,_0.04)_52.56%,_rgba(255,_255,_255,_0.06)_77.29%)] px-20 py-20 max-lg:px-4 max-lg:py-14">
         <Tabs
           selectedKey={selected}
           onSelectionChange={(key) => setSelected(key as string)}
@@ -41,9 +41,9 @@ export const BorrowerLender = () => {
           classNames={{ panel: 'p-0 pt-6', cursor: 'bg-white/10!' }}
         >
           <Tab key="borrower" title="As a Borrower">
-            <div className="flex items-center justify-between gap-30 max-lg:flex-col">
+            <div className="flex items-center justify-between gap-30 max-lg:flex-col max-lg:gap-16">
               <div className="flex max-w-[456px] flex-1 flex-col gap-2">
-                <h1 className="text-foreground text-5xl leading-[1.15] font-medium">
+                <h1 className="text-foreground text-5xl leading-[1.15] font-medium max-lg:text-[32px]">
                   Start Stacking BTC
                 </h1>
                 <p className="text-foreground/70 text-base leading-tight font-normal">
@@ -59,7 +59,7 @@ export const BorrowerLender = () => {
                     >
                       <div className="size-8 flex-shrink-0">{item.icon}</div>
                       <div className="flex flex-col gap-4">
-                        <div className="text-foreground/90 text-xl leading-[1] font-medium">
+                        <div className="text-foreground/90 text-xl leading-[1] font-medium max-lg:text-lg">
                           {item.title}
                         </div>
                         <div className="text-foreground/70 text-sm leading-[1.15] font-normal">
@@ -90,11 +90,11 @@ export const BorrowerLender = () => {
 
           <Tab key="lender" title="As a Lender" id="lenders">
             <div
-              className="flex items-center justify-between gap-30 max-lg:flex-col"
+              className="flex items-center justify-between gap-30 max-lg:flex-col max-lg:gap-16"
               id="lenders"
             >
               <div className="flex max-w-[456px] flex-1 flex-col gap-2">
-                <h1 className="text-foreground text-5xl leading-[1.15] font-medium">
+                <h1 className="text-foreground text-5xl leading-[1.15] font-medium max-lg:text-[32px]">
                   Start Lending USDC
                 </h1>
                 <p className="text-foreground/70 text-base leading-tight font-normal">
@@ -109,7 +109,7 @@ export const BorrowerLender = () => {
                     >
                       <div className="size-8 flex-shrink-0">{item.icon}</div>
                       <div className="flex flex-col gap-4">
-                        <div className="text-foreground/90 text-xl leading-[1] font-medium">
+                        <div className="text-foreground/90 text-xl leading-[1] font-medium max-lg:text-lg">
                           {item.title}
                         </div>
                         <div className="text-foreground/70 text-sm leading-[1.15] font-normal">
@@ -132,7 +132,7 @@ export const BorrowerLender = () => {
                 </Button>
               </div>
 
-              <div className="grid flex-1 place-items-center">
+              <div className="grid flex-1 place-items-center max-lg:w-full">
                 <LendingChart />
               </div>
             </div>

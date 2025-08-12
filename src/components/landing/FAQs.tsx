@@ -6,18 +6,17 @@ import { Glow } from './Glow'
 
 export const FAQs = () => {
   return (
-    <section className="container pb-50" id="faqs">
-      <div className="flex w-full items-center justify-between gap-6 max-md:flex-col">
+    <section className="container pb-50 max-lg:pb-30" id="faqs">
+      <div className="flex w-full items-center justify-between gap-10 max-lg:flex-col max-lg:items-start">
         <div className="relative z-1 flex flex-col gap-4">
           <Glow className="absolute -top-10 right-full z-0 h-[158px] w-[72px] -translate-x-full rotate-22 blur-[100px]" />
 
-          <h2 className="text-foreground text-5xl leading-[1.15] font-medium">
+          <h2 className="text-foreground text-5xl leading-[1.15] font-medium max-lg:text-[32px]">
             FAQs
           </h2>
 
           <p className="text-foreground/70 text-base leading-tight font-normal">
-            Everything you need to know,
-            <br />
+            Everything you need to know, <br className="max-lg:hidden" />
             No surprises.
           </p>
 
@@ -34,12 +33,12 @@ export const FAQs = () => {
           </Link>
         </div>
 
-        <div className="w-full max-w-[716px]">
+        <div className="w-full max-w-[716px] max-lg:w-full max-lg:max-w-full">
           <Accordion
             fullWidth
             showDivider={false}
             variant="splitted"
-            className="gap-0"
+            className="gap-0 max-lg:px-0!"
           >
             {FAQ_ITEMS.map((item, index) => (
               <AccordionItem
