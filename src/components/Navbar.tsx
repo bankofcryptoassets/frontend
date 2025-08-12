@@ -97,8 +97,8 @@ export const Navbar = () => {
               <NextLink
                 className={cn(
                   linkStyles({ color: 'foreground' }),
-                  '!text-default-800 font-normal',
-                  'data-[active=true]:!text-default-900 data-[active=true]:font-medium'
+                  'text-default-800 font-normal',
+                  'data-[active=true]:!text-default-900 hover:text-primary animate-underline transition-colors data-[active=true]:font-medium'
                 )}
                 color="foreground"
                 href={item.href}

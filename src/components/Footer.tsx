@@ -4,6 +4,7 @@ import { Logo } from './Navbar'
 import Link from 'next/link'
 import { FaXTwitter } from 'react-icons/fa6'
 import { FaGithub, FaTelegramPlane } from 'react-icons/fa'
+import InlineSVG from 'react-inlinesvg'
 
 const MENU_ITEMS = [
   {
@@ -64,18 +65,16 @@ const SOCIAL_LINKS = [
 
 export const Footer = () => {
   return (
-    <footer className="relative z-0 py-8" id="footer">
-      <div className="border-default-200 bg-default-100 pointer-events-none absolute inset-2 top-0 -z-1 overflow-hidden rounded-xl border-2 select-none"></div>
-
-      <div className="text-default-800 container">
-        <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
-          <div className="col-span-2 mb-8 lg:mb-0">
+    <footer className="relative z-0" id="footer">
+      <div className="text-default-800 container pb-10 max-lg:pb-6">
+        <div className="flex justify-between gap-8 max-lg:flex-col">
+          <div>
             <Logo />
             <p className="mt-2 text-sm font-medium">
               Revolutionizing BTC Ownership
             </p>
 
-            <div className="mt-4 flex flex-wrap gap-4 lg:mt-14">
+            <div className="mt-4 flex flex-wrap gap-4 lg:mt-10">
               {SOCIAL_LINKS.map((social, index) => (
                 <Link
                   key={index}
@@ -93,42 +92,44 @@ export const Footer = () => {
             </div>
           </div>
 
-          {MENU_ITEMS.map((section, sectionIdx) => (
-            <div key={sectionIdx}>
-              <h3 className="text-default-900 mb-3 text-sm font-bold">
-                {section.title}
-              </h3>
+          <div className="flex flex-wrap gap-30 max-lg:justify-between max-lg:gap-10">
+            {MENU_ITEMS.map((section, sectionIdx) => (
+              <div key={sectionIdx}>
+                <h3 className="text-default-900 mb-3 text-sm font-bold">
+                  {section.title}
+                </h3>
 
-              <ul className="space-y-1.5">
-                {section.links.map((link, linkIdx) => (
-                  <li key={linkIdx} className="">
-                    <StyledLink
-                      as={Link}
-                      href={link.url}
-                      className="text-default-800 hover:text-primary"
-                      underline="hover"
-                      size="sm"
-                      isDisabled={!link.url}
-                    >
-                      {link.text}
-                    </StyledLink>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                <ul className="space-y-1.5">
+                  {section.links.map((link, linkIdx) => (
+                    <li key={linkIdx} className="">
+                      <StyledLink
+                        as={Link}
+                        href={link.url}
+                        className="text-default-800 animate-underline hover:text-primary transition-colors"
+                        size="sm"
+                        isDisabled={!link.url}
+                      >
+                        {link.text}
+                      </StyledLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="border-default/50 mt-8 flex flex-col justify-between gap-4 border-t pt-6 text-sm md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} Bitmor. All rights reserved.</p>
-          <ul className="flex gap-4">
+        <div className="border-default/50 mt-10 flex flex-col-reverse justify-between gap-4 border-t pt-10 text-sm max-lg:mt-6 max-lg:pt-6 lg:flex-row lg:items-center">
+          <p className="text-default-a">
+            © {new Date().getFullYear()} Bitmor. All rights reserved.
+          </p>
+          <ul className="flex gap-6">
             {BOTTOM_LINKS.map((link, linkIdx) => (
               <li key={linkIdx}>
                 <StyledLink
                   as={Link}
                   href={link.url}
-                  className="text-default-800 hover:text-primary"
-                  underline="hover"
+                  className="text-default-800 hover:text-primary animate-underline transition-colors"
                   size="sm"
                   isDisabled={!link.url}
                 >
@@ -138,6 +139,13 @@ export const Footer = () => {
             ))}
           </ul>
         </div>
+      </div>
+
+      <div className="w-full px-8 pb-3 max-lg:px-4">
+        <InlineSVG
+          src="/extras/bitmor-footer.svg"
+          className="h-full w-full stroke-[0.1] max-lg:stroke-[0.2]"
+        />
       </div>
     </footer>
   )

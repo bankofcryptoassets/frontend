@@ -88,8 +88,11 @@ export const BorrowerLender = () => {
             </div>
           </Tab>
 
-          <Tab key="lender" title="As a Lender">
-            <div className="flex items-center justify-between gap-30 max-lg:flex-col">
+          <Tab key="lender" title="As a Lender" id="lenders">
+            <div
+              className="flex items-center justify-between gap-30 max-lg:flex-col"
+              id="lenders"
+            >
               <div className="flex max-w-[456px] flex-1 flex-col gap-2">
                 <h1 className="text-foreground text-5xl leading-[1.15] font-medium">
                   Start Lending USDC
