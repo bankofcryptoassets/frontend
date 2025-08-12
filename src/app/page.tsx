@@ -1,26 +1,35 @@
 import { Footer } from '@/components/Footer'
 import {
-  Borrowers,
-  CTABanner,
-  FAQs,
   Hero,
-  Lenders,
-  Stats,
-  Team,
-  WhyBitcoin,
+  AboutBitmore,
+  JustLikeMortgage,
+  BorrowerLender,
+  Testimonials,
+  FAQs,
+  CTABanner,
+  // Borrowers,
+  // CTABanner,
+  // Lenders,
+  // Stats,
+  // Team,
+  // WhyBitcoin,
 } from '@/components/landing'
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <Stats />
+      <AboutBitmore />
+      <JustLikeMortgage />
+      <BorrowerLender />
+      <Testimonials />
+      <FAQs />
+      <CTABanner />
+      {/* <Stats />
       <Borrowers />
       <WhyBitcoin />
       <Lenders />
-      <Team />
-      <FAQs />
-      <CTABanner />
+      <Team /> */}
       <Footer />
     </>
   )

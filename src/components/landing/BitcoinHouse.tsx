@@ -1,3 +1,4 @@
+'use client'
 import { cn } from '@heroui/react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -38,7 +39,7 @@ export const BitcoinHouse = () => {
           width={420}
           height={320}
           className={cn(
-            'w-full max-w-[420px] transition-all duration-1000 ease-in-out select-none',
+            'w-full max-w-[420px] transition-transform duration-1000 ease-in-out select-none',
             isRotating && '[transform:rotateY(360deg)]'
           )}
           priority
@@ -50,7 +51,7 @@ export const BitcoinHouse = () => {
             <div
               key={item.year}
               className={cn(
-                'rounded-xl px-6 py-1.5 text-xl leading-tight font-bold opacity-20 transition-all',
+                'rounded-xl px-6 py-1.5 text-xl leading-tight font-bold opacity-20 transition',
                 active.year === item.year &&
                   'bg-default/35 opacity-100 shadow-[2px_4px_16px_0px_hsl(var(--heroui-default-200))_inset]'
               )}
@@ -62,7 +63,7 @@ export const BitcoinHouse = () => {
 
         {/* BTC */}
         <div className="-bottom-5 -left-24 flex flex-col items-end gap-2 sm:absolute">
-          <div className="border-background text-primary -mr-5 w-fit rounded-2xl border-4 bg-[#fbecda] px-10 py-2.5 text-sm leading-tight font-bold dark:bg-[#251604]">
+          <div className="border-background text-primary -mr-5 w-fit rounded-xl border-4 bg-[#fbecda] px-10 py-2.5 text-sm leading-tight font-bold dark:bg-[#251604]">
             Home Price in BTC
           </div>
           <div className="flex items-center gap-3">
@@ -92,7 +93,7 @@ export const BitcoinHouse = () => {
 
         {/* USD */}
         <div className="-top-32 -right-0 flex flex-col items-end gap-2 sm:absolute">
-          <div className="border-background bg-success-50 text-success w-fit rounded-2xl border-4 px-10 py-2.5 text-sm leading-tight font-bold">
+          <div className="bg-success-50 text-success w-fit rounded-xl px-10 py-2.75 text-sm leading-tight font-bold">
             Home Price in USD
           </div>
           <div className="flex items-center gap-3">
@@ -109,8 +110,8 @@ export const BitcoinHouse = () => {
                 value={active.usd}
                 // animateOnVisible={{ triggerOnce: true }}
                 numberClassName="w-full"
-                charClassName="text-4xl font-bold leading-tight lg:text-[56px]"
-                separatorClassName="text-4xl font-bold leading-tight lg:text-[56px]"
+                charClassName="text-3xl font-bold leading-tight lg:text-[44px]"
+                separatorClassName="text-3xl font-bold leading-tight lg:text-[44px]"
               />
             </div>
           </div>

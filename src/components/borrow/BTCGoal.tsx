@@ -379,7 +379,7 @@ export const CustomRadio = (props: RadioProps) => {
       {...otherProps}
       className={cn('group', className)}
       classNames={{
-        base: 'm-0 rounded-lg bg-default-200 transition hover:bg-primary/5 data-[selected=true]:bg-primary/5 border border-default-300/50 data-[selected=true]:border-primary/50',
+        base: 'm-0 rounded-lg bg-default-200 transition-colors hover:bg-primary/5 data-[selected=true]:bg-primary/5 border border-default-300/50 data-[selected=true]:border-primary/50',
         wrapper: 'hidden',
         labelWrapper:
           'ml-0 ms-0 px-3 [&>span]:group-data-[selected=true]:text-primary [&>span]:text-default-a [&>span]:font-medium [&>span]:group-data-[selected=true]:font-semibold',

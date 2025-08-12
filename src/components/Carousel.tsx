@@ -272,7 +272,7 @@ const DotButton: React.FC<
     type="button"
     className={cn(
       // base dot styles
-      'mx-1 flex items-center justify-center rounded-full p-0 transition-all',
+      'transition-background transition-size mx-1 flex items-center justify-center rounded-full p-0',
       selected ? 'bg-primary size-2' : 'bg-foreground/20 size-1.5',
       className
     )}

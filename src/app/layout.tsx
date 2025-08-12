@@ -55,7 +55,7 @@ export default async function RootLayout({
         <Providers>
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
-            {children}
+            <div className="w-full overflow-x-hidden">{children}</div>
           </div>
         </Providers>
       </body>

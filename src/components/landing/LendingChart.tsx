@@ -1,6 +1,4 @@
 import { Card } from '@heroui/react'
-import { MagicCard } from '../MagicCard'
-import { useTheme } from 'next-themes'
 import {
   ChartConfig,
   ChartContainer,
@@ -24,15 +22,10 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export const LendingChart = () => {
-  const { resolvedTheme: theme } = useTheme()
-
   return (
-    <Card className="bg-background w-full max-w-md rounded-2xl">
-      <MagicCard
-        gradientColor={theme === 'dark' ? '#333333' : '#D9D9D9aa'}
-        className="p-3"
-      >
-        <div className="bg-default-200/70 rounded-xl px-5 py-6">
+    <Card className="bg-default-50/90 border-default-100 w-full max-w-md rounded-2xl border shadow-[0px_1px_0px_0px_#FEFEFE1A,0px_0px_4px_0px_#FFFFFF1F]">
+      <div className="p-3">
+        <div className="border-default-100 rounded-xl border bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] px-5 py-6">
           <div className="mb-6 flex items-start justify-between gap-4">
             <div className="text-default-d text-base font-semibold">
               USDC Yield
@@ -126,7 +119,7 @@ export const LendingChart = () => {
             </AreaChart>
           </ChartContainer>
         </div>
-      </MagicCard>
+      </div>
     </Card>
   )
 }

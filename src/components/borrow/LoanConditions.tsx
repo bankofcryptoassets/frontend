@@ -310,7 +310,7 @@ const LoanConditionItem = ({
         <div
           ref={ref}
           className={cn(
-            'hover:bg-default-200/70 flex rounded-[10px] px-3.5 py-2.5 pr-2.5 transition aria-expanded:scale-100 aria-expanded:opacity-100',
+            'hover:bg-default-200/70 flex rounded-[10px] px-3.5 py-2.5 pr-2.5 transition-[filter,background-color] aria-expanded:scale-100 aria-expanded:opacity-100',
             isOtherOpen && 'blur-sm'
           )}
         >
@@ -334,7 +334,7 @@ const LoanConditionItem = ({
         </div>
       </PopoverTrigger>
       <PopoverContent className="bg-default-100 w-(--content-width) px-2 dark:bg-[#1F1F22]">
-        <div className="border-default-300 mb-3 flex border-b px-1.5 py-2.5 pr-0.5 transition">
+        <div className="border-default-300 mb-3 flex border-b px-1.5 py-2.5 pr-0.5 transition-colors">
           <Checkbox
             color="primary"
             className="m-0! p-0"

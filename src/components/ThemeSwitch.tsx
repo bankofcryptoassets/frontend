@@ -5,6 +5,7 @@ import { useTheme } from 'next-themes'
 import { useIsSSR } from '@react-aria/ssr'
 import { cn, Tooltip } from '@heroui/react'
 import { IconSvgProps } from '@/types'
+import { MoonIcon, SunIcon } from 'lucide-react'
 
 export interface ThemeSwitchProps {
   className?: string
@@ -15,9 +16,24 @@ export const ThemeSwitch = ({ className, classNames }: ThemeSwitchProps) => {
   const { theme, setTheme } = useTheme()
   const isSSR = useIsSSR()
 
-  const onChange = () =>
-    theme === 'light' ? setTheme('dark') : setTheme('light')
+  const updateTheme = (theme?: string) => {
+    if (theme === 'light') {
+      setTheme('dark')
+    } else {
+      setTheme('light')
+    }
+  }
 
+  const onChange = () => {
+    if (!document.startViewTransition) {
+      updateTheme(theme)
+      return
+    }
+
+    document.startViewTransition(() => {
+      updateTheme(theme)
+    })
+  }
   const tooltipContent = `Switch to ${theme === 'light' || isSSR ? 'dark' : 'light'} mode`
 
   const {
@@ -53,11 +69,9 @@ export const ThemeSwitch = ({ className, classNames }: ThemeSwitchProps) => {
             class: cn(
               [
                 'h-auto w-auto',
-                'bg-default',
+                'hover:bg-default-200! bg-transparent!',
                 'rounded-xl',
                 'flex items-center justify-center',
-                'group-data-[selected=true]:bg-default',
-                '!text-foreground',
                 'p-1.5 lg:p-2.5',
               ],
               classNames?.wrapper
@@ -65,9 +79,9 @@ export const ThemeSwitch = ({ className, classNames }: ThemeSwitchProps) => {
           })}
         >
           {!isSelected || isSSR ? (
-            <MoonFilledIcon size={20} />
+            <MoonIcon size={20} strokeWidth={1} absoluteStrokeWidth />
           ) : (
-            <SunFilledIcon size={20} />
+            <SunIcon size={20} strokeWidth={1} absoluteStrokeWidth />
           )}
         </div>
       </Component>

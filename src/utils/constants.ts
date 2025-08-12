@@ -3,6 +3,8 @@ export const API_BASE_URL = 'https://backend.xefi.ai/api'
 
 export const COOKIE_KEYS = { JWT: 'auth:jwt' }
 
+export const DASH = '—'
+
 export const CONTRACT_ADDRESSES = {
   USDC: '0xe270578586FA80B627a0B84a3D86169B4B515730',
   MAIN: '0x80822a4BC3Ad8659686e2F44a24c70B47Cd5905b',

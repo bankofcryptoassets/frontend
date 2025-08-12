@@ -1,79 +1,30 @@
 'use client'
+import { Glow } from './Glow'
 import { JoinWishlist } from './JoinWishlist'
 
 export const CTABanner = () => {
   return (
-    <section className="relative z-0" id="cta">
-      <div
-        className="border-default-200 pointer-events-none absolute inset-2 -z-1 overflow-hidden rounded-xl border-2 select-none"
-        style={{
-          background: `
-              url("data:image/svg+xml,%3Csvg viewBox='0 0 1799 1799' opacity='0.4' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
-              linear-gradient(315deg, rgba(247, 147, 26, 0.8), rgba(247, 147, 26, 0.1) 70%),
-              radial-gradient(circle at 20% 30%, rgba(0, 82, 255, 0.4) 0%, rgba(0, 82, 255, 0) 50%),
-              radial-gradient(circle at 80% 20%, rgba(11, 83, 191, 0.4) 0%, rgba(11, 83, 191, 0) 60%),
-              linear-gradient(to right bottom, rgba(247, 147, 26, 0.2), rgba(0, 82, 255, 0.2), rgba(11, 83, 191, 0.2))
-            `,
-          backgroundBlendMode: 'overlay, normal, screen, multiply, normal',
-        }}
-      ></div>
+    <section
+      className="relative container mb-50 max-w-[1360px] min-[87.5rem]:px-0!"
+      id="cta"
+    >
+      <>
+        <Glow className="absolute -top-20 left-full h-[158px] w-[72px] rotate-22 blur-[100px]" />
+      </>
 
-      <div className="container py-16">
-        <div className="flex flex-col items-center justify-center gap-8">
-          <div className="inline-block max-w-4xl justify-center text-center">
-            <h1 className="inline text-3xl font-bold tracking-tight max-lg:text-balance lg:text-4xl">
-              Start your Bitcoin Ownership Journey Here.
+      <div className="border-default-100 relative z-1 w-full gap-4 rounded-xl border bg-[linear-gradient(86.84deg,_rgba(254,_254,_254,_0.08)_17.87%,_rgba(255,_255,_255,_0.04)_52.56%,_rgba(255,_255,_255,_0.06)_77.29%)] px-20 py-20">
+        <div className="flex flex-col items-center justify-center gap-20">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <h1 className="text-foreground text-5xl leading-[1.15] font-medium">
+              Stay in-the-know
             </h1>
-
-            <p className="text-default-900 my-2 mt-4 block w-full! max-w-6xl text-lg md:w-1/2 lg:text-xl">
-              Join 100M+ Bitcoin Owners today.
+            <p className="text-foreground/70 text-base leading-tight font-normal">
+              Don&apos;t just watch future, be a part of it.
             </p>
           </div>
 
-          <div className="mt-1 mb-8 w-full max-w-[720px]">
+          <div className="w-full max-w-[720px]">
             <JoinWishlist />
-            {/* <Input
-              placeholder="Early access = better terms"
-              className="h-[60px] w-full max-w-[720px] rounded-xl"
-              classNames={{
-                mainWrapper: 'w-full',
-                inputWrapper:
-                  'h-[60px] rounded-xl w-full pl-5 pr-2 bg-[#F5F5F5]! ',
-                innerWrapper: 'w-full',
-                input: 'text-black! placeholder:text-[#666666]',
-              }}
-              size="lg"
-              endContent={
-                <div className="flex items-center gap-4">
-                  <Button
-                    className="size-11 rounded-lg bg-white text-sm font-bold shadow-[1px_2px_8px_0px_#0000000A] hover:bg-white/90"
-                    size="sm"
-                    isIconOnly
-                  >
-                    <Image
-                      src="/icons/google.png"
-                      alt="google"
-                      width={24}
-                      height={24}
-                      className="size-6 min-w-6"
-                    />
-                  </Button>
-
-                  <Divider
-                    orientation="vertical"
-                    className="h-8 w-px bg-default-d"
-                  />
-
-                  <Button
-                    className="h-11 w-[160px] rounded-lg text-sm font-bold"
-                    color="primary"
-                    variant="shadow"
-                  >
-                    Join Waitlist
-                  </Button>
-                </div>
-              }
-            /> */}
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ import {
   NavbarMenuItem,
 } from '@heroui/navbar'
 import { Link } from '@heroui/link'
-import { link as linkStyles } from '@heroui/theme'
+import { cn, link as linkStyles } from '@heroui/theme'
 import clsx from 'clsx'
 import { siteConfig } from '@/config/site'
 import { ThemeSwitch } from '@/components/ThemeSwitch'
@@ -23,19 +23,21 @@ import { useAuth } from '@/auth/useAuth'
 import { CONTRACT_ADDRESSES } from '@/utils/constants'
 import { useAccount, useBalance } from 'wagmi'
 import numeral from 'numeral'
+import { GetBalanceData } from 'wagmi/query'
+import Big from 'big.js'
 
 const HIDE_NAVBAR_PATHS = ['/connect-telegram']
 
 export const Logo = () => {
   return (
-    <NextLink href="/">
-      <span className="text-primary inline text-2xl leading-9 font-bold tracking-tight">
+    <>
+      <span className="text-primary inline text-3xl leading-none font-bold tracking-tight">
         Bit
       </span>
-      <span className="text-secondary dark:text-foreground inline text-2xl leading-9 font-bold tracking-tight">
+      <span className="text-secondary dark:text-foreground inline text-3xl leading-none font-bold tracking-tight">
         mor
       </span>
-    </NextLink>
+    </>
   )
 }
 
@@ -63,19 +65,29 @@ export const Navbar = () => {
 
   return (
     <HeroUINavbar
-      classNames={{ wrapper: 'container!' }}
+      classNames={{
+        wrapper: 'container!',
+        base: isMainApp && 'bg-transparent! backdrop-saturate-100',
+      }}
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-      height="4.5rem"
+      height="6rem"
     >
       <NavbarContent
         className="basis-1/5 gap-12 max-xl:gap-8 sm:basis-full"
         justify="start"
       >
         <NavbarBrand as="li" className="max-w-fit" onClick={onMenuItemClick}>
-          <Logo />
+          <NextLink href="/">
+            <Logo />
+          </NextLink>
         </NavbarBrand>
+      </NavbarContent>
 
+      <NavbarContent
+        className="basis-1/5 gap-12 max-xl:gap-8 sm:basis-full"
+        justify="center"
+      >
         <ul className="ml-2 hidden justify-start gap-8 max-xl:gap-6 lg:flex">
           {siteConfig[isMainApp ? 'navItemMainApp' : 'navItems'].map((item) => (
             <NavbarItem
@@ -83,9 +95,9 @@ export const Navbar = () => {
               isActive={pathname.startsWith(item.href)}
             >
               <NextLink
-                className={clsx(
+                className={cn(
                   linkStyles({ color: 'foreground' }),
-                  '!text-default-700 font-normal',
+                  '!text-default-800 font-normal',
                   'data-[active=true]:!text-default-900 data-[active=true]:font-medium'
                 )}
                 color="foreground"
@@ -106,16 +118,7 @@ export const Navbar = () => {
         {isMainApp && isAuth && (
           <>
             <NavbarItem className="hidden gap-2 sm:flex">
-              <Button
-                color="primary"
-                variant="bordered"
-                className="border-default-300"
-              >
-                <Image src="/icons/btc.svg" alt="BTC" width={16} height={16} />
-                <span className="text-base font-medium">
-                  {numeral(btcBalance?.value || 0).format('0,0')} sats
-                </span>
-              </Button>
+              <SatsBalance btcBalance={btcBalance} />
             </NavbarItem>
 
             <NavbarItem className="hidden gap-2 sm:flex">
@@ -135,21 +138,18 @@ export const Navbar = () => {
               href="/borrow"
               color="primary"
               variant="shadow"
-              className="font-bold"
+              className="h-11 font-bold"
               onPress={onMenuItemClick}
+              size="lg"
             >
-              Try Bitmor (Testnet)
+              Launch App
             </Button>
           </NavbarItem>
         )}
 
         {isMainApp && (
-          <NavbarItem className="hidden gap-2 sm:flex [&>div>button]:font-sans! [&>div>button]:text-sm! [&>div>button]:font-medium! [&>div>button_*]:font-sans! [&>div>button_*]:text-sm! [&>div>button_*]:font-medium!">
-            <ConnectButton
-              accountStatus="full"
-              showBalance={false}
-              chainStatus="none"
-            />
+          <NavbarItem className="hidden gap-2 sm:flex">
+            <CustomConnectButton />
           </NavbarItem>
         )}
       </NavbarContent>
@@ -185,31 +185,9 @@ export const Navbar = () => {
 
           {isMainApp ? (
             <div className="mt-6 flex flex-col gap-4">
-              {isAuth && (
-                <Button
-                  color="primary"
-                  variant="bordered"
-                  className="border-default-300"
-                >
-                  <Image
-                    src="/icons/btc.svg"
-                    alt="BTC"
-                    width={16}
-                    height={16}
-                  />
-                  <span className="font-medium">
-                    {numeral(btcBalance?.value || 0).format('0,0')} sats
-                  </span>
-                </Button>
-              )}
+              {isAuth && <SatsBalance btcBalance={btcBalance} />}
 
-              <Button className="p-0 **:flex! **:items-center! **:justify-center! **:gap-2! [&_[style='height:_24px;_width:_24px;']]:overflow-hidden [&_[style='height:_24px;_width:_24px;']]:rounded-full! [&>div]:h-full! [&>div]:w-full! [&>div>button]:h-full! [&>div>button]:w-full! [&>div>button]:font-sans! [&>div>button]:text-sm! [&>div>button]:font-semibold!">
-                <ConnectButton
-                  accountStatus="avatar"
-                  showBalance={false}
-                  chainStatus="none"
-                />
-              </Button>
+              <CustomConnectButton />
             </div>
           ) : (
             <Button
@@ -226,5 +204,108 @@ export const Navbar = () => {
         </div>
       </NavbarMenu>
     </HeroUINavbar>
+  )
+}
+
+export const CustomConnectButton = () => {
+  return (
+    <ConnectButton.Custom>
+      {({
+        account,
+        chain,
+        openAccountModal,
+        openChainModal,
+        openConnectModal,
+        authenticationStatus,
+        mounted,
+      }) => {
+        const ready = mounted && authenticationStatus !== 'loading'
+        const connected =
+          ready &&
+          account &&
+          chain &&
+          (!authenticationStatus || authenticationStatus === 'authenticated')
+
+        return (
+          <>
+            {(() => {
+              if (!connected) {
+                return (
+                  <Button
+                    onPress={openConnectModal}
+                    color="primary"
+                    variant="shadow"
+                    className="h-11 font-bold"
+                    size="lg"
+                  >
+                    Connect Wallet
+                  </Button>
+                )
+              }
+
+              if (chain.unsupported) {
+                return (
+                  <Button
+                    onPress={openChainModal}
+                    color="primary"
+                    variant="shadow"
+                    className="h-11 font-bold"
+                    size="lg"
+                  >
+                    Wrong network
+                  </Button>
+                )
+              }
+
+              return (
+                <Button
+                  onPress={openAccountModal}
+                  color="primary"
+                  variant="shadow"
+                  className="h-11 font-bold"
+                  size="lg"
+                >
+                  {!!account.ensAvatar && (
+                    <Image
+                      src={account.ensAvatar}
+                      alt="ENS Avatar"
+                      width={24}
+                      height={24}
+                    />
+                  )}
+                  {account.displayName}
+                </Button>
+              )
+            })()}
+          </>
+        )
+      }}
+    </ConnectButton.Custom>
+  )
+}
+
+export const SatsBalance = ({
+  btcBalance,
+}: {
+  btcBalance?: GetBalanceData
+}) => {
+  if (!btcBalance) return null
+
+  const isTooManySats = Big(Number(btcBalance?.value || 0)).gte(1_000_000)
+  const symbol = isTooManySats ? 'BTC' : 'sats'
+  const value = isTooManySats ? btcBalance?.formatted : btcBalance?.value
+
+  return (
+    <Button
+      color="primary"
+      variant="bordered"
+      className="border-default-300 h-11"
+      size="lg"
+    >
+      <Image src="/icons/btc.svg" alt="BTC" width={16} height={16} />
+      <span className="font-medium">
+        {numeral(value).format('0,0.[00]')} {symbol}
+      </span>
+    </Button>
   )
 }

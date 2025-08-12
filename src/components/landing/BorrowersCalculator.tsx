@@ -1,28 +1,24 @@
 'use client'
 import {
-  Button,
   Card,
   cn,
   Divider,
+  Link,
   NumberInput,
   Radio,
   RadioGroup,
   RadioProps,
 } from '@heroui/react'
-import { MagicCard } from '../MagicCard'
-import Link from 'next/link'
-import { useTheme } from 'next-themes'
 import { useMemo, useState } from 'react'
 import numeral from 'numeral'
 import SlotCounter from 'react-slot-counter'
 import { INTEREST_RATE, TIME_PERIOD } from '@/utils/constants'
 import { trackEvent } from '@/utils/trackEvent'
+import NextLink from 'next/link'
 
 const BITCOIN_PRICE = 1_00_000
 
 export const BorrowersCalculator = () => {
-  const { resolvedTheme: theme } = useTheme()
-
   const [btcAmount, setBtcAmount] = useState<number>()
   const [loanTerm, setLoanTerm] = useState<string>()
 
@@ -69,117 +65,112 @@ export const BorrowersCalculator = () => {
   }, [btcAmount, loanTerm])
 
   return (
-    <Card className="bg-background w-full max-w-md rounded-2xl">
-      <MagicCard
-        gradientColor={theme === 'dark' ? '#333333' : '#D9D9D9aa'}
-        className="p-0"
-      >
-        <div className="px-6 py-5">
-          <div className="text-default-d mb-4 text-base leading-tight font-medium">
-            Ownership Calculator
-          </div>
+    <Card className="bg-default-50/90 border-default-100 w-full max-w-md rounded-2xl border shadow-[0px_1px_0px_0px_#FEFEFE1A,0px_0px_4px_0px_#FFFFFF1F]">
+      <div className="p-6">
+        <div className="text-foreground/90 mb-4 text-center text-xl leading-[1] font-medium">
+          Ownership Calculator
+        </div>
+
+        <Divider />
+
+        <div className="my-6 flex w-full flex-col gap-6">
+          <NumberInput
+            hideStepper
+            isWheelDisabled
+            label="Amount of BTC"
+            endContent={<span>BTC</span>}
+            name="btc"
+            fullWidth
+            minValue={0}
+            value={btcAmount}
+            formatOptions={{ maximumFractionDigits: 8 }}
+            onChange={(value) => {
+              if (typeof value === 'number') setBtcAmount(value)
+              else if (value?.target)
+                setBtcAmount(
+                  numeral(value?.target?.value || 0).value() || undefined
+                )
+            }}
+            classNames={{
+              inputWrapper:
+                'bg-transparent bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] border border-default-100',
+            }}
+          />
+
+          <RadioGroup
+            label="Select Loan Duration:"
+            orientation="horizontal"
+            value={loanTerm}
+            onValueChange={setLoanTerm}
+            classNames={{ label: 'text-sm font-medium text-default-d' }}
+          >
+            {TIME_PERIOD.map((term) => (
+              <CustomRadio
+                key={term.value}
+                value={term.value}
+                labelClassName="px-5"
+              >
+                {term.label}
+              </CustomRadio>
+            ))}
+          </RadioGroup>
+
+          <RadioGroup
+            label="Interest Rate:"
+            orientation="horizontal"
+            value={loanTerm}
+            onValueChange={setLoanTerm}
+            classNames={{ label: 'text-sm font-medium text-default-d' }}
+          >
+            {TIME_PERIOD.map((term) => (
+              <CustomRadio key={term.value} value={term.value}>
+                {term.interestForLandingPage}%
+              </CustomRadio>
+            ))}
+          </RadioGroup>
 
           <Divider />
 
-          <div className="my-6 flex w-full flex-col gap-6">
-            <NumberInput
-              hideStepper
-              isWheelDisabled
-              label="Bitcoin Amount (BTC)"
-              name="btc"
-              fullWidth
-              minValue={0}
-              value={btcAmount}
-              formatOptions={{ maximumFractionDigits: 8 }}
-              onChange={(value) => {
-                if (typeof value === 'number') setBtcAmount(value)
-                else if (value?.target)
-                  setBtcAmount(
-                    numeral(value?.target?.value || 0).value() || undefined
-                  )
-              }}
-              classNames={{
-                inputWrapper: 'bg-default/35 data-[hover=true]:bg-default/50',
-              }}
-            />
-
-            <RadioGroup
-              label="Select Loan Duration:"
-              orientation="horizontal"
-              value={loanTerm}
-              onValueChange={setLoanTerm}
-              classNames={{ label: 'text-sm font-medium text-default-d' }}
-            >
-              {TIME_PERIOD.map((term) => (
-                <CustomRadio
-                  key={term.value}
-                  value={term.value}
-                  labelClassName="px-5"
-                >
-                  {term.label}
-                </CustomRadio>
-              ))}
-            </RadioGroup>
-
-            <RadioGroup
-              label="Interest Rate:"
-              orientation="horizontal"
-              value={loanTerm}
-              onValueChange={setLoanTerm}
-              classNames={{ label: 'text-sm font-medium text-default-d' }}
-            >
-              {TIME_PERIOD.map((term) => (
-                <CustomRadio key={term.value} value={term.value}>
-                  {term.interestForLandingPage}%
-                </CustomRadio>
-              ))}
-            </RadioGroup>
-
-            <Divider />
-
-            <div className="flex flex-col gap-2">
-              <div className="flex justify-between gap-2">
-                <div className="text-default-d text-sm font-medium">
-                  Down Payment
-                </div>
-                <Counter value={calculateLoanAmounts?.upfront} />
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between gap-2">
+              <div className="text-default-d text-sm font-medium">
+                Down Payment
               </div>
+              <Counter value={calculateLoanAmounts?.upfront} />
+            </div>
 
-              <div className="flex justify-between gap-2">
-                <div className="text-default-d text-sm font-medium">
-                  Monthly EMI
-                </div>
-                <Counter value={calculateLoanAmounts?.monthly} />
+            <div className="flex justify-between gap-2">
+              <div className="text-default-d text-sm font-medium">
+                Monthly EMI
               </div>
+              <Counter value={calculateLoanAmounts?.monthly} />
+            </div>
 
-              <div className="flex justify-between gap-2">
-                <div className="text-default-d text-sm font-medium">
-                  Total Paid
-                </div>
-                <Counter value={calculateLoanAmounts?.total} />
+            <div className="flex justify-between gap-2">
+              <div className="text-default-d text-sm font-medium">
+                Total Paid
               </div>
+              <Counter value={calculateLoanAmounts?.total} />
             </div>
           </div>
-
-          <Button
-            color="primary"
-            variant="light"
-            as={Link}
-            href="/borrow"
-            className="text-lg font-medium"
-            fullWidth
-            onPress={() => {
-              trackEvent('clicked "Get Full Quote in App"', {
-                btc_amount: btcAmount,
-                loan_term: loanTerm,
-                interest_rate: INTEREST_RATE[0],
-              })
-            }}
-          >
-            Get Full Quote in App
-          </Button>
         </div>
-      </MagicCard>
+
+        <Link
+          color="primary"
+          as={NextLink}
+          href="/borrow"
+          className="flex! w-full items-center justify-center text-center text-base leading-tight"
+          onPress={() => {
+            trackEvent('clicked "Get Full Quote in App"', {
+              btc_amount: btcAmount,
+              loan_term: loanTerm,
+              interest_rate: INTEREST_RATE[0],
+            })
+          }}
+        >
+          Get Full Quote in App
+        </Link>
+      </div>
     </Card>
   )
 }
@@ -208,10 +199,10 @@ export const CustomRadio = (
       {...otherProps}
       className={cn('group', className)}
       classNames={{
-        base: 'm-0 rounded-lg bg-default-200 transition hover:bg-primary/5 data-[selected=true]:bg-primary/5 border border-default-300/50 data-[selected=true]:border-primary/50',
+        base: 'm-0 rounded-lg bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] border border-default-100 transition-colors hover:bg-primary/10 data-[selected=true]:bg-primary/10  data-[selected=true]:border-primary/30',
         wrapper: 'hidden',
         labelWrapper: cn(
-          'ml-0 ms-0 px-8 [&>span]:group-data-[selected=true]:text-primary [&>span]:text-default-a [&>span]:font-medium [&>span]:group-data-[selected=true]:font-semibold',
+          'ml-0 ms-0 px-8 [&>span]:group-data-[selected=true]:text-primary/80 [&>span]:text-default-a [&>span]:font-medium [&>span]:group-data-[selected=true]:font-semibold',
           labelClassName
         ),
       }}

@@ -1,5 +1,68 @@
 'use client'
-import { Accordion, AccordionItem } from '@heroui/react'
+import { Accordion, AccordionItem, Link } from '@heroui/react'
+import NextLink from 'next/link'
+import { IoIosArrowRoundForward } from 'react-icons/io'
+import { Glow } from './Glow'
+
+export const FAQs = () => {
+  return (
+    <section className="container pb-50" id="faqs">
+      <div className="flex w-full items-center justify-between gap-6 max-md:flex-col">
+        <div className="relative z-1 flex flex-col gap-4">
+          <Glow className="absolute -top-10 right-full z-0 h-[158px] w-[72px] -translate-x-full rotate-22 blur-[100px]" />
+
+          <h2 className="text-foreground text-5xl leading-[1.15] font-medium">
+            FAQs
+          </h2>
+
+          <p className="text-foreground/70 text-base leading-tight font-normal">
+            Everything you need to know,
+            <br />
+            No surprises.
+          </p>
+
+          <Link
+            as={NextLink}
+            href="/borrow"
+            className="text-foreground group mt-2 w-fit gap-2 leading-tight font-medium"
+          >
+            See More{' '}
+            <IoIosArrowRoundForward
+              size={24}
+              className="transition-transform group-hover:translate-x-2"
+            />
+          </Link>
+        </div>
+
+        <div className="w-full max-w-[716px]">
+          <Accordion
+            fullWidth
+            showDivider={false}
+            variant="splitted"
+            className="gap-0"
+          >
+            {FAQ_ITEMS.map((item, index) => (
+              <AccordionItem
+                key={index}
+                aria-label={item.question}
+                title={item.question}
+                classNames={{
+                  base: 'mb-3 text-default-900 dark:text-default-800 mb-3 border border-default-100 rounded-xl shadow-[0px_0px_4px_0px_#FFFFFF1F] bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] bg-transparent',
+                  trigger: 'cursor-pointer',
+                  title: 'font-semibold text-foreground',
+                  indicator: 'text-default-700',
+                  content: 'pt-0 pb-6',
+                }}
+              >
+                {item.answer}
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 const FAQ_ITEMS = [
   {
@@ -69,47 +132,3 @@ const FAQ_ITEMS = [
       'Absolutely, feel free to prepay anytime! Just send enough USDC to cover your remaining balance and fees, and we’ll release the full BTC to you immediately!',
   },
 ]
-
-export const FAQs = () => {
-  return (
-    <section className="container py-20 max-lg:py-16" id="faqs">
-      <div className="flex w-full flex-col items-center justify-center gap-6">
-        <div className="flex w-full flex-col items-center justify-center gap-3 text-center">
-          <h2 className="text-primary inline text-2xl font-bold tracking-tight lg:text-[32px]">
-            FAQs
-          </h2>
-
-          <p className="text-default-d text-center text-lg text-balance">
-            Everything you need to know about Bitmor’s services.
-          </p>
-        </div>
-
-        <div className="mt-6 w-full max-w-5xl">
-          <Accordion
-            fullWidth
-            showDivider={false}
-            variant="splitted"
-            className="gap-0"
-          >
-            {FAQ_ITEMS.map((item, index) => (
-              <AccordionItem
-                key={index}
-                aria-label={item.question}
-                title={item.question}
-                classNames={{
-                  base: 'mb-3 text-default-900 dark:text-default-800 mb-3',
-                  trigger: 'cursor-pointer',
-                  title: 'font-semibold text-foreground',
-                  indicator: 'text-default-700',
-                  content: 'pt-0 pb-6',
-                }}
-              >
-                {item.answer}
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </div>
-    </section>
-  )
-}

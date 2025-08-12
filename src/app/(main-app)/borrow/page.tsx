@@ -393,7 +393,7 @@ export default function BorrowPage() {
 
   return (
     <div
-      className="container mt-10 grid h-full min-h-[calc(100vh-7rem)] w-full grid-cols-[280px_1fr] gap-5 pb-[60px] max-lg:grid-cols-1"
+      className="container mt-10 grid h-full min-h-[calc(100vh-8.5rem)] w-full grid-cols-[280px_1fr] gap-5 pb-[60px] max-lg:grid-cols-1"
       id="borrow-page"
     >
       <StyledModal

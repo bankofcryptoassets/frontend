@@ -140,7 +140,7 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="bg-background min-h-[calc(100vh-4.5rem)]">
+    <div className="min-h-[calc(100vh-8.5rem)]">
       <div className="container mx-auto flex h-full flex-col gap-5 px-4 py-6 lg:flex-row">
         {/* Sidebar */}
         <div className="flex h-full w-full flex-col gap-3 lg:w-[360px]">
