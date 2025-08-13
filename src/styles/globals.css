@@ -209,3 +209,41 @@ svg#bitmor-footer path#bitmor-r:hover {
   fill: hsl(var(--heroui-secondary));
   stroke: hsl(var(--heroui-secondary));
 }
+
+/* Bitcoin falling animation */
+@keyframes bitcoin-fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(150px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.bitcoin-falling {
+  animation: bitcoin-fall 6s linear infinite;
+}
+.bitcoin-falling.one {
+  animation-delay: 0s;
+  left: 52%;
+}
+.bitcoin-falling.two {
+  animation-delay: 1.5s;
+  left: 48%;
+}
+.bitcoin-falling.three {
+  animation-delay: 3s;
+  left: 50%;
+}
+.bitcoin-falling.four {
+  animation-delay: 4.5s;
+  left: 56%;
+}

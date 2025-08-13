@@ -10,7 +10,7 @@ export const Hero = () => {
       className="container pt-36 pb-60 max-lg:pt-14 max-lg:pb-30"
       id="hero"
     >
-      <div className="flex items-center justify-between gap-20 max-lg:flex-col">
+      <div className="flex items-center justify-between gap-20 max-lg:flex-col max-lg:gap-30">
         <div className="flex w-full max-w-lg flex-1 flex-col gap-4">
           <div className="text-foreground text-[56px] leading-[1.15] font-bold max-lg:text-4xl">
             Own 1 Bitcoin {DASH}
