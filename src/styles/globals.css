@@ -39,15 +39,35 @@ button,
 }
 
 @utility animate-underline {
+  /* --underline-width-end: 0rem; */
   position: relative;
   text-decoration: none;
 
   &:hover::before,
-  &:focus::before,
   &:focus-visible::before {
     transform: scaleX(1);
     transform-origin: top left;
   }
+
+  &::before {
+    content: '';
+    position: absolute;
+    display: block;
+    /* width: calc(100% - var(--underline-width-end)); */
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: top right;
+    transition: transform 250ms ease-in-out;
+  }
+}
+
+.group-animate-underline {
+  position: relative;
+  text-decoration: none;
 
   &::before {
     content: '';
@@ -62,6 +82,12 @@ button,
     transform-origin: top right;
     transition: transform 250ms ease-in-out;
   }
+}
+
+.group:hover .group-animate-underline::before,
+.group:focus-visible .group-animate-underline::before {
+  transform: scaleX(1);
+  transform-origin: top left;
 }
 
 ::view-transition-old(root) {

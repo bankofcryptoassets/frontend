@@ -5,16 +5,52 @@ export const siteConfig = {
   description:
     'Buy Bitcoin with 80% Financing. Earn Yield Backed by Real Demand.',
   navItems: [
-    { label: 'Ownership Calculator', href: '/#calc' },
-    { label: 'Bitmor Edge', href: '/#why' },
-    { label: 'For Lenders', href: '/#lenders' },
-    { label: 'Team', href: '/#team' },
-    { label: 'FAQs', href: '/#faqs' },
+    {
+      id: 'products',
+      label: 'Products',
+      href: '',
+      children: [
+        { id: 'bitcoin-loan', label: 'Bitcoin Loan', href: '/borrow' },
+        {
+          id: 'bitcoin-dca',
+          label: 'Bitcoin DCA',
+          href: 'https://dca.bitmor.xyz',
+        },
+      ],
+    },
+    {
+      id: 'resources',
+      label: 'Resources',
+      href: '',
+      children: [
+        {
+          id: 'ownership-calculator',
+          label: 'Ownership Calculator',
+          href: '/#ownership-calculator',
+        },
+        {
+          id: 'loan-vs-dca-calculator',
+          label: 'Loan vs DCA Calculator',
+          href: '/analytics',
+        },
+      ],
+    },
+    { id: 'about', label: 'About', href: '/#about', children: [] },
   ],
   navItemMainApp: [
-    { label: 'Borrow $BTC', href: '/borrow' },
-    { label: 'Invest', href: '/invest' },
-    { label: 'My Portfolio', href: '/portfolio' },
-    { label: 'Analytics', href: '/analytics' },
+    { id: 'borrow', label: 'Borrow $BTC', href: '/borrow', children: [] },
+    { id: 'invest', label: 'Invest', href: '/invest', children: [] },
+    {
+      id: 'portfolio',
+      label: 'My Portfolio',
+      href: '/portfolio',
+      children: [],
+    },
+    {
+      id: 'analytics',
+      label: 'Loan vs DCA Calculator',
+      href: '/analytics',
+      children: [],
+    },
   ],
 }

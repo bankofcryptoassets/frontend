@@ -10,11 +10,19 @@ import {
 } from '@heroui/navbar'
 import { Link } from '@heroui/link'
 import { cn, link as linkStyles } from '@heroui/theme'
-import clsx from 'clsx'
 import { siteConfig } from '@/config/site'
 import { ThemeSwitch } from '@/components/ThemeSwitch'
 import NextLink from 'next/link'
-import { Button, Divider } from '@heroui/react'
+import {
+  Button,
+  Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Accordion,
+  AccordionItem,
+} from '@heroui/react'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
@@ -25,6 +33,7 @@ import { useAccount, useBalance } from 'wagmi'
 import numeral from 'numeral'
 import { GetBalanceData } from 'wagmi/query'
 import Big from 'big.js'
+import { ChevronDown } from 'lucide-react'
 
 const HIDE_NAVBAR_PATHS = ['/connect-telegram']
 
@@ -67,7 +76,10 @@ export const Navbar = () => {
     <HeroUINavbar
       classNames={{
         wrapper: 'container! h-24 max-lg:h-16',
-        base: isMainApp && 'bg-transparent! backdrop-saturate-100',
+        base:
+          isMainApp &&
+          !isMenuOpen &&
+          'bg-transparent! backdrop-saturate-100 transition-[background-color,backdrop-filter]',
       }}
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
@@ -88,25 +100,62 @@ export const Navbar = () => {
         justify="center"
       >
         <ul className="ml-2 hidden justify-start gap-8 max-xl:gap-6 lg:flex">
-          {siteConfig[isMainApp ? 'navItemMainApp' : 'navItems'].map((item) => (
-            <NavbarItem
-              key={item.href}
-              isActive={pathname.startsWith(item.href)}
-            >
-              <NextLink
-                className={cn(
-                  linkStyles({ color: 'foreground' }),
-                  'text-default-800 font-normal',
-                  'data-[active=true]:text-primary hover:text-primary animate-underline transition-colors data-[active=true]:font-medium'
-                )}
-                color="foreground"
-                href={item.href}
-                data-active={pathname.startsWith(item.href)}
+          {siteConfig[isMainApp ? 'navItemMainApp' : 'navItems'].map((item) =>
+            item?.children?.length ? (
+              <Dropdown key={item.id}>
+                <NavbarItem>
+                  <DropdownTrigger>
+                    <button
+                      className={cn(
+                        linkStyles({ color: 'foreground' }),
+                        'text-default-800 group aria-[expanded=true]:text-primary hover:text-primary group flex cursor-pointer items-center gap-2 font-normal transition-colors aria-[expanded=true]:font-medium'
+                      )}
+                    >
+                      <span className="group-animate-underline">
+                        {item.label}
+                      </span>
+                      <ChevronDown className="size-4 transition-transform group-aria-[expanded=true]:rotate-180" />
+                    </button>
+                  </DropdownTrigger>
+                </NavbarItem>
+                <DropdownMenu aria-label={item.label}>
+                  {item.children.map((child) => (
+                    <DropdownItem
+                      key={child.id}
+                      as={NextLink}
+                      href={child.href}
+                      className="group hover:bg-transparent!"
+                      classNames={{
+                        title: cn(
+                          linkStyles({ color: 'foreground' }),
+                          'text-default-800 group overflow-visible flex-0 group-hover:text-primary group-animate-underline flex cursor-pointer items-center gap-2 font-normal transition-colors'
+                        ),
+                      }}
+                    >
+                      {child.label}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            ) : (
+              <NavbarItem
+                key={item.id}
+                isActive={!!item.href && pathname.startsWith(item.href)}
               >
-                {item.label}
-              </NextLink>
-            </NavbarItem>
-          ))}
+                <NextLink
+                  className={cn(
+                    linkStyles({ color: 'foreground' }),
+                    'text-default-800 data-[active=true]:text-primary hover:text-primary animate-underline font-normal transition-colors data-[active=true]:font-medium'
+                  )}
+                  color="foreground"
+                  href={item.href}
+                  data-active={!!item.href && pathname.startsWith(item.href)}
+                >
+                  {item.label}
+                </NextLink>
+              </NavbarItem>
+            )
+          )}
         </ul>
       </NavbarContent>
 
@@ -161,20 +210,52 @@ export const Navbar = () => {
 
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
-          {siteConfig[isMainApp ? 'navItemMainApp' : 'navItems'].map(
-            (item, index) => (
-              <NavbarMenuItem key={`${item}-${index}`}>
+          {siteConfig[isMainApp ? 'navItemMainApp' : 'navItems'].map((item) =>
+            item.children?.length ? (
+              <Accordion key={item.id} className="w-full px-0!">
+                <AccordionItem
+                  title={item.label}
+                  classNames={{
+                    trigger: 'p-0! group',
+                    title: cn(
+                      linkStyles({ color: 'foreground' }),
+                      'text-default-800 font-normal data-[active=true]:text-primary group-hover:text-primary group-animate-underline transition-colors data-[active=true]:font-medium text-lg w-fit'
+                    ),
+                    indicator: 'text-default-700',
+                  }}
+                >
+                  <div className="flex flex-col gap-2 pl-4">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.id}
+                        color="foreground"
+                        as={NextLink}
+                        href={child.href}
+                        size="lg"
+                        onClick={onMenuItemClick}
+                        className="text-default-800 data-[active=true]:text-primary hover:text-primary group font-normal transition-colors data-[active=true]:font-medium"
+                        data-active={
+                          !!child.href && pathname.startsWith(child.href)
+                        }
+                      >
+                        <span className="group-animate-underline">
+                          {child.label}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </AccordionItem>
+              </Accordion>
+            ) : (
+              <NavbarMenuItem key={item.id}>
                 <Link
                   color="foreground"
                   as={NextLink}
                   href={item.href}
                   size="lg"
                   onClick={onMenuItemClick}
-                  className={clsx(
-                    'text-default-700 font-normal',
-                    'data-[active=true]:text-primary hover:text-primary animate-underline transition-colors data-[active=true]:font-medium'
-                  )}
-                  data-active={pathname.startsWith(item.href)}
+                  className="text-default-800 group data-[active=true]:text-primary hover:text-primary animate-underline font-normal transition-colors data-[active=true]:font-medium"
+                  data-active={!!item.href && pathname.startsWith(item.href)}
                 >
                   {item.label}
                 </Link>
@@ -197,7 +278,7 @@ export const Navbar = () => {
               className="mt-4 font-bold"
               onPress={onMenuItemClick}
             >
-              Try Bitmor (Testnet)
+              Launch App
             </Button>
           )}
         </div>

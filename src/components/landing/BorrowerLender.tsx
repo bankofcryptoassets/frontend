@@ -15,7 +15,7 @@ export const BorrowerLender = () => {
   return (
     <section
       className="relative container mb-50 max-w-[1360px] max-lg:mb-30 min-[87.5rem]:px-0!"
-      id="borrower-lender"
+      id="ownership-calculator"
     >
       <>
         <Glow

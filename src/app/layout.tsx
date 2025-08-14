@@ -43,7 +43,11 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html
+      suppressHydrationWarning
+      lang="en"
+      className="scroll-pt-30 scroll-smooth max-lg:scroll-pt-20"
+    >
       <head />
       <body
         className={cn(

@@ -13,7 +13,7 @@ export const AboutBitmore = () => {
   return (
     <section
       className="relative container max-w-[1360px] min-[87.5rem]:px-0!"
-      id="about-bitmore"
+      id="about"
     >
       <Glow className="absolute top-0 left-full h-[127px] w-[58px] rotate-22 blur-[85px]" />
 
