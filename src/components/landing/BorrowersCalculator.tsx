@@ -20,10 +20,20 @@ import {
 } from '@/utils/constants'
 import { trackEvent } from '@/utils/trackEvent'
 import NextLink from 'next/link'
+import { useQuery } from '@tanstack/react-query'
+import axios from '@/utils/axios'
+import { BitcoinPriceData } from '@/types'
 
-const BITCOIN_PRICE = 1_00_000
+const DEFAULT_BITCOIN_PRICE = 100_000
 
 export const BorrowersCalculator = () => {
+  const { data: bitcoinPrice } = useQuery({
+    queryKey: ['/initialisation/getbtcprice'],
+    queryFn: () => axios.get<BitcoinPriceData>(`/initialisation/getbtcprice`),
+    staleTime: Infinity,
+  })
+  const btcPrice = bitcoinPrice?.data?.data?.btcPrice || DEFAULT_BITCOIN_PRICE
+
   const [btcAmount, setBtcAmount] = useState<number>()
   const [loanTerm, setLoanTerm] = useState<string>(
     OWNERSHIP_CALC_TIME_PERIOD[0].value
@@ -41,7 +51,7 @@ export const BorrowersCalculator = () => {
     const termMonths = parseInt(loanTerm)
 
     // Calculate BTC value in USD
-    const btcValue = btcAmount * BITCOIN_PRICE
+    const btcValue = btcAmount * btcPrice
 
     // 20% upfront as per benefits
     const upfrontPercentage = 0.2
@@ -72,7 +82,7 @@ export const BorrowersCalculator = () => {
       monthly: numeral(monthlyPayment).format('0,0.[00]'),
       total: numeral(totalPayment).format('0,0.[00]'),
     }
-  }, [btcAmount, loanTerm])
+  }, [btcAmount, loanTerm, btcPrice])
 
   return (
     <Card className="bg-default-50/90 border-default-100 w-full max-w-md rounded-2xl border shadow-[0px_1px_0px_0px_#FEFEFE1A,0px_0px_4px_0px_#FFFFFF1F]">

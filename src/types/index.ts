@@ -140,3 +140,5 @@ export type LendingStats = {
   baseAPR: number
   loanAPR: number
 }
+
+export type BitcoinPriceData = { status: string; data: { btcPrice: number } }
