@@ -33,6 +33,7 @@ export const siteConfig = {
           label: 'Loan vs DCA Calculator',
           href: '/analytics',
         },
+        { id: 'whitepaper', label: 'Whitepaper (Coming Soon)', href: '' },
       ],
     },
     { id: 'about', label: 'About', href: '/#about', children: [] },

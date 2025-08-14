@@ -30,3 +30,10 @@ export const TIME_PERIOD_AND_INTEREST_RATES = [
 export const DEFAULT_LOAN_AMOUNT = 100_000
 export const MIN_DATE = '2017-08-17'
 export const MAX_DATE = '2025-05-08'
+
+export const OWNERSHIP_CALC_TIME_PERIOD = [
+  { value: '6', label: '6 Months', y: 0.5 },
+  { value: '12', label: '1 Year', y: 1 },
+]
+
+export const OWNERSHIP_CALC_INTEREST_RATE = ['10']

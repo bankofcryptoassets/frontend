@@ -1,13 +1,13 @@
 'use client'
-import { Button, cn, Tab, Tabs } from '@heroui/react'
+import { cn, Tab, Tabs } from '@heroui/react'
 import { Glow } from './Glow'
 import { BorrowersCalculator } from './BorrowersCalculator'
-import Link from 'next/link'
 import InlineSVG from 'react-inlinesvg'
 import { BiSolidWallet } from 'react-icons/bi'
 import { GoGoal } from 'react-icons/go'
 import { LendingChart } from './LendingChart'
 import { useState } from 'react'
+import { JoinWishlist } from './JoinWishlist'
 
 export const BorrowerLender = () => {
   const [selected, setSelected] = useState('borrower')
@@ -44,11 +44,10 @@ export const BorrowerLender = () => {
             <div className="flex items-center justify-between gap-30 max-lg:flex-col max-lg:gap-16">
               <div className="flex max-w-[456px] flex-1 flex-col gap-2">
                 <h1 className="text-foreground text-5xl leading-[1.15] font-medium max-lg:text-[32px]">
-                  Start Stacking BTC
+                  Start Your Bitcoin Journey Today
                 </h1>
                 <p className="text-foreground/70 text-base leading-tight font-normal">
-                  Ready to own BTC without needing to buy it all at once?
-                  Here&apos;s how.
+                  Own BTC without the big upfront buy. Here&apos;s how:
                 </p>
 
                 <div className="my-8 flex w-full flex-col gap-6">
@@ -70,19 +69,10 @@ export const BorrowerLender = () => {
                   ))}
                 </div>
 
-                <Button
-                  as={Link}
-                  color="primary"
-                  size="lg"
-                  className="h-11 w-full font-medium"
-                  variant="shadow"
-                  href="/borrow"
-                >
-                  Launch App
-                </Button>
+                <JoinWishlist />
               </div>
 
-              <div className="grid flex-1 place-items-center">
+              <div className="grid flex-1 place-items-center max-lg:w-full">
                 <BorrowersCalculator />
               </div>
             </div>
@@ -94,11 +84,12 @@ export const BorrowerLender = () => {
               id="lenders"
             >
               <div className="flex max-w-[456px] flex-1 flex-col gap-2">
-                <h1 className="text-foreground text-5xl leading-[1.15] font-medium max-lg:text-[32px]">
-                  Start Lending USDC
+                <h1 className="text-foreground text-4xl leading-[1.15] font-medium max-lg:text-2xl">
+                  Predictable Benchmark-Beating Performance
                 </h1>
                 <p className="text-foreground/70 text-base leading-tight font-normal">
-                  Ready to earn interest on your USDC? <br /> Here&apos;s how.
+                  Earn stable, high yields on your USDC by lending to Bitcoin
+                  buyers.
                 </p>
 
                 <div className="my-8 flex w-full flex-col gap-6">
@@ -120,16 +111,7 @@ export const BorrowerLender = () => {
                   ))}
                 </div>
 
-                <Button
-                  as={Link}
-                  color="secondary"
-                  size="lg"
-                  className="h-11 w-full font-medium"
-                  variant="shadow"
-                  href="/lend"
-                >
-                  Launch App
-                </Button>
+                <JoinWishlist isLenderThemed />
               </div>
 
               <div className="grid flex-1 place-items-center max-lg:w-full">
@@ -148,21 +130,21 @@ const BORROWER_ABOUT = [
     icon: <BiSolidWallet className="text-primary size-8" />,
     title: 'Connect Your Wallet',
     description:
-      'Connect your wallet and start your journey to unlocking more BTC ownership.',
+      'Login with your wallet and unlock the path to Bitcoin ownership.',
   },
   {
     icon: <GoGoal className="text-primary size-8" />,
-    title: 'Set Your BTC Goal',
+    title: 'Set Your Goal',
     description:
-      'Choose how much BTC you want to own, start with as little as 25% upfront.',
+      'Start with as little as 25% down and choose the terms that fit you.',
   },
   {
     icon: (
       <InlineSVG src="/icons/coin-bag.svg" className="text-primary size-8" />
     ),
-    title: 'Start Stacking BTC',
+    title: 'Start Stacking',
     description:
-      'Instantly review and see your monthly payment, ownership schedule, and total BTC progress.',
+      'See your monthly plan, track your progress, and watch your BTC stack grow.',
   },
 ]
 
@@ -171,20 +153,19 @@ const LENDER_ABOUT = [
     icon: <BiSolidWallet className="text-secondary size-8" />,
     title: 'Connect Your Wallet',
     description:
-      'Connect your wallet and start your journey to earning interest.',
+      'Login with your wallet to begin lending and start earning interest.',
   },
   {
     icon: <GoGoal className="text-secondary size-8" />,
-    title: 'Set Your USDC Goal',
-    description:
-      'Choose how much USDC you want to lend, start with as little as 25% upfront.',
+    title: 'Choose Your Amount',
+    description: 'Decide how much USDC you want to lend , it’s your call.',
   },
   {
     icon: (
       <InlineSVG src="/icons/coin-bag.svg" className="text-secondary size-8" />
     ),
-    title: 'Start Stacking USDC',
+    title: 'Start Earning',
     description:
-      'Instantly review and see your monthly payment, ownership schedule, and total USDC progress.',
+      'Lend your USDC and watch your interest accrue in your portfolio',
   },
 ]

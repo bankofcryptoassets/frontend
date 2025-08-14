@@ -12,7 +12,12 @@ import {
 import { useMemo, useState } from 'react'
 import numeral from 'numeral'
 import SlotCounter from 'react-slot-counter'
-import { INTEREST_RATE, TIME_PERIOD } from '@/utils/constants'
+import {
+  INTEREST_RATE,
+  OWNERSHIP_CALC_INTEREST_RATE,
+  OWNERSHIP_CALC_TIME_PERIOD,
+  TIME_PERIOD,
+} from '@/utils/constants'
 import { trackEvent } from '@/utils/trackEvent'
 import NextLink from 'next/link'
 
@@ -20,7 +25,12 @@ const BITCOIN_PRICE = 1_00_000
 
 export const BorrowersCalculator = () => {
   const [btcAmount, setBtcAmount] = useState<number>()
-  const [loanTerm, setLoanTerm] = useState<string>()
+  const [loanTerm, setLoanTerm] = useState<string>(
+    OWNERSHIP_CALC_TIME_PERIOD[0].value
+  )
+  const [interestRate, setInterestRate] = useState<string>(
+    OWNERSHIP_CALC_INTEREST_RATE[0]
+  )
 
   const calculateLoanAmounts = useMemo(() => {
     if (!btcAmount || loanTerm === 'all' || !loanTerm) {
@@ -77,8 +87,8 @@ export const BorrowersCalculator = () => {
           <NumberInput
             hideStepper
             isWheelDisabled
-            label="Amount of BTC"
-            endContent={<span>BTC</span>}
+            label="BTC Goal (in BTC)"
+            // endContent={<span>BTC</span>}
             name="btc"
             fullWidth
             minValue={0}
@@ -104,7 +114,7 @@ export const BorrowersCalculator = () => {
             onValueChange={setLoanTerm}
             classNames={{ label: 'text-sm font-medium text-default-d' }}
           >
-            {TIME_PERIOD.map((term) => (
+            {OWNERSHIP_CALC_TIME_PERIOD.map((term) => (
               <CustomRadio
                 key={term.value}
                 value={term.value}
@@ -118,13 +128,13 @@ export const BorrowersCalculator = () => {
           <RadioGroup
             label="Interest Rate:"
             orientation="horizontal"
-            value={loanTerm}
-            onValueChange={setLoanTerm}
+            value={interestRate}
+            onValueChange={setInterestRate}
             classNames={{ label: 'text-sm font-medium text-default-d' }}
           >
-            {TIME_PERIOD.map((term) => (
-              <CustomRadio key={term.value} value={term.value}>
-                {term.interestForLandingPage}%
+            {OWNERSHIP_CALC_INTEREST_RATE.map((interestRate) => (
+              <CustomRadio key={interestRate} value={interestRate}>
+                {interestRate}%
               </CustomRadio>
             ))}
           </RadioGroup>

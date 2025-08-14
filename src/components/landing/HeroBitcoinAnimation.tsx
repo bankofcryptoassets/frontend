@@ -6,15 +6,15 @@ import { useMediaQuery } from 'usehooks-ts'
 export const HeroBitcoinAnimation = () => {
   const isMobile = useMediaQuery('(max-width: 1024px)')
   return (
-    <div className="relative max-sm:mr-16">
+    <div className="relative">
       <>
-        <div className="bg-secondary/20 text-foreground/80 absolute top-0 -left-10 z-2 inline-flex items-center gap-2 rounded-[10px] p-2.5 text-base leading-tight font-medium whitespace-nowrap max-lg:py-2 max-lg:text-sm sm:-left-22">
+        <div className="bg-secondary/20 text-foreground/80 absolute top-0 -left-16 z-2 inline-flex items-center gap-2 rounded-[10px] p-2.5 text-base leading-tight font-medium whitespace-nowrap max-lg:py-2 max-lg:text-sm sm:-left-24">
           <LuLockKeyhole className="text-secondary size-5 stroke-1 max-lg:size-4" />{' '}
-          100% Secured
+          Onchain Loans
         </div>
-        <div className="bg-success/20 text-foreground/80 absolute top-10 -right-26 z-2 inline-flex items-center gap-2 rounded-[10px] p-2.5 text-base leading-tight font-medium whitespace-nowrap max-lg:py-2 max-lg:text-sm sm:-right-34 lg:-right-28 xl:-right-34">
+        <div className="bg-success/20 text-foreground/80 absolute top-10 -right-12 z-2 inline-flex items-center gap-2 rounded-[10px] p-2.5 text-base leading-tight font-medium whitespace-nowrap max-lg:py-2 max-lg:text-sm">
           <LuUserRoundCheck className="text-success size-5 stroke-1 max-lg:size-4" />{' '}
-          No Checks, No KYC
+          No KYC
         </div>
         <div className="bg-primary/20 text-foreground/80 absolute -bottom-12.5 left-1/2 z-2 inline-flex -translate-x-1/2 items-center gap-2 rounded-[10px] p-2.5 text-base leading-tight font-medium whitespace-nowrap max-lg:py-2 max-lg:text-sm">
           <LuZap className="text-primary size-5 stroke-1 max-lg:size-4" />{' '}

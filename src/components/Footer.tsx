@@ -10,28 +10,16 @@ const MENU_ITEMS = [
   {
     title: 'PRODUCTS',
     links: [
-      { text: 'Borrowing', url: '/borrow' },
-      { text: 'Lending', url: '/invest' },
-      { text: 'Pricing', url: '' },
-      { text: 'API', url: '' },
+      { text: 'Bitcoin Loan', url: '/borrow' },
+      { text: 'Bitcoin DCA', url: 'https://dca.bitmor.xyz' },
     ],
   },
   {
     title: 'RESOURCES',
     links: [
-      { text: 'Documentation', url: '' },
-      { text: 'Guides', url: '' },
-      { text: 'Blog', url: '' },
-      { text: 'Support', url: '' },
-    ],
-  },
-  {
-    title: 'COMPANY',
-    links: [
-      { text: 'Team', url: '/#team' },
-      { text: 'About', url: '' },
-      { text: 'Careers', url: '' },
-      { text: 'Contact', url: '' },
+      { text: 'Ownership Calculator', url: '/#ownership-calculator' },
+      { text: 'Loan vs DCA Calculator', url: '/analytics' },
+      { text: 'Whitepaper (Coming Soon)', url: '' },
     ],
   },
 ]
@@ -92,7 +80,7 @@ export const Footer = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-30 max-lg:justify-between max-lg:gap-10">
+          <div className="flex flex-wrap gap-30 max-lg:gap-20 max-sm:gap-10">
             {MENU_ITEMS.map((section, sectionIdx) => (
               <div key={sectionIdx}>
                 <h3 className="text-default-900 mb-3 text-sm font-bold">

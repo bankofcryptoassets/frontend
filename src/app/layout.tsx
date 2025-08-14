@@ -46,7 +46,8 @@ export default async function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className="scroll-pt-30 scroll-smooth max-lg:scroll-pt-20"
+      className="scroll-smooth"
+      // className="scroll-pt-30 scroll-smooth max-lg:scroll-pt-20"
     >
       <head />
       <body

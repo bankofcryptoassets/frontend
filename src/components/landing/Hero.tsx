@@ -1,5 +1,4 @@
 'use client'
-import { DASH } from '@/utils/constants'
 import { JoinWishlist } from './JoinWishlist'
 import { Glow } from './Glow'
 import { HeroBitcoinAnimation } from './HeroBitcoinAnimation'
@@ -13,7 +12,7 @@ export const Hero = () => {
       <div className="flex items-center justify-between gap-20 max-lg:flex-col max-lg:gap-30">
         <div className="flex w-full max-w-lg flex-1 flex-col gap-4">
           <div className="text-foreground text-[56px] leading-[1.15] font-bold max-lg:text-4xl">
-            Own 1 Bitcoin {DASH}
+            Own Bitcoin
             <br />
             Without Buying It
             <br />
@@ -21,8 +20,8 @@ export const Hero = () => {
           </div>
 
           <div className="text-foreground/70 mb-6 text-base leading-tight font-normal max-lg:mb-4">
-            A smarter more secure way to build Bitcoin ownership over time.{' '}
-            Backed by on-chain proof and built for everyday investors like you.
+            Build towards your Bitcoin Ownership goals over time, with plans
+            designed to protect your peace of mind.
           </div>
 
           <div>

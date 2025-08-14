@@ -11,11 +11,11 @@ export const JustLikeMortgage = () => {
       <div className="flex flex-col items-center justify-center gap-20 max-lg:gap-16">
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-foreground text-center text-5xl leading-[1.15] font-medium max-lg:text-[32px]">
-            Just Like Owning a Mortgage
+            Step Into the World’s Fastest-Growing Asset
           </h1>
           <p className="text-foreground/70 max-w-[606px] text-center text-base leading-tight font-normal">
-            Let your sats work for you just like owning property. You build up
-            ownership over time, protect your downside, and grow your wealth.
+            Build a meaningful Bitcoin position with fixed monthly contributions
+            and downside protection, to outperform legacy assets.
           </p>
         </div>
 
@@ -51,22 +51,22 @@ export const JustLikeMortgage = () => {
 const JUST_LIKE_MORTGAGE = [
   {
     icon: <FaSeedling size={32} className="text-success" />,
-    title: 'Start Small, Grow Big',
+    title: 'Start Small, Own Big',
     description:
-      'Just like a mortgage, your investment compounds as you make monthly payments.',
+      'Turn $100 a month into a million satoshis, the smallest unit of Bitcoin.',
   },
   {
     icon: <FaGem size={32} className="text-primary" />,
-    title: 'Increase in Value',
+    title: 'Outperform Everything',
     description:
-      'BTC historically gains value, just like a home. You get the benefits as you own more.',
+      'Bitcoin has beaten stocks, property, gold, and every other investment on Earth.',
   },
   {
     icon: (
       <InlineSVG src="/icons/compass.svg" className="text-secondary size-8" />
     ),
-    title: 'Stay on the Smart Path',
+    title: 'Own Your Share Early',
     description:
-      'Each payment gets you closer to being a full‑coin holder — with proof on‑chain.',
+      'Only 21 million Bitcoin will ever exist. 8 billion people. The math favors the early.',
   },
 ]

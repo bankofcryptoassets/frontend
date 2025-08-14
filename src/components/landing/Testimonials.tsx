@@ -1,5 +1,5 @@
-import { UserIcon } from 'lucide-react'
 import { Glow } from './Glow'
+import Image from 'next/image'
 
 export const Testimonials = () => {
   return (
@@ -21,15 +21,21 @@ export const Testimonials = () => {
           {TESTIMONIALS.map((item) => (
             <div
               key={item.id}
-              className="border-default-100 flex max-w-80 flex-col items-start gap-10 rounded-lg border bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-8 max-lg:max-w-full"
+              className="border-default-100 flex max-w-96 flex-col items-start gap-10 rounded-lg border bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-7 max-lg:max-w-full"
             >
               <div className="leading-tight">
                 &quot;{item.testimonial}&quot;
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="bg-content1 grid size-12 place-items-center rounded-full">
-                  <UserIcon className="text-primary size-7" />
+              <div className="mt-auto flex items-center gap-4">
+                <div className="bg-content1 grid size-12 flex-shrink-0 place-items-center rounded-full">
+                  <Image
+                    src={`/testimonials/${item.id}.jpeg`}
+                    alt="user"
+                    width={48}
+                    height={48}
+                    className="size-12 rounded-full select-none"
+                  />
                 </div>
                 <div className="flex flex-col gap-2">
                   <div className="text-foreground/90 text-xl leading-[1] font-medium">
@@ -51,23 +57,23 @@ export const Testimonials = () => {
 const TESTIMONIALS = [
   {
     id: 1,
-    name: 'Dareon',
-    handle: '@crypto_gee',
+    name: 'Saumya Saxena',
+    handle: 'Lead @Base India',
     testimonial:
-      "Since using Bitmor, I started building my Bitcoin portfolio. With the monthly ownership tracker, I knew exactly how much I was unlocking. It's simple, transparent, and it finally made owning BTC feel realistic.",
+      "I'm excited by the team that's building Bitmor. Base Batches winners and a goated team. They're going to make owning Bitcoin feel achievable. LFG.",
   },
   {
     id: 2,
-    name: 'Judith',
-    handle: '@btcqueen',
+    name: 'Akshat',
+    handle: 'CTO @QuillAI Network',
     testimonial:
-      "Paying monthly towards my BTC goal became rewarding, especially with the visual progress bar. I started looking forward to paying each month. It's more than an app — it's a journey toward ownership.",
+      'The DCA vs Loan Calculator is an absolute eye opener. Mind blown by what the data has to say. Here I was thinking the best way to accumulate BTC is only DCA.',
   },
   {
     id: 3,
-    name: 'Marcus',
-    handle: '@btc_enthusiates',
+    name: 'Sreeraj S',
+    handle: 'Sr. Engineering Manager @BitGo',
     testimonial:
-      "I've been DCA'ing into BTC for years, but Bitmor gave me a smarter option — owning more, faster, without risking it all upfront. It's like combining strategy with stability. It feels like leveling up.",
+      "Can't wait for these guys to launch to finally stack seriously into BTC. A structured plan helps me to plan my finances around it.",
   },
 ]

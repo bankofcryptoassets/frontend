@@ -1,4 +1,4 @@
-import { Button, Input } from '@heroui/react'
+import { Button, cn, Input } from '@heroui/react'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -19,7 +19,13 @@ const joinWaitlist = async (email: string): Promise<WaitlistResponse> => {
   return response.data
 }
 
-export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
+export const JoinWishlist = ({
+  isInHero = false,
+  isLenderThemed = false,
+}: {
+  isInHero?: boolean
+  isLenderThemed?: boolean
+}) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -84,12 +90,15 @@ export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
   return (
     <div className="flex w-full max-w-[720px] items-center gap-2 max-lg:flex-col">
       <Input
-        placeholder="Early access = earn bonus sats"
+        // placeholder="Early access = earn bonus sats"
+        placeholder="Enter Email to earn bonus sats"
         className="h-13 w-full rounded-xl max-sm:h-full"
         classNames={{
           mainWrapper: 'w-full',
-          inputWrapper:
-            'h-[60px] rounded-xl w-full pl-5 pr-2 bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)]! max-sm:h-full max-sm:p-3 border border-default-100 shadow-[0px_0px_4px_0px] shadow-default-800/10 bg-transparent',
+          inputWrapper: cn(
+            'h-[60px] rounded-xl w-full pl-5 pr-2 bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)]! max-sm:h-full max-sm:p-3 border border-default-100 shadow-[0px_0px_4px_0px] shadow-default-800/10 bg-foreground/3',
+            isInHero && 'bg-foreground/5'
+          ),
           innerWrapper: 'w-full max-sm:flex-col',
         }}
         size="lg"
@@ -117,7 +126,7 @@ export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
 
         <Button
           className="h-12 rounded-xl text-sm font-bold"
-          color="primary"
+          color={isLenderThemed ? 'secondary' : 'primary'}
           variant="shadow"
           isLoading={isLoading}
           onPress={handleJoinWaitlist}

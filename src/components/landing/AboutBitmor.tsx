@@ -24,9 +24,9 @@ export const AboutBitmore = () => {
           </h1>
 
           <p className="text-foreground/70 max-w-sm text-base leading-tight font-normal">
-            Bitmor helps you own Bitcoin in installments, like a mortgage {DASH}
-            without the complexity of trading or the pressure of timing the
-            market.
+            Bitmor accelerates your Bitcoin ownership goals, while not requiring
+            high upfront capital. Lock in today’s price and pay in monthly
+            installments.
           </p>
 
           <Link
@@ -87,12 +87,13 @@ const ABOUT = [
       <InlineSVG src="/icons/coin-bag.svg" className="text-primary size-8" />
     ),
     title: 'Smarter than Saving',
-    description: 'Secure your entry. Own sooner, ride the entire gains.',
+    description: 'Secure your entry today. Own sooner to ride the gains.',
   },
   {
     icon: <MdRemoveModerator size={32} className="text-primary" />,
     title: 'No Over-Collateralisation',
-    description: 'Secure your BTC without tying up extra capital or assets.',
+    description:
+      'Use what you have to get to where you want to go. Don’t lock up excess capital to get the same BTC',
   },
   {
     icon: <LuChartLine size={32} className="text-primary" />,

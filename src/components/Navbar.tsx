@@ -122,8 +122,12 @@ export const Navbar = () => {
                   {item.children.map((child) => (
                     <DropdownItem
                       key={child.id}
+                      isDisabled={!child.href}
                       as={NextLink}
                       href={child.href}
+                      target={
+                        child.href.startsWith('http') ? '_blank' : undefined
+                      }
                       className="group hover:bg-transparent!"
                       classNames={{
                         title: cn(
@@ -150,6 +154,7 @@ export const Navbar = () => {
                   color="foreground"
                   href={item.href}
                   data-active={!!item.href && pathname.startsWith(item.href)}
+                  target={item.href.startsWith('http') ? '_blank' : undefined}
                 >
                   {item.label}
                 </NextLink>
@@ -231,6 +236,9 @@ export const Navbar = () => {
                         color="foreground"
                         as={NextLink}
                         href={child.href}
+                        target={
+                          child.href.startsWith('http') ? '_blank' : undefined
+                        }
                         size="lg"
                         onClick={onMenuItemClick}
                         className="text-default-800 data-[active=true]:text-primary hover:text-primary group font-normal transition-colors data-[active=true]:font-medium"
@@ -256,6 +264,7 @@ export const Navbar = () => {
                   onClick={onMenuItemClick}
                   className="text-default-800 group data-[active=true]:text-primary hover:text-primary animate-underline font-normal transition-colors data-[active=true]:font-medium"
                   data-active={!!item.href && pathname.startsWith(item.href)}
+                  target={item.href.startsWith('http') ? '_blank' : undefined}
                 >
                   {item.label}
                 </Link>

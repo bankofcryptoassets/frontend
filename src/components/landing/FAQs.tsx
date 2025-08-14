@@ -7,7 +7,7 @@ import { Glow } from './Glow'
 export const FAQs = () => {
   return (
     <section className="container pb-50 max-lg:pb-30" id="faqs">
-      <div className="flex w-full items-center justify-between gap-10 max-lg:flex-col max-lg:items-start">
+      <div className="flex w-full justify-between gap-10 max-lg:flex-col">
         <div className="relative z-1 flex flex-col gap-4">
           <Glow className="absolute -top-10 right-full z-0 h-[158px] w-[72px] -translate-x-full rotate-22 blur-[100px]" />
 
