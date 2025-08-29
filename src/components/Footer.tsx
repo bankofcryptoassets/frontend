@@ -5,19 +5,30 @@ import Link from 'next/link'
 import { FaXTwitter } from 'react-icons/fa6'
 import { FaGithub, FaTelegramPlane } from 'react-icons/fa'
 import InlineSVG from 'react-inlinesvg'
+import { DCA_MINI_APP_URL } from '@/utils/constants'
+import { SetSelected, useCalculatorTabs } from '@/hooks/useCalculatorTabs'
 
 const MENU_ITEMS = [
   {
     title: 'PRODUCTS',
     links: [
       { text: 'Bitcoin Loan', url: '/borrow' },
-      { text: 'Bitcoin DCA', url: 'https://dca.bitmor.xyz' },
+      { text: 'Bitcoin DCA', url: DCA_MINI_APP_URL },
     ],
   },
   {
     title: 'RESOURCES',
     links: [
-      { text: 'Ownership Calculator', url: '/#ownership-calculator' },
+      {
+        text: 'Loan Calculator',
+        url: '/#calculators',
+        handleClick: (setSelected: SetSelected) => setSelected('loan'),
+      },
+      {
+        text: 'DCA Calculator',
+        url: '/#calculators',
+        handleClick: (setSelected: SetSelected) => setSelected('dca'),
+      },
       { text: 'Loan vs DCA Calculator', url: '/analytics' },
       { text: 'Whitepaper (Coming Soon)', url: '' },
     ],
@@ -52,6 +63,8 @@ const SOCIAL_LINKS = [
 ]
 
 export const Footer = () => {
+  const { setSelected } = useCalculatorTabs()
+
   return (
     <footer className="relative z-0" id="footer">
       <div className="text-default-800 container pb-10 max-lg:pb-6">
@@ -96,6 +109,9 @@ export const Footer = () => {
                         className="text-default-800 animate-underline hover:text-primary transition-colors"
                         size="sm"
                         isDisabled={!link.url}
+                        onClick={() => {
+                          link?.handleClick?.(setSelected)
+                        }}
                       >
                         {link.text}
                       </StyledLink>

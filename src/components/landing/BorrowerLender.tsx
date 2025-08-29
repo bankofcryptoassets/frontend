@@ -1,7 +1,7 @@
 'use client'
 import { cn, Tab, Tabs } from '@heroui/react'
 import { Glow } from './Glow'
-import { BorrowersCalculator } from './BorrowersCalculator'
+import { Calculators } from './Calculators'
 import InlineSVG from 'react-inlinesvg'
 import { BiSolidWallet } from 'react-icons/bi'
 import { GoGoal } from 'react-icons/go'
@@ -36,7 +36,6 @@ export const BorrowerLender = () => {
         <Tabs
           selectedKey={selected}
           onSelectionChange={(key) => setSelected(key as string)}
-          aria-label="Tabs variants"
           variant="light"
           classNames={{ panel: 'p-0 pt-6', cursor: 'bg-white/10!' }}
         >
@@ -73,7 +72,7 @@ export const BorrowerLender = () => {
               </div>
 
               <div className="grid flex-1 place-items-center max-lg:w-full">
-                <BorrowersCalculator />
+                <Calculators />
               </div>
             </div>
           </Tab>

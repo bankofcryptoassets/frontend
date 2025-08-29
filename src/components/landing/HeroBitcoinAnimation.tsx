@@ -1,4 +1,3 @@
-import { LuLockKeyhole, LuUserRoundCheck, LuZap } from 'react-icons/lu'
 import InlineSVG from 'react-inlinesvg'
 import Wave from 'react-wavify'
 import { useMediaQuery } from 'usehooks-ts'
@@ -8,17 +7,23 @@ export const HeroBitcoinAnimation = () => {
   return (
     <div className="relative">
       <>
-        <div className="bg-secondary/20 text-foreground/80 absolute top-0 -left-16 z-2 inline-flex items-center gap-2 rounded-[10px] p-2.5 text-base leading-tight font-medium whitespace-nowrap max-lg:py-2 max-lg:text-sm sm:-left-24">
-          <LuLockKeyhole className="text-secondary size-5 stroke-1 max-lg:size-4" />{' '}
-          Onchain Loans
+        <div className="bg-secondary/20 text-foreground/80 absolute top-0 -left-16 z-2 inline-flex items-center gap-2 rounded-[10px] p-2.5 text-base leading-tight font-medium whitespace-nowrap backdrop-blur-sm max-lg:py-2 max-lg:text-sm sm:-left-24">
+          <span className="size-5 max-lg:size-4">
+            <InlineSVG src="/icons/hand-dollar.svg" className="size-full" />
+          </span>
+          Onchain BTC Loans
         </div>
-        <div className="bg-success/20 text-foreground/80 absolute top-10 -right-12 z-2 inline-flex items-center gap-2 rounded-[10px] p-2.5 text-base leading-tight font-medium whitespace-nowrap max-lg:py-2 max-lg:text-sm">
-          <LuUserRoundCheck className="text-success size-5 stroke-1 max-lg:size-4" />{' '}
-          No KYC
+        <div className="bg-success/20 text-foreground/80 absolute top-12 -right-20 z-2 inline-flex items-center gap-2 rounded-[10px] p-2.5 text-base leading-tight font-medium whitespace-nowrap backdrop-blur-sm max-lg:py-2 max-lg:text-sm max-sm:-right-16">
+          <span className="size-5 max-lg:size-4">
+            <InlineSVG src="/icons/dollar-return.svg" className="size-full" />
+          </span>{' '}
+          DCA Into BTC
         </div>
-        <div className="bg-primary/20 text-foreground/80 absolute -bottom-12.5 left-1/2 z-2 inline-flex -translate-x-1/2 items-center gap-2 rounded-[10px] p-2.5 text-base leading-tight font-medium whitespace-nowrap max-lg:py-2 max-lg:text-sm">
-          <LuZap className="text-primary size-5 stroke-1 max-lg:size-4" />{' '}
-          Instant Approval
+        <div className="bg-primary/20 text-foreground/80 absolute -bottom-12.5 left-1/2 z-2 inline-flex -translate-x-1/2 items-center gap-2 rounded-[10px] p-2.5 text-base leading-tight font-medium whitespace-nowrap backdrop-blur-sm max-lg:py-2 max-lg:text-sm">
+          <span className="size-5 max-lg:size-4">
+            <InlineSVG src="/icons/coin-stacks.svg" className="size-full" />
+          </span>{' '}
+          Stack Sats Everyday
         </div>
       </>
 

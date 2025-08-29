@@ -1,15 +1,18 @@
 'use client'
-import { DASH } from '@/utils/constants'
 import NextLink from 'next/link'
-import { Link } from '@heroui/react'
+import { Link, Tab, Tabs } from '@heroui/react'
 import Image from 'next/image'
 import { IoIosArrowRoundForward } from 'react-icons/io'
 import { Glow } from './Glow'
 import { LuChartLine } from 'react-icons/lu'
 import InlineSVG from 'react-inlinesvg'
 import { MdRemoveModerator } from 'react-icons/md'
+import { useState } from 'react'
+import { DCA_MINI_APP_URL } from '@/utils/constants'
+import { JoinWishlist } from './JoinWishlist'
 
 export const AboutBitmore = () => {
+  const [selected, setSelected] = useState('dca')
   return (
     <section
       className="relative container max-w-[1360px] min-[87.5rem]:px-0!"
@@ -17,71 +20,178 @@ export const AboutBitmore = () => {
     >
       <Glow className="absolute top-0 left-full h-[127px] w-[58px] rotate-22 blur-[85px]" />
 
-      <div className="border-default-100 relative z-1 flex w-full justify-between gap-4 rounded-xl border bg-[linear-gradient(86.84deg,_rgba(254,_254,_254,_0.08)_17.87%,_rgba(255,_255,_255,_0.04)_52.56%,_rgba(255,_255,_255,_0.06)_77.29%)] px-20 max-lg:flex-col max-lg:px-4">
-        <div className="flex flex-1 flex-col gap-2 pt-22 max-lg:pt-10">
-          <h1 className="text-foreground text-5xl leading-[1.15] font-medium max-lg:text-[32px]">
-            About Bitmor
-          </h1>
+      <div className="border-default-100 relative z-1 w-full rounded-xl border bg-[linear-gradient(86.84deg,_rgba(254,_254,_254,_0.08)_17.87%,_rgba(255,_255,_255,_0.04)_52.56%,_rgba(255,_255,_255,_0.06)_77.29%)] px-20 pt-16 max-lg:px-4 max-lg:pt-4">
+        <Tabs
+          selectedKey={selected}
+          onSelectionChange={(key) => setSelected(key as string)}
+          variant="light"
+          classNames={{
+            panel: 'p-0',
+            cursor: 'bg-white/10!',
+            tabList: 'max-lg:mx-auto',
+            base: 'w-full',
+            tabContent:
+              'text-foreground/60 transition-colors group-data-[selected=true]:text-foreground',
+          }}
+        >
+          <Tab key="dca" title="Bitmor DCA">
+            <div className="mt-6 flex w-full justify-between gap-7 max-lg:flex-col">
+              <div className="flex flex-1 flex-col gap-2 max-lg:items-center">
+                <h1 className="text-foreground text-5xl leading-[1.15] font-medium max-lg:text-center max-lg:text-[32px]">
+                  About Bitmor DCA
+                </h1>
 
-          <p className="text-foreground/70 max-w-sm text-base leading-tight font-normal">
-            Bitmor accelerates your Bitcoin ownership goals, while not requiring
-            high upfront capital. Lock in today’s price and pay in monthly
-            installments.
-          </p>
+                <p className="text-foreground/70 mb-4 max-w-sm text-base leading-tight font-normal max-lg:mx-auto max-lg:text-center">
+                  Bitmor loans accelerates your Bitcoin ownership goals, while
+                  not requiring high upfront capital. Lock in today&apos;s price
+                  and pay in monthly installments.
+                </p>
 
-          <Link
-            as={NextLink}
-            href="/borrow"
-            className="text-foreground group mt-4 w-fit gap-2 leading-tight font-medium"
-          >
-            Learn More{' '}
-            <IoIosArrowRoundForward
-              size={24}
-              className="transition-transform group-hover:translate-x-2"
-            />
-          </Link>
+                <Link
+                  as={NextLink}
+                  href={DCA_MINI_APP_URL}
+                  target="_blank"
+                  className="text-foreground group w-fit gap-2 leading-tight font-medium max-lg:mx-auto"
+                >
+                  Launch Mini App{' '}
+                  <IoIosArrowRoundForward
+                    size={24}
+                    className="transition-transform group-hover:translate-x-2"
+                  />
+                </Link>
 
-          <Image
-            src="/extras/borrow-page.png"
-            alt="Borrow page"
-            width={570}
-            height={317}
-            className="mt-auto bg-black/90 max-lg:hidden dark:bg-transparent"
-          />
-        </div>
+                <Image
+                  src="/extras/dca-app.png"
+                  alt="Borrow page"
+                  width={437}
+                  height={310}
+                  className="pointer-events-none mt-16 select-none max-lg:hidden"
+                />
+              </div>
 
-        <div className="flex max-w-md flex-1 flex-col gap-6 py-20 max-lg:max-w-full max-lg:py-10 max-lg:pb-0">
-          {ABOUT.map((item) => (
-            <div
-              key={item.title}
-              className="border-default-100 flex items-start gap-4 rounded-lg border bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-4 shadow-[0px_0px_4px_0px_#FFFFFF1F,0px_1px_0px_0px_#FFFFFF1F]"
-            >
-              <div className="size-8 flex-shrink-0">{item.icon}</div>
-              <div className="flex flex-col gap-4">
-                <div className="text-foreground/90 text-xl leading-[1] font-medium max-lg:text-lg">
-                  {item.title}
-                </div>
-                <div className="text-foreground/70 text-sm leading-[1.15] font-normal">
-                  {item.description}
-                </div>
+              <div className="flex max-w-md flex-1 flex-col gap-6 max-lg:max-w-full">
+                {ABOUT_DCA.map((item) => (
+                  <div
+                    key={item.title}
+                    className="border-default-100 flex items-start gap-4 rounded-lg border bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-4 shadow-[0px_0px_4px_0px_#FFFFFF1F,0px_1px_0px_0px_#FFFFFF1F]"
+                  >
+                    <div className="size-8 flex-shrink-0">{item.icon}</div>
+                    <div className="flex flex-col gap-4">
+                      <div className="text-foreground/90 text-xl leading-[1] font-medium max-lg:text-lg">
+                        {item.title}
+                      </div>
+                      <div className="text-foreground/70 text-sm leading-[1.15] font-normal">
+                        {item.description}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+          </Tab>
+
+          <Tab key="loans" title="Bitmor Loans">
+            <div className="mt-6 flex w-full justify-between gap-7 max-lg:flex-col">
+              <div className="flex flex-1 flex-col gap-2 max-lg:items-center">
+                <h1 className="text-foreground text-5xl leading-[1.15] font-medium max-lg:text-center max-lg:text-[32px]">
+                  About Bitmor Loans
+                </h1>
+
+                <p className="text-foreground/70 mb-4 max-w-sm text-base leading-tight font-normal max-lg:mx-auto max-lg:text-center">
+                  Bitmor loans accelerates your Bitcoin ownership goals, while
+                  not requiring high upfront capital. Lock in today&apos;s price
+                  and pay in monthly installments.
+                </p>
+
+                <JoinWishlist />
+
+                <Image
+                  src="/extras/borrow-page.png"
+                  alt="Borrow page"
+                  width={574}
+                  height={294}
+                  className="pointer-events-none mt-16 select-none max-lg:hidden"
+                />
+              </div>
+
+              <div className="flex max-w-md flex-1 flex-col gap-6 max-lg:max-w-full">
+                {ABOUT_LOANS.map((item) => (
+                  <div
+                    key={item.title}
+                    className="border-default-100 flex items-start gap-4 rounded-lg border bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-4 shadow-[0px_0px_4px_0px_#FFFFFF1F,0px_1px_0px_0px_#FFFFFF1F]"
+                  >
+                    <div className="size-8 flex-shrink-0">{item.icon}</div>
+                    <div className="flex flex-col gap-4">
+                      <div className="text-foreground/90 text-xl leading-[1] font-medium max-lg:text-lg">
+                        {item.title}
+                      </div>
+                      <div className="text-foreground/70 text-sm leading-[1.15] font-normal">
+                        {item.description}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Tab>
+        </Tabs>
 
         <Image
-          src="/extras/borrow-page.png"
+          src={
+            selected === 'dca'
+              ? '/extras/dca-app.png'
+              : '/extras/borrow-page.png'
+          }
           alt="Borrow page"
-          width={570}
-          height={317}
-          className="mx-auto mt-10 bg-black/90 lg:hidden dark:bg-transparent"
+          width={568}
+          height={298}
+          className="pointer-events-none mx-auto mt-10 select-none lg:hidden"
+        />
+
+        <Image
+          src="/extras/about-page-glow.svg"
+          alt="Borrow page"
+          width={800}
+          height={528}
+          className="pointer-events-none absolute bottom-0 left-0 -z-1 select-none"
         />
       </div>
     </section>
   )
 }
 
-const ABOUT = [
+const ABOUT_DCA = [
+  {
+    icon: (
+      <InlineSVG src="/icons/coin-stack.svg" className="text-primary size-8" />
+    ),
+    title: 'Start Small, Stack Big',
+    description:
+      'Own Bitcoin from just $1/day. Turn spare change into real wealth.',
+  },
+  {
+    icon: (
+      <InlineSVG src="/icons/candles.svg" className="text-primary size-8" />
+    ),
+    title: 'Faster Than Waiting',
+    description:
+      'Stop chasing dips. Time in the market beats timing the market.',
+  },
+  {
+    icon: <InlineSVG src="/icons/link.svg" className="text-primary size-8" />,
+    title: 'No Stress, No FOMO',
+    description: `Automated daily or weekly buys. No need to monitor every chart move`,
+  },
+  {
+    icon: (
+      <InlineSVG src="/icons/btc-pyramid.svg" className="text-primary size-8" />
+    ),
+    title: 'Built for YOU',
+    description:
+      'No complicated setups. Just a simple, secure way to own Bitcoin your way.',
+  },
+]
+const ABOUT_LOANS = [
   {
     icon: (
       <InlineSVG src="/icons/coin-bag.svg" className="text-primary size-8" />

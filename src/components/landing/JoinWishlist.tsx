@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import axios from '@/utils/axios'
 import { trackEvent } from '@/utils/trackEvent'
+import { IoIosArrowRoundForward } from 'react-icons/io'
 
 interface WaitlistResponse {
   success: boolean
@@ -88,26 +89,40 @@ export const JoinWishlist = ({
   const isSuccess = joinWaitlistMutation.isSuccess
 
   return (
-    <div className="flex w-full max-w-[720px] items-center gap-2 max-lg:flex-col">
+    <div className="flex w-full max-w-[520px] items-center gap-2">
       <Input
-        // placeholder="Early access = earn bonus sats"
-        placeholder="Enter Email to earn bonus sats"
-        className="h-13 w-full rounded-xl max-sm:h-full"
+        placeholder="Enter your email for launch alerts + bonus sats"
+        className="w-full rounded-xl max-sm:h-full"
         classNames={{
           mainWrapper: 'w-full',
           inputWrapper: cn(
-            'h-[60px] rounded-xl w-full pl-5 pr-2 bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)]! max-sm:h-full max-sm:p-3 border border-default-100 shadow-[0px_0px_4px_0px] shadow-default-800/10 bg-foreground/3',
+            'rounded-xl w-full pl-5 pr-2 bg-background/75! max-sm:p-3 border border-default-100 shadow-[0px_0px_4px_0px] shadow-default-800/10 bg-foreground/3 max-sm:h-full max-sm:pb-0',
             isInHero && 'bg-foreground/5'
           ),
+          input: 'text-sm',
           innerWrapper: 'w-full max-sm:flex-col',
         }}
         size="lg"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        endContent={
+          <Button
+            className="text-primary gap-1 bg-transparent text-sm font-bold"
+            color={isLenderThemed ? 'secondary' : 'primary'}
+            isLoading={isLoading}
+            onPress={handleJoinWaitlist}
+            endContent={
+              <IoIosArrowRoundForward className="size-5 flex-shrink-0 stroke-3" />
+            }
+          >
+            {isSuccess ? 'Joined!' : 'Join Waitlist'}
+          </Button>
+        }
       />
+
       <div className="flex items-center gap-2">
         <Button
-          className="shadow-default-800/10 bg-foreground/10 size-12 rounded-xl text-sm font-bold"
+          className="bg-foreground/10 size-10 rounded-xl"
           variant="shadow"
           isIconOnly
           onPress={() => {
@@ -118,20 +133,10 @@ export const JoinWishlist = ({
           <Image
             src="/icons/google.png"
             alt="google"
-            width={24}
-            height={24}
-            className="size-6 min-w-6"
+            width={20}
+            height={20}
+            className="size-4 min-w-4"
           />
-        </Button>
-
-        <Button
-          className="h-12 rounded-xl text-sm font-bold"
-          color={isLenderThemed ? 'secondary' : 'primary'}
-          variant="shadow"
-          isLoading={isLoading}
-          onPress={handleJoinWaitlist}
-        >
-          {isSuccess ? 'Joined!' : 'Join Waitlist'}
         </Button>
       </div>
     </div>

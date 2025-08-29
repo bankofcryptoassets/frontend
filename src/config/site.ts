@@ -1,3 +1,6 @@
+import { SetSelected } from '@/hooks/useCalculatorTabs'
+import { DCA_MINI_APP_URL } from '@/utils/constants'
+
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
@@ -11,11 +14,7 @@ export const siteConfig = {
       href: '',
       children: [
         { id: 'bitcoin-loan', label: 'Bitcoin Loan', href: '/borrow' },
-        {
-          id: 'bitcoin-dca',
-          label: 'Bitcoin DCA',
-          href: 'https://dca.bitmor.xyz',
-        },
+        { id: 'bitcoin-dca', label: 'Bitcoin DCA', href: DCA_MINI_APP_URL },
       ],
     },
     {
@@ -24,9 +23,16 @@ export const siteConfig = {
       href: '',
       children: [
         {
-          id: 'ownership-calculator',
-          label: 'Ownership Calculator',
-          href: '/#ownership-calculator',
+          id: 'loan-calculator',
+          label: 'Loan Calculator',
+          href: '/#calculators',
+          handleClick: (setSelected: SetSelected) => setSelected('loan'),
+        },
+        {
+          id: 'dca-calculator',
+          label: 'DCA Calculator',
+          href: '/#calculators',
+          handleClick: (setSelected: SetSelected) => setSelected('dca'),
         },
         {
           id: 'loan-vs-dca-calculator',

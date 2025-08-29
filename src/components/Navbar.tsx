@@ -34,6 +34,7 @@ import numeral from 'numeral'
 import { GetBalanceData } from 'wagmi/query'
 import Big from 'big.js'
 import { ChevronDown } from 'lucide-react'
+import { useCalculatorTabs } from '@/hooks/useCalculatorTabs'
 
 const HIDE_NAVBAR_PATHS = ['/connect-telegram']
 
@@ -61,6 +62,7 @@ export const Navbar = () => {
     token: CONTRACT_ADDRESSES.BTC,
     query: { enabled: !!address && !!isAuth },
   })
+  const { setSelected } = useCalculatorTabs()
 
   const onMenuItemClick = () => {
     setIsMenuOpen(false)
@@ -125,6 +127,9 @@ export const Navbar = () => {
                       isDisabled={!child.href}
                       as={NextLink}
                       href={child.href}
+                      onClick={() => {
+                        child?.handleClick?.(setSelected)
+                      }}
                       target={
                         child.href.startsWith('http') ? '_blank' : undefined
                       }
@@ -191,7 +196,7 @@ export const Navbar = () => {
               href="/borrow"
               color="primary"
               variant="shadow"
-              className="h-11 font-bold"
+              className="h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
               onPress={onMenuItemClick}
               size="lg"
             >
@@ -234,13 +239,17 @@ export const Navbar = () => {
                       <Link
                         key={child.id}
                         color="foreground"
+                        isDisabled={!child.href}
                         as={NextLink}
                         href={child.href}
                         target={
                           child.href.startsWith('http') ? '_blank' : undefined
                         }
                         size="lg"
-                        onClick={onMenuItemClick}
+                        onClick={() => {
+                          child?.handleClick?.(setSelected)
+                          onMenuItemClick()
+                        }}
                         className="text-default-800 data-[active=true]:text-primary hover:text-primary group font-normal transition-colors data-[active=true]:font-medium"
                         data-active={
                           !!child.href && pathname.startsWith(child.href)
@@ -284,7 +293,7 @@ export const Navbar = () => {
               href="/borrow"
               color="primary"
               variant="shadow"
-              className="mt-4 font-bold"
+              className="mt-4 h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
               onPress={onMenuItemClick}
             >
               Launch App
@@ -324,7 +333,7 @@ export const CustomConnectButton = () => {
                     onPress={openConnectModal}
                     color="primary"
                     variant="shadow"
-                    className="h-11 font-bold"
+                    className="h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
                     size="lg"
                   >
                     Connect Wallet
@@ -338,7 +347,7 @@ export const CustomConnectButton = () => {
                     onPress={openChainModal}
                     color="primary"
                     variant="shadow"
-                    className="h-11 font-bold"
+                    className="h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
                     size="lg"
                   >
                     Wrong network
@@ -351,7 +360,7 @@ export const CustomConnectButton = () => {
                   onPress={openAccountModal}
                   color="primary"
                   variant="shadow"
-                  className="h-11 font-bold"
+                  className="h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
                   size="lg"
                 >
                   {!!account.ensAvatar && (

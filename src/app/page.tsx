@@ -3,7 +3,7 @@ import {
   Hero,
   AboutBitmore,
   JustLikeMortgage,
-  BorrowerLender,
+  BitcoinJourney,
   Testimonials,
   FAQs,
   CTABanner,
@@ -16,7 +16,7 @@ export default function Home() {
       <Hero />
       <AboutBitmore />
       <JustLikeMortgage />
-      <BorrowerLender />
+      <BitcoinJourney />
       <Testimonials />
       <FAQs />
       <CTABanner />

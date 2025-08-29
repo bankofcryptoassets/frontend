@@ -1,7 +1,10 @@
 'use client'
-import { JoinWishlist } from './JoinWishlist'
+import { DCA_MINI_APP_URL } from '@/utils/constants'
 import { Glow } from './Glow'
 import { HeroBitcoinAnimation } from './HeroBitcoinAnimation'
+import { Button, Link } from '@heroui/react'
+import NextLink from 'next/link'
+import { IoIosArrowRoundForward } from 'react-icons/io'
 
 export const Hero = () => {
   return (
@@ -11,7 +14,7 @@ export const Hero = () => {
     >
       <div className="flex items-center justify-between gap-20 max-lg:flex-col max-lg:gap-30">
         <div className="flex w-full max-w-lg flex-1 flex-col gap-4">
-          <div className="text-foreground text-[56px] leading-[1.15] font-bold max-lg:text-4xl">
+          <div className="text-foreground text-[56px] leading-[1.15] font-bold max-lg:text-center max-lg:text-4xl">
             Own Bitcoin
             <br />
             Without Buying It
@@ -19,13 +22,35 @@ export const Hero = () => {
             All at Once
           </div>
 
-          <div className="text-foreground/70 mb-6 text-base leading-tight font-normal max-lg:mb-4">
+          <div className="text-foreground/70 mb-6 text-base leading-tight font-normal max-lg:mb-4 max-lg:text-center">
             Build towards your Bitcoin Ownership goals over time, with plans
             designed to protect your peace of mind.
           </div>
 
-          <div>
-            <JoinWishlist isInHero />
+          <div className="flex flex-wrap items-center gap-2 max-lg:flex-col max-lg:justify-center">
+            <Button
+              className="h-13 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] px-8 py-3.5 text-base font-bold"
+              color="primary"
+              variant="shadow"
+              as={NextLink}
+              href={DCA_MINI_APP_URL}
+              target="_blank"
+            >
+              Buy Bitcoin Everyday
+            </Button>
+
+            <Link
+              className="group flex h-13 items-center gap-1 px-6 py-3.5 text-base font-medium"
+              color="primary"
+              href="/borrow"
+              as={NextLink}
+            >
+              Learn About Bitcoin Loan
+              <IoIosArrowRoundForward
+                size={20}
+                className="transition-transform group-hover:translate-x-2"
+              />
+            </Link>
           </div>
         </div>
 
