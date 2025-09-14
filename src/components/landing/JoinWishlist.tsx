@@ -1,4 +1,4 @@
-import { Button, Divider, Input } from '@heroui/react'
+import { Button, cn, Input } from '@heroui/react'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import axios from '@/utils/axios'
 import { trackEvent } from '@/utils/trackEvent'
+import { IoIosArrowRoundForward } from 'react-icons/io'
 
 interface WaitlistResponse {
   success: boolean
@@ -19,7 +20,13 @@ const joinWaitlist = async (email: string): Promise<WaitlistResponse> => {
   return response.data
 }
 
-export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
+export const JoinWishlist = ({
+  isInHero = false,
+  isLenderThemed = false,
+}: {
+  isInHero?: boolean
+  isLenderThemed?: boolean
+}) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -82,55 +89,56 @@ export const JoinWishlist = ({ isInHero = false }: { isInHero?: boolean }) => {
   const isSuccess = joinWaitlistMutation.isSuccess
 
   return (
-    <div className="w-full max-w-[720px]">
+    <div className="flex w-full max-w-[520px] items-center gap-2">
       <Input
-        placeholder="Early access = earn bonus sats"
-        className="h-[60px] w-full rounded-xl max-sm:h-full"
+        placeholder="Enter your email for launch alerts + bonus sats"
+        className="w-full rounded-xl max-sm:h-full"
         classNames={{
           mainWrapper: 'w-full',
-          inputWrapper:
-            'h-[60px] rounded-xl w-full pl-5 pr-2 bg-[#F5F5F5]! max-sm:h-full max-sm:p-3',
+          inputWrapper: cn(
+            'rounded-xl w-full pl-5 pr-2 bg-background/75! max-sm:p-3 border border-default-100 shadow-[0px_0px_4px_0px] shadow-default-800/10 bg-foreground/3 max-sm:h-full max-sm:pb-0',
+            isInHero && 'bg-foreground/5'
+          ),
+          input: 'text-sm',
           innerWrapper: 'w-full max-sm:flex-col',
-          input:
-            'text-black! placeholder:text-[#666666] max-sm:mb-4 max-sm:text-center',
         }}
         size="lg"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         endContent={
-          <div className="flex items-center gap-4">
-            <Button
-              className="size-11 rounded-lg bg-white text-sm font-bold shadow-[1px_2px_8px_0px_#0000000A] hover:bg-white/90"
-              size="sm"
-              isIconOnly
-              onPress={() => {
-                trackEvent('Join Waitlist via Google')
-                router.push('https://backend.xefi.ai/api/auth/google')
-              }}
-            >
-              <Image
-                src="/icons/google.png"
-                alt="google"
-                width={24}
-                height={24}
-                className="size-6 min-w-6"
-              />
-            </Button>
-
-            <Divider orientation="vertical" className="bg-default-d h-8 w-px" />
-
-            <Button
-              className="h-11 w-[160px] rounded-lg text-sm font-bold"
-              color="primary"
-              variant="shadow"
-              isLoading={isLoading}
-              onPress={handleJoinWaitlist}
-            >
-              {isSuccess ? 'Joined!' : 'Join Waitlist'}
-            </Button>
-          </div>
+          <Button
+            className="text-primary gap-1 bg-transparent text-sm font-bold"
+            color={isLenderThemed ? 'secondary' : 'primary'}
+            isLoading={isLoading}
+            onPress={handleJoinWaitlist}
+            endContent={
+              <IoIosArrowRoundForward className="size-5 flex-shrink-0 stroke-3" />
+            }
+          >
+            {isSuccess ? 'Joined!' : 'Join Waitlist'}
+          </Button>
         }
       />
+
+      <div className="flex items-center gap-2">
+        <Button
+          className="bg-foreground/10 size-10 rounded-xl"
+          variant="shadow"
+          isIconOnly
+          onPress={() => {
+            trackEvent('Join Waitlist via Google')
+            router.push('https://backend.xefi.ai/api/auth/google')
+          }}
+        >
+          <Image
+            src="/icons/google.png"
+            alt="google"
+            width={20}
+            height={20}
+            className="size-4 min-w-4"
+          />
+        </Button>
+      </div>
     </div>
   )
 }

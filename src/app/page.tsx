@@ -1,27 +1,27 @@
 import { Footer } from '@/components/Footer'
 import {
-  Borrowers,
-  CTABanner,
-  FAQs,
   Hero,
-  Lenders,
-  Stats,
-  Team,
-  WhyBitcoin,
+  AboutBitmore,
+  JustLikeMortgage,
+  BitcoinJourney,
+  Testimonials,
+  FAQs,
+  CTABanner,
 } from '@/components/landing'
+import { SmoothScroll } from '@/components/SmoothScroll'
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <Stats />
-      <Borrowers />
-      <WhyBitcoin />
-      <Lenders />
-      <Team />
+      <AboutBitmore />
+      <JustLikeMortgage />
+      <BitcoinJourney />
+      <Testimonials />
       <FAQs />
       <CTABanner />
       <Footer />
+      <SmoothScroll />
     </>
   )
 }

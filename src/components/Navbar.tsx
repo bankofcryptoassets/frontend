@@ -9,12 +9,20 @@ import {
   NavbarMenuItem,
 } from '@heroui/navbar'
 import { Link } from '@heroui/link'
-import { link as linkStyles } from '@heroui/theme'
-import clsx from 'clsx'
+import { cn, link as linkStyles } from '@heroui/theme'
 import { siteConfig } from '@/config/site'
 import { ThemeSwitch } from '@/components/ThemeSwitch'
 import NextLink from 'next/link'
-import { Button, Divider } from '@heroui/react'
+import {
+  Button,
+  Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Accordion,
+  AccordionItem,
+} from '@heroui/react'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
@@ -23,19 +31,23 @@ import { useAuth } from '@/auth/useAuth'
 import { CONTRACT_ADDRESSES } from '@/utils/constants'
 import { useAccount, useBalance } from 'wagmi'
 import numeral from 'numeral'
+import { GetBalanceData } from 'wagmi/query'
+import Big from 'big.js'
+import { ChevronDown } from 'lucide-react'
+import { useCalculatorTabs } from '@/hooks/useCalculatorTabs'
 
 const HIDE_NAVBAR_PATHS = ['/connect-telegram']
 
 export const Logo = () => {
   return (
-    <NextLink href="/">
-      <span className="text-primary inline text-2xl leading-9 font-bold tracking-tight">
+    <>
+      <span className="text-primary inline text-3xl leading-[1] font-bold tracking-tight max-lg:text-2xl">
         Bit
       </span>
-      <span className="text-secondary dark:text-foreground inline text-2xl leading-9 font-bold tracking-tight">
+      <span className="text-secondary dark:text-foreground inline text-3xl leading-[1] font-bold tracking-tight max-lg:text-2xl">
         mor
       </span>
-    </NextLink>
+    </>
   )
 }
 
@@ -50,6 +62,7 @@ export const Navbar = () => {
     token: CONTRACT_ADDRESSES.BTC,
     query: { enabled: !!address && !!isAuth },
   })
+  const { setSelected } = useCalculatorTabs()
 
   const onMenuItemClick = () => {
     setIsMenuOpen(false)
@@ -63,39 +76,96 @@ export const Navbar = () => {
 
   return (
     <HeroUINavbar
-      classNames={{ wrapper: 'container!' }}
+      classNames={{
+        wrapper: 'container! h-24 max-lg:h-16',
+        base:
+          isMainApp &&
+          !isMenuOpen &&
+          'bg-transparent! backdrop-saturate-100 transition-[background-color,backdrop-filter]',
+      }}
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-      height="4.5rem"
     >
       <NavbarContent
         className="basis-1/5 gap-12 max-xl:gap-8 sm:basis-full"
         justify="start"
       >
         <NavbarBrand as="li" className="max-w-fit" onClick={onMenuItemClick}>
-          <Logo />
+          <NextLink href="/">
+            <Logo />
+          </NextLink>
         </NavbarBrand>
+      </NavbarContent>
 
+      <NavbarContent
+        className="basis-1/5 gap-12 max-xl:gap-8 sm:basis-full"
+        justify="center"
+      >
         <ul className="ml-2 hidden justify-start gap-8 max-xl:gap-6 lg:flex">
-          {siteConfig[isMainApp ? 'navItemMainApp' : 'navItems'].map((item) => (
-            <NavbarItem
-              key={item.href}
-              isActive={pathname.startsWith(item.href)}
-            >
-              <NextLink
-                className={clsx(
-                  linkStyles({ color: 'foreground' }),
-                  '!text-default-700 font-normal',
-                  'data-[active=true]:!text-default-900 data-[active=true]:font-medium'
-                )}
-                color="foreground"
-                href={item.href}
-                data-active={pathname.startsWith(item.href)}
+          {siteConfig[isMainApp ? 'navItemMainApp' : 'navItems'].map((item) =>
+            item?.children?.length ? (
+              <Dropdown key={item.id}>
+                <NavbarItem>
+                  <DropdownTrigger>
+                    <button
+                      className={cn(
+                        linkStyles({ color: 'foreground' }),
+                        'text-default-800 group aria-[expanded=true]:text-primary hover:text-primary group flex cursor-pointer items-center gap-2 font-normal transition-colors aria-[expanded=true]:font-medium'
+                      )}
+                    >
+                      <span className="group-animate-underline">
+                        {item.label}
+                      </span>
+                      <ChevronDown className="size-4 transition-transform group-aria-[expanded=true]:rotate-180" />
+                    </button>
+                  </DropdownTrigger>
+                </NavbarItem>
+                <DropdownMenu aria-label={item.label}>
+                  {item.children.map((child) => (
+                    <DropdownItem
+                      key={child.id}
+                      isDisabled={!child.href}
+                      as={NextLink}
+                      href={child.href}
+                      onClick={() => {
+                        child?.handleClick?.(setSelected)
+                      }}
+                      target={
+                        child.href.startsWith('http') ? '_blank' : undefined
+                      }
+                      className="group hover:bg-transparent!"
+                      classNames={{
+                        title: cn(
+                          linkStyles({ color: 'foreground' }),
+                          'text-default-800 group overflow-visible flex-0 group-hover:text-primary group-animate-underline flex cursor-pointer items-center gap-2 font-normal transition-colors'
+                        ),
+                      }}
+                    >
+                      {child.label}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            ) : (
+              <NavbarItem
+                key={item.id}
+                isActive={!!item.href && pathname.startsWith(item.href)}
               >
-                {item.label}
-              </NextLink>
-            </NavbarItem>
-          ))}
+                <NextLink
+                  className={cn(
+                    linkStyles({ color: 'foreground' }),
+                    'text-default-800 data-[active=true]:text-primary hover:text-primary animate-underline font-normal transition-colors data-[active=true]:font-medium'
+                  )}
+                  color="foreground"
+                  href={item.href}
+                  data-active={!!item.href && pathname.startsWith(item.href)}
+                  target={item.href.startsWith('http') ? '_blank' : undefined}
+                >
+                  {item.label}
+                </NextLink>
+              </NavbarItem>
+            )
+          )}
         </ul>
       </NavbarContent>
 
@@ -106,16 +176,7 @@ export const Navbar = () => {
         {isMainApp && isAuth && (
           <>
             <NavbarItem className="hidden gap-2 sm:flex">
-              <Button
-                color="primary"
-                variant="bordered"
-                className="border-default-300"
-              >
-                <Image src="/icons/btc.svg" alt="BTC" width={16} height={16} />
-                <span className="text-base font-medium">
-                  {numeral(btcBalance?.value || 0).format('0,0')} sats
-                </span>
-              </Button>
+              <SatsBalance btcBalance={btcBalance} />
             </NavbarItem>
 
             <NavbarItem className="hidden gap-2 sm:flex">
@@ -135,21 +196,18 @@ export const Navbar = () => {
               href="/borrow"
               color="primary"
               variant="shadow"
-              className="font-bold"
+              className="h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
               onPress={onMenuItemClick}
+              size="lg"
             >
-              Try Bitmor (Testnet)
+              Launch App
             </Button>
           </NavbarItem>
         )}
 
         {isMainApp && (
-          <NavbarItem className="hidden gap-2 sm:flex [&>div>button]:font-sans! [&>div>button]:text-sm! [&>div>button]:font-medium! [&>div>button_*]:font-sans! [&>div>button_*]:text-sm! [&>div>button_*]:font-medium!">
-            <ConnectButton
-              accountStatus="full"
-              showBalance={false}
-              chainStatus="none"
-            />
+          <NavbarItem className="hidden gap-2 sm:flex">
+            <CustomConnectButton />
           </NavbarItem>
         )}
       </NavbarContent>
@@ -162,20 +220,60 @@ export const Navbar = () => {
 
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
-          {siteConfig[isMainApp ? 'navItemMainApp' : 'navItems'].map(
-            (item, index) => (
-              <NavbarMenuItem key={`${item}-${index}`}>
+          {siteConfig[isMainApp ? 'navItemMainApp' : 'navItems'].map((item) =>
+            item.children?.length ? (
+              <Accordion key={item.id} className="w-full px-0!">
+                <AccordionItem
+                  title={item.label}
+                  classNames={{
+                    trigger: 'p-0! group',
+                    title: cn(
+                      linkStyles({ color: 'foreground' }),
+                      'text-default-800 font-normal data-[active=true]:text-primary group-hover:text-primary group-animate-underline transition-colors data-[active=true]:font-medium text-lg w-fit'
+                    ),
+                    indicator: 'text-default-700',
+                  }}
+                >
+                  <div className="flex flex-col gap-2 pl-4">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.id}
+                        color="foreground"
+                        isDisabled={!child.href}
+                        as={NextLink}
+                        href={child.href}
+                        target={
+                          child.href.startsWith('http') ? '_blank' : undefined
+                        }
+                        size="lg"
+                        onClick={() => {
+                          child?.handleClick?.(setSelected)
+                          onMenuItemClick()
+                        }}
+                        className="text-default-800 data-[active=true]:text-primary hover:text-primary group font-normal transition-colors data-[active=true]:font-medium"
+                        data-active={
+                          !!child.href && pathname.startsWith(child.href)
+                        }
+                      >
+                        <span className="group-animate-underline">
+                          {child.label}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </AccordionItem>
+              </Accordion>
+            ) : (
+              <NavbarMenuItem key={item.id}>
                 <Link
                   color="foreground"
                   as={NextLink}
                   href={item.href}
                   size="lg"
                   onClick={onMenuItemClick}
-                  className={clsx(
-                    '!text-default-700 font-normal',
-                    'data-[active=true]:!text-default-900 data-[active=true]:font-medium'
-                  )}
-                  data-active={pathname.startsWith(item.href)}
+                  className="text-default-800 group data-[active=true]:text-primary hover:text-primary animate-underline font-normal transition-colors data-[active=true]:font-medium"
+                  data-active={!!item.href && pathname.startsWith(item.href)}
+                  target={item.href.startsWith('http') ? '_blank' : undefined}
                 >
                   {item.label}
                 </Link>
@@ -185,31 +283,9 @@ export const Navbar = () => {
 
           {isMainApp ? (
             <div className="mt-6 flex flex-col gap-4">
-              {isAuth && (
-                <Button
-                  color="primary"
-                  variant="bordered"
-                  className="border-default-300"
-                >
-                  <Image
-                    src="/icons/btc.svg"
-                    alt="BTC"
-                    width={16}
-                    height={16}
-                  />
-                  <span className="font-medium">
-                    {numeral(btcBalance?.value || 0).format('0,0')} sats
-                  </span>
-                </Button>
-              )}
+              {isAuth && <SatsBalance btcBalance={btcBalance} />}
 
-              <Button className="p-0 **:flex! **:items-center! **:justify-center! **:gap-2! [&_[style='height:_24px;_width:_24px;']]:overflow-hidden [&_[style='height:_24px;_width:_24px;']]:rounded-full! [&>div]:h-full! [&>div]:w-full! [&>div>button]:h-full! [&>div>button]:w-full! [&>div>button]:font-sans! [&>div>button]:text-sm! [&>div>button]:font-semibold!">
-                <ConnectButton
-                  accountStatus="avatar"
-                  showBalance={false}
-                  chainStatus="none"
-                />
-              </Button>
+              <CustomConnectButton />
             </div>
           ) : (
             <Button
@@ -217,14 +293,117 @@ export const Navbar = () => {
               href="/borrow"
               color="primary"
               variant="shadow"
-              className="mt-4 font-bold"
+              className="mt-4 h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
               onPress={onMenuItemClick}
             >
-              Try Bitmor (Testnet)
+              Launch App
             </Button>
           )}
         </div>
       </NavbarMenu>
     </HeroUINavbar>
+  )
+}
+
+export const CustomConnectButton = () => {
+  return (
+    <ConnectButton.Custom>
+      {({
+        account,
+        chain,
+        openAccountModal,
+        openChainModal,
+        openConnectModal,
+        authenticationStatus,
+        mounted,
+      }) => {
+        const ready = mounted && authenticationStatus !== 'loading'
+        const connected =
+          ready &&
+          account &&
+          chain &&
+          (!authenticationStatus || authenticationStatus === 'authenticated')
+
+        return (
+          <>
+            {(() => {
+              if (!connected) {
+                return (
+                  <Button
+                    onPress={openConnectModal}
+                    color="primary"
+                    variant="shadow"
+                    className="h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
+                    size="lg"
+                  >
+                    Connect Wallet
+                  </Button>
+                )
+              }
+
+              if (chain.unsupported) {
+                return (
+                  <Button
+                    onPress={openChainModal}
+                    color="primary"
+                    variant="shadow"
+                    className="h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
+                    size="lg"
+                  >
+                    Wrong network
+                  </Button>
+                )
+              }
+
+              return (
+                <Button
+                  onPress={openAccountModal}
+                  color="primary"
+                  variant="shadow"
+                  className="h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
+                  size="lg"
+                >
+                  {!!account.ensAvatar && (
+                    <Image
+                      src={account.ensAvatar}
+                      alt="ENS Avatar"
+                      width={24}
+                      height={24}
+                    />
+                  )}
+                  {account.displayName}
+                </Button>
+              )
+            })()}
+          </>
+        )
+      }}
+    </ConnectButton.Custom>
+  )
+}
+
+export const SatsBalance = ({
+  btcBalance,
+}: {
+  btcBalance?: GetBalanceData
+}) => {
+  if (!btcBalance) return null
+
+  const isTooManySats = Big(Number(btcBalance?.value || 0)).gte(1_000_000)
+  const symbol = isTooManySats ? 'BTC' : 'sats'
+  const value = isTooManySats ? btcBalance?.formatted : btcBalance?.value
+
+  return (
+    <Button
+      color="primary"
+      variant="bordered"
+      className="border-default-300 h-11"
+      size="lg"
+    >
+      <Image src="/icons/btc.svg" alt="BTC" width={16} height={16} />
+      <span className="font-medium">
+        {numeral(value).format('0,0.[00]')} {symbol}
+      </span>
+    </Button>
   )
 }

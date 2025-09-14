@@ -1,95 +1,44 @@
 'use client'
-import { Accordion, AccordionItem } from '@heroui/react'
-
-const FAQ_ITEMS = [
-  {
-    question: 'How does Bitmor work?',
-    answer: (
-      <div className="space-y-3">
-        <p>
-          Bitmor lets you own any amount of Bitcoin today and pay for it over 1,
-          3, or 5 years. Just put down 25 % of your chosen BTC amount’s current
-          price in USDC, and our lenders cover the rest. We buy and hold your
-          BTC in an audited on-chain escrow, then you make fixed monthly USDC
-          payments toward principal, interest, and fees. Your BTC is released at
-          the end of the loan.
-        </p>
-
-        <div>
-          <p>You can close or sell your position anytime:</p>
-
-          <ul className="list-disc pl-6">
-            <li>
-              If BTC’s price is above your purchase price, we sell just enough
-              to repay lenders + fees and hand the rest of the BTC back to you.
-            </li>
-            <li>If it’s below, closing early could mean a loss.</li>
-          </ul>
-        </div>
-
-        <p>
-          Miss a payment? We’ll automatically sell a small slice of your BTC to
-          cover that month’s dues (as long as BTC stays above your personal
-          safety level). Each payment increases your safety levels. For as long
-          as you pay on time, you’re always protected from liquidations, and
-          we’ll send friendly reminders before each payment is due.
-        </p>
-      </div>
-    ),
-  },
-  {
-    question: `What crypto assets do I need to get started?`,
-    answer:
-      'You only need USDC to cover your 25 % down payment and monthly payments, plus an EVM-compatible wallet (e.g. MetaMask or Phantom) to connect and sign transactions, no BTC or other tokens required up front.',
-  },
-  {
-    question: 'Who is eligible for a Bitmor loan?',
-    answer:
-      'BitMor is open to everyone, no KYC or credit checks, so all you need is an EVM-compatible wallet and enough USDC for the down payment to start stacking sats with us (after all, we began with just a sat and a dream).',
-  },
-  {
-    question:
-      'How is my interest rate determined, and can it change over time?',
-    answer:
-      'Your rate is always capped at 11% APR, but when market conditions push borrowing costs lower, you’ll automatically pay the reduced rate for that month. Plus, keep that on-time payment streak alive, or refer a friend mid-term, and we’ll shave extra basis points off your rate as a thank-you!',
-  },
-  {
-    question: 'What happens to my Bitcoin if I miss a payment?',
-    answer:
-      'Miss a payment? We’ll sell just a tiny slice of your escrowed BTC to cover that month’s dues, only if BTC stays above your personal safety price. Your safety price starts at 75 % of the purchase price and falls as you pay down principal, so your equity buffer grows over time. If BTC dips below that threshold and payments stop, a full liquidation would be required, but don’t worry, we’ll send friendly reminders before every due date!',
-  },
-  {
-    question: 'How do you have no forced liquidations?',
-    answer:
-      'Every BitMor loan comes with our Liquidation Protection Plan, think of it as insurance that steps in if Bitcoin plunges too far, so you won’t face a forced sell-off. It’s valid for one year and renews annually (the premium can vary with market swings). We usually recommend a 1-year plan for new users and longer terms for more risk-tolerant borrowers.',
-  },
-  {
-    question: 'Can I make extra payments or pay off my loan early?',
-    answer:
-      'Absolutely, feel free to prepay anytime! Just send enough USDC to cover your remaining balance and fees, and we’ll release the full BTC to you immediately!',
-  },
-]
+import { Accordion, AccordionItem, Link } from '@heroui/react'
+import NextLink from 'next/link'
+import { IoIosArrowRoundForward } from 'react-icons/io'
+import { Glow } from './Glow'
 
 export const FAQs = () => {
   return (
-    <section className="container py-20 max-lg:py-16" id="faqs">
-      <div className="flex w-full flex-col items-center justify-center gap-6">
-        <div className="flex w-full flex-col items-center justify-center gap-3 text-center">
-          <h2 className="text-primary inline text-2xl font-bold tracking-tight lg:text-[32px]">
+    <section className="container pb-50 max-lg:pb-30" id="faqs">
+      <div className="flex w-full justify-between gap-10 max-lg:flex-col">
+        <div className="relative z-1 flex flex-col gap-4">
+          <Glow className="absolute -top-10 right-full z-0 h-[158px] w-[72px] -translate-x-full rotate-22 blur-[100px]" />
+
+          <h2 className="text-foreground text-5xl leading-[1.15] font-medium max-lg:text-[32px]">
             FAQs
           </h2>
 
-          <p className="text-default-d text-center text-lg text-balance">
-            Everything you need to know about Bitmor’s services.
+          <p className="text-foreground/70 text-base leading-tight font-normal">
+            Everything you need to know, <br className="max-lg:hidden" />
+            No surprises.
           </p>
+
+          <Link
+            as={NextLink}
+            href="/borrow"
+            className="text-foreground group mt-2 w-fit gap-2 leading-tight font-medium"
+          >
+            See More{' '}
+            <IoIosArrowRoundForward
+              size={24}
+              className="transition-transform group-hover:translate-x-2"
+            />
+          </Link>
         </div>
 
-        <div className="mt-6 w-full max-w-5xl">
+        <div className="w-full max-w-[716px] max-lg:w-full max-lg:max-w-full">
           <Accordion
             fullWidth
             showDivider={false}
             variant="splitted"
-            className="gap-0"
+            className="gap-0 max-lg:px-0!"
           >
             {FAQ_ITEMS.map((item, index) => (
               <AccordionItem
@@ -97,7 +46,7 @@ export const FAQs = () => {
                 aria-label={item.question}
                 title={item.question}
                 classNames={{
-                  base: 'mb-3 text-default-900 dark:text-default-800 mb-3',
+                  base: 'mb-3 text-default-900 dark:text-default-800 mb-3 border border-default-100 rounded-xl shadow-[0px_0px_4px_0px_#FFFFFF1F] bg-[linear-gradient(86.84deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] bg-transparent',
                   trigger: 'cursor-pointer',
                   title: 'font-semibold text-foreground',
                   indicator: 'text-default-700',
@@ -113,3 +62,87 @@ export const FAQs = () => {
     </section>
   )
 }
+
+const FAQ_ITEMS = [
+  {
+    question: 'How does Bitmor work?',
+    answer: (
+      <div>
+        <p>Bitmor helps you own Bitcoin in two ways:</p>
+
+        <ul className="list-disc pl-6">
+          <li>
+            With DCA (Dollar-Cost Averaging) you invest automatically over time.
+          </li>
+          <li>
+            With Loans, you can lock in Bitcoin now and pay it off monthly.
+          </li>
+        </ul>
+      </div>
+    ),
+  },
+  {
+    question: `What crypto assets do I need to begin?`,
+    answer:
+      'You only need USDC to use our DCA and Loan product. For DCA, you can start with as little as 1USDC per day.',
+  },
+  {
+    question: 'What is DCA and why use it?',
+    answer:
+      'DCA means investing small amounts regularly, instead of trying to time the market. It helps reduce stress and smooths out price swings.',
+  },
+  {
+    question: 'Can I change or pause my DCA plan?',
+    answer: 'Yes, you can adjust, pause, or cancel anytime with no penalties.',
+  },
+  {
+    question: 'Who is eligible for a Bitmor loan?',
+    answer:
+      'BitMor is open to everyone, no KYC or credit checks, so all you need is an EVM-compatible wallet and enough USDC for the down payment to start stacking sats with us (after all, we began with just a sat and a dream).',
+  },
+  {
+    question: 'What happens if Bitcoin’s price drops while my loan is active?',
+    answer:
+      'Unlike traditional crypto lenders, Bitmor does not force liquidations. You keep your Bitcoin as long as you’re making payments.',
+  },
+  {
+    question: 'Can I make extra payments or pay off early?',
+    answer: 'Yes. You can pay off your loan anytime.',
+  },
+  {
+    question: 'What happens if I miss a Payment?',
+    answer: (
+      <div className="space-y-3">
+        <p>
+          If you miss a payment, we’ll cover it by selling just a small bit of
+          your escrowed Bitcoin,.but only if the current BTC price is above your
+          personal safety price.
+        </p>
+        <p>
+          Your safety price starts at 70% of your purchase price and goes lower
+          as you pay down the loan, giving you more protection over time.
+        </p>
+        <p>
+          If Bitcoin ever drops below that level and payments stop, a full
+          sell-off may be needed — but don’t worry, we’ll always remind you
+          before any due date.
+        </p>
+      </div>
+    ),
+  },
+  {
+    question: 'Will my interest rate ever increase?',
+    answer: (
+      <div className="space-y-3">
+        <p>
+          Your APR is always capped at 11%, but if market rates drop, you’ll
+          automatically pay less for that month.
+        </p>
+        <p>
+          Make on-time payments (or refer a friend!) and we’ll lower your rate
+          even further as a reward.
+        </p>
+      </div>
+    ),
+  },
+]

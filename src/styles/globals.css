@@ -33,3 +33,137 @@ button,
 [role='button'] {
   cursor: pointer;
 }
+
+@utility container {
+  @apply mx-auto max-w-7xl px-6 sm:px-6 lg:px-10;
+}
+
+@utility animate-underline {
+  /* --underline-width-end: 0rem; */
+  position: relative;
+  text-decoration: none;
+
+  &:hover::before,
+  &:focus-visible::before {
+    transform: scaleX(1);
+    transform-origin: top left;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    display: block;
+    /* width: calc(100% - var(--underline-width-end)); */
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: top right;
+    transition: transform 250ms ease-in-out;
+  }
+}
+
+.group-animate-underline {
+  position: relative;
+  text-decoration: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: top right;
+    transition: transform 250ms ease-in-out;
+  }
+}
+
+.group:hover .group-animate-underline::before,
+.group:focus-visible .group-animate-underline::before {
+  transform: scaleX(1);
+  transform-origin: top left;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+svg#bitmor-footer path#bitmor-b,
+svg#bitmor-footer path#bitmor-i,
+svg#bitmor-footer path#bitmor-t,
+svg#bitmor-footer path#bitmor-m,
+svg#bitmor-footer path#bitmor-o,
+svg#bitmor-footer path#bitmor-r {
+  fill: transparent;
+  stroke: hsl(var(--heroui-default-200));
+  transition:
+    fill 0.4s ease-in-out,
+    stroke 0.4s ease-in-out;
+}
+
+svg#bitmor-footer path#bitmor-b:hover,
+svg#bitmor-footer path#bitmor-i:hover,
+svg#bitmor-footer path#bitmor-t:hover {
+  fill: hsl(var(--heroui-primary));
+  stroke: hsl(var(--heroui-primary));
+}
+
+.dark svg#bitmor-footer path#bitmor-m:hover,
+.dark svg#bitmor-footer path#bitmor-o:hover,
+.dark svg#bitmor-footer path#bitmor-r:hover {
+  fill: hsl(var(--heroui-foreground));
+  stroke: hsl(var(--heroui-foreground));
+}
+
+svg#bitmor-footer path#bitmor-m:hover,
+svg#bitmor-footer path#bitmor-o:hover,
+svg#bitmor-footer path#bitmor-r:hover {
+  fill: hsl(var(--heroui-secondary));
+  stroke: hsl(var(--heroui-secondary));
+}
+
+/* Bitcoin falling animation */
+@keyframes bitcoin-fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(150px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.bitcoin-falling {
+  animation: bitcoin-fall 6s linear infinite;
+}
+.bitcoin-falling.one {
+  animation-delay: 0s;
+  left: 52%;
+}
+.bitcoin-falling.two {
+  animation-delay: 1.5s;
+  left: 48%;
+}
+.bitcoin-falling.three {
+  animation-delay: 3s;
+  left: 50%;
+}
+.bitcoin-falling.four {
+  animation-delay: 4.5s;
+  left: 56%;
+}

@@ -43,7 +43,12 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html suppressHydrationWarning lang="en" className="scroll-smooth">
+    <html
+      suppressHydrationWarning
+      lang="en"
+      className="scroll-smooth"
+      // className="scroll-pt-30 scroll-smooth max-lg:scroll-pt-20"
+    >
       <head />
       <body
         className={cn(
@@ -55,7 +60,7 @@ export default async function RootLayout({
         <Providers>
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
-            {children}
+            <div className="w-full overflow-x-hidden">{children}</div>
           </div>
         </Providers>
       </body>

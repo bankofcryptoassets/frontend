@@ -6,26 +6,6 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: { sans: ['var(--font-sans)'], mono: ['var(--font-mono)'] },
-      container: {
-        center: true,
-        padding: {
-          DEFAULT: '1.5rem',
-          sm: '1.5rem',
-          md: '1.5rem',
-          lg: '2.5rem',
-          xl: '2.5rem',
-          '2xl': '2.5rem',
-        },
-      },
-      // animation: {
-      //   'bounce-slow': 'bounce-slow 15s ease infinite',
-      // },
-      // keyframes: {
-      //   'bounce-slow': {
-      //     '0%, 100%': { transform: 'none' },
-      //     '50%': { transform: 'translateY(-10%)' },
-      //   },
-      // },
     },
   },
   darkMode: 'class',

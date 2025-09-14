@@ -1,5 +1,6 @@
 'use client'
 import { ConnectTelegramButton } from '@/components/ConnectTelegramButton'
+import { Logo } from '@/components/Navbar'
 
 export default function ConnectTelegram() {
   return (
@@ -8,12 +9,7 @@ export default function ConnectTelegram() {
       id="connect-telegram"
     >
       <div className="select-none">
-        <span className="text-primary inline text-2xl leading-9 font-bold tracking-tight">
-          Bit
-        </span>
-        <span className="text-secondary dark:text-foreground inline text-2xl leading-9 font-bold tracking-tight">
-          mor
-        </span>
+        <Logo />
       </div>
 
       <p>

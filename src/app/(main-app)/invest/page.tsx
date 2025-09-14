@@ -96,7 +96,7 @@ export default function InvestPage() {
 
   return (
     <div
-      className="container mt-10 grid h-full min-h-[calc(100vh-7rem)] w-full grid-cols-[280px_1fr] gap-5 pb-[60px] max-lg:grid-cols-1"
+      className="container mt-10 grid h-full min-h-[calc(100vh-8.5rem)] w-full grid-cols-[280px_1fr] gap-5 pb-[60px] max-lg:grid-cols-1"
       id="invest-page"
     >
       <StyledModal
@@ -214,7 +214,7 @@ export default function InvestPage() {
         </div>
 
         <div className="mb-7! flex flex-wrap gap-[60px] px-2 max-sm:gap-6 max-sm:px-0">
-          <div className="group border-default-300/50 bg-default-200/40 hover:border-default-300 hover:bg-default-200 w-[360px] rounded-xl border px-5 pt-[18px] pb-7 transition max-sm:w-full">
+          <div className="group border-default-300/50 bg-default-200/40 hover:border-default-300 hover:bg-default-200 w-[360px] rounded-xl border px-5 pt-[18px] pb-7 transition-colors max-sm:w-full">
             <div className="border-default-200 text-default-d group-hover:border-default-300 mb-7 border-b pb-3.5 pl-1 text-base font-medium transition-[border-color]">
               Be a Lender on Bitmor
             </div>
@@ -237,7 +237,7 @@ export default function InvestPage() {
             </Button>
           </div>
 
-          <div className="group border-default-300/50 bg-default-200/40 hover:border-default-300 hover:bg-default-200 w-[360px] rounded-xl border px-5 pt-[18px] pb-7 transition max-sm:w-full">
+          <div className="group border-default-300/50 bg-default-200/40 hover:border-default-300 hover:bg-default-200 w-[360px] rounded-xl border px-5 pt-[18px] pb-7 transition-colors max-sm:w-full">
             <div className="border-default-200 text-default-d group-hover:border-default-300 mb-7 flex items-center justify-between gap-2 border-b pb-3.5 pl-1 text-base font-medium transition-[border-color]">
               <span>Earn from Aave</span>
 

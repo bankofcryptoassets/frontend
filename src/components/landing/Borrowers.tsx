@@ -2,7 +2,7 @@
 import { Button } from '@heroui/react'
 import { LuCircleCheckBig } from 'react-icons/lu'
 import Link from 'next/link'
-import { BorrowersCalculator } from './BorrowersCalculator'
+import { Calculators } from './Calculators'
 
 const BENEFITS = [
   'Only 20% down, own any amount of Bitcoin',
@@ -63,7 +63,7 @@ export const Borrowers = () => {
           </Button>
         </div>
 
-        <BorrowersCalculator />
+        <Calculators />
       </div>
     </section>
   )

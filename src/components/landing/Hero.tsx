@@ -1,90 +1,68 @@
 'use client'
-import { JoinWishlist } from './JoinWishlist'
+import { DCA_MINI_APP_URL } from '@/utils/constants'
+import { Glow } from './Glow'
+import { HeroBitcoinAnimation } from './HeroBitcoinAnimation'
+import { Button, Link } from '@heroui/react'
+import NextLink from 'next/link'
+import { IoIosArrowRoundForward } from 'react-icons/io'
 
 export const Hero = () => {
   return (
-    <section className="relative z-0" id="hero">
-      <div
-        className="border-default-200 pointer-events-none absolute inset-2 -z-1 overflow-hidden rounded-xl border-2 select-none"
-        style={{
-          background: `
-              url("data:image/svg+xml,%3Csvg viewBox='0 0 1799 1799' opacity='0.4' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
-              linear-gradient(135deg, rgba(247, 147, 26, 0.8), rgba(247, 147, 26, 0.1) 70%),
-              radial-gradient(circle at 20% 30%, rgba(0, 82, 255, 0.4) 0%, rgba(0, 82, 255, 0) 50%),
-              radial-gradient(circle at 80% 20%, rgba(11, 83, 191, 0.4) 0%, rgba(11, 83, 191, 0) 60%),
-              linear-gradient(to right bottom, rgba(247, 147, 26, 0.2), rgba(0, 82, 255, 0.2), rgba(11, 83, 191, 0.2))
-            `,
-          backgroundBlendMode: 'overlay, normal, screen, multiply, normal',
-        }}
-      ></div>
-
-      <div className="container pt-16">
-        <div className="flex flex-col items-center justify-center gap-4 pt-8 md:pt-10">
-          <div className="inline-block max-w-4xl justify-center text-center">
-            <h1 className="max-lg:text-balance">
-              <span className="inline text-5xl font-bold tracking-tight lg:text-6xl">
-                Own Bitcoin Today,{' '}
-              </span>
-              <br />
-              <span className="text-primary inline text-5xl font-bold tracking-tight lg:text-6xl">
-                Pay Monthly
-              </span>
-            </h1>
-
-            <p className="text-default-900 my-2 mt-10 block w-full! max-w-6xl text-lg text-balance md:w-1/2 lg:text-xl">
-              Start with just 20%. Earn yield while you repay.
-            </p>
+    <section
+      className="container pt-36 pb-60 max-lg:pt-14 max-lg:pb-30"
+      id="hero"
+    >
+      <div className="flex items-center justify-between gap-20 max-lg:flex-col max-lg:gap-30">
+        <div className="flex w-full max-w-lg flex-1 flex-col gap-4">
+          <div className="text-foreground text-[56px] leading-[1.15] font-bold max-lg:text-center max-lg:text-4xl">
+            Own Bitcoin
+            <br />
+            Without Buying It
+            <br />
+            All at Once
           </div>
 
-          <div className="mt-8 mb-20 w-full max-w-[720px]">
-            <JoinWishlist isInHero />
-            {/* <Input
-              placeholder="Early access = better terms"
-              className="h-[60px] w-full max-w-[720px] rounded-xl"
-              classNames={{
-                mainWrapper: 'w-full',
-                inputWrapper:
-                  'h-[60px] rounded-xl w-full pl-5 pr-2 bg-[#F5F5F5]! ',
-                innerWrapper: 'w-full',
-                input: 'text-black! placeholder:text-[#666666]',
-              }}
-              size="lg"
-              endContent={
-                <div className="flex items-center gap-4">
-                  <Button
-                    className="size-11 rounded-lg bg-white text-sm font-bold shadow-[1px_2px_8px_0px_#0000000A] hover:bg-white/90"
-                    size="sm"
-                    isIconOnly
-                  >
-                    <Image
-                      src="/icons/google.png"
-                      alt="google"
-                      width={24}
-                      height={24}
-                      className="size-6 min-w-6"
-                    />
-                  </Button>
-
-                  <Divider
-                    orientation="vertical"
-                    className="h-8 w-px bg-default-d"
-                  />
-
-                  <Button
-                    className="h-11 w-[160px] rounded-lg text-sm font-bold"
-                    color="primary"
-                    variant="shadow"
-                  >
-                    Join Waitlist
-                  </Button>
-                </div>
-              }
-            /> */}
+          <div className="text-foreground/70 mb-6 text-base leading-tight font-normal max-lg:mb-4 max-lg:text-center">
+            Build towards your Bitcoin Ownership goals over time, with plans
+            designed to protect your peace of mind.
           </div>
 
-          <p className="text-default-d mb-6 text-center text-sm text-balance">
-            Bitmor Lets You Stack BTC. No Checks. No KYC.
-          </p>
+          <div className="flex flex-wrap items-center gap-2 max-lg:flex-col max-lg:justify-center">
+            <Button
+              className="h-13 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] px-8 py-3.5 text-base font-bold"
+              color="primary"
+              variant="shadow"
+              as={NextLink}
+              href={DCA_MINI_APP_URL}
+              target="_blank"
+            >
+              Buy Bitcoin Everyday
+            </Button>
+
+            <Link
+              className="group flex h-13 items-center gap-1 px-6 py-3.5 text-base font-medium"
+              color="primary"
+              href="/borrow"
+              as={NextLink}
+            >
+              Learn About Bitcoin Loan
+              <IoIosArrowRoundForward
+                size={20}
+                className="transition-transform group-hover:translate-x-2"
+              />
+            </Link>
+          </div>
+        </div>
+
+        <div className="relative flex w-full max-w-lg flex-1 justify-end overflow-visible">
+          <div className="z-0">
+            <Glow className="absolute right-0 bottom-1/2 rotate-10" />
+            <Glow className="absolute top-1/2 left-1/2 -translate-x-1/2 rotate-10" />
+          </div>
+
+          <div className="z-1 grid w-full place-items-center">
+            <HeroBitcoinAnimation />
+          </div>
         </div>
       </div>
     </section>
