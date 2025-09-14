@@ -34,4 +34,5 @@ export const OWNERSHIP_CALC_INTEREST_RATE = [{ value: '10', label: '10%' }]
 
 export const DEFAULT_BITCOIN_PRICE = 100_000
 
-export const DCA_MINI_APP_URL = 'https://dca.bitmor.xyz'
+export const DCA_MINI_APP_URL =
+  'https://farcaster.xyz/miniapps/HVDZUx8hVTgA/bitmor'

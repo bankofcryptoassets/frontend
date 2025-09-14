@@ -20,7 +20,13 @@ export const AboutBitmore = () => {
     >
       <Glow className="absolute top-0 left-full h-[127px] w-[58px] rotate-22 blur-[85px]" />
 
-      <div className="border-default-100 relative z-1 w-full rounded-xl border bg-[linear-gradient(86.84deg,_rgba(254,_254,_254,_0.08)_17.87%,_rgba(255,_255,_255,_0.04)_52.56%,_rgba(255,_255,_255,_0.06)_77.29%)] px-20 pt-16 max-lg:px-4 max-lg:pt-4">
+      <div className="border-default-100 relative z-1 w-full overflow-hidden rounded-xl border bg-[linear-gradient(86.84deg,_rgba(254,_254,_254,_0.08)_17.87%,_rgba(255,_255,_255,_0.04)_52.56%,_rgba(255,_255,_255,_0.06)_77.29%)] px-20 pt-16 max-lg:px-4 max-lg:pt-4">
+        {selected === 'loans' && (
+          <div className="bg-primary absolute top-4 -right-15 rotate-20 py-1.5 pr-20 pl-40 text-lg font-bold text-[#4C2D07] max-md:hidden">
+            COMING SOON !!!
+          </div>
+        )}
+
         <Tabs
           selectedKey={selected}
           onSelectionChange={(key) => setSelected(key as string)}
@@ -42,9 +48,9 @@ export const AboutBitmore = () => {
                 </h1>
 
                 <p className="text-foreground/70 mb-4 max-w-sm text-base leading-tight font-normal max-lg:mx-auto max-lg:text-center">
-                  Bitmor loans accelerates your Bitcoin ownership goals, while
-                  not requiring high upfront capital. Lock in today&apos;s price
-                  and pay in monthly installments.
+                  With Bitmor DCA build Bitcoin ownership the simple way. You
+                  set a goal, choose how often to invest, and let automation do
+                  the rest.
                 </p>
 
                 <Link
@@ -167,28 +173,28 @@ const ABOUT_DCA = [
     ),
     title: 'Start Small, Stack Big',
     description:
-      'Own Bitcoin from just $1/day. Turn spare change into real wealth.',
+      'Own Bitcoin from just $1/day. Turn spare change into lasting wealth.',
   },
   {
     icon: (
       <InlineSVG src="/icons/candles.svg" className="text-primary size-8" />
     ),
-    title: 'Faster Than Waiting',
+    title: 'Set It and Forget It',
     description:
-      'Stop chasing dips. Time in the market beats timing the market.',
+      'Automated daily or weekly buys. Consistency beats chasing dips.',
   },
   {
     icon: <InlineSVG src="/icons/link.svg" className="text-primary size-8" />,
-    title: 'No Stress, No FOMO',
-    description: `Automated daily or weekly buys. No need to monitor every chart move`,
+    title: 'Peace of Mind Investing',
+    description: `No charts, no FOMO. Just steady, stress-free accumulation.`,
   },
   {
     icon: (
       <InlineSVG src="/icons/btc-pyramid.svg" className="text-primary size-8" />
     ),
-    title: 'Built for YOU',
+    title: 'Secure & Simple',
     description:
-      'No complicated setups. Just a simple, secure way to own Bitcoin your way.',
+      'No complicated setups — a safe, beginner-friendly way to grow Bitcoin your way.',
   },
 ]
 const ABOUT_LOANS = [
@@ -196,7 +202,7 @@ const ABOUT_LOANS = [
     icon: (
       <InlineSVG src="/icons/coin-bag.svg" className="text-primary size-8" />
     ),
-    title: 'Smarter than Saving',
+    title: 'Faster than Saving',
     description: 'Secure your entry today. Own sooner to ride the gains.',
   },
   {
