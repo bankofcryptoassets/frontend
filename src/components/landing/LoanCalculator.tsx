@@ -66,7 +66,7 @@ export const LoanCalculator = ({ btcPrice }: { btcPrice: number }) => {
 
   return (
     <div className="my-4 flex w-full flex-col gap-4">
-      <div className="flex flex-col gap-2.5 rounded-xl border border-[#19191C] bg-[linear-gradient(89.57deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-3.5">
+      <div className="border-default-100 flex flex-col gap-2.5 rounded-xl border bg-[linear-gradient(89.57deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-3.5">
         <label htmlFor="btc" className="text-default-d text-sm font-medium">
           BTC Goal
         </label>
@@ -95,7 +95,7 @@ export const LoanCalculator = ({ btcPrice }: { btcPrice: number }) => {
         />
       </div>
 
-      <div className="flex flex-col gap-2.5 rounded-xl border border-[#19191C] bg-[linear-gradient(89.57deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-3.5">
+      <div className="border-default-100 flex flex-col gap-2.5 rounded-xl border bg-[linear-gradient(89.57deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-3.5">
         <label
           htmlFor="loan-duration"
           className="text-default-d text-sm font-medium"
@@ -120,7 +120,7 @@ export const LoanCalculator = ({ btcPrice }: { btcPrice: number }) => {
         </Tabs>
       </div>
 
-      <div className="flex flex-col gap-2.5 rounded-xl border border-[#19191C] bg-[linear-gradient(89.57deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-3.5">
+      <div className="border-default-100 flex flex-col gap-2.5 rounded-xl border bg-[linear-gradient(89.57deg,_rgba(247,_147,_26,_0.01)_17.87%,_rgba(255,_255,_255,_0.02)_52.56%,_rgba(255,_255,_255,_0.04)_77.29%)] p-3.5">
         <label
           htmlFor="interest-rate"
           className="text-default-d text-sm font-medium"
