@@ -28,11 +28,11 @@ export default function AnalyticsPage() {
   )
   const [loanAPR, setLoanAPR] = useState(10)
   const [selectedPoint, setSelectedPoint] = useState<any>(null)
-  const [liquidationInsuranceCost, setLiquidationInsuranceCost] = useState(0)
-  const [dcaCadence, setDcaCadence] = useState<'daily' | 'weekly' | 'monthly'>(
-    'monthly'
-  )
-  const [btcYield, setBtcYield] = useState(1)
+  // const [liquidationInsuranceCost, setLiquidationInsuranceCost] = useState(0)
+  // const [dcaCadence, setDcaCadence] = useState<'daily' | 'weekly' | 'monthly'>(
+  //   'monthly'
+  // )
+  // const [btcYield, setBtcYield] = useState(1)
   const [dcaWithoutDownPayment, setDcaWithoutDownPayment] = useState(false)
 
   // const { data: borrowStats } = useQuery({
@@ -55,10 +55,10 @@ export default function AnalyticsPage() {
       timePeriod,
       downPayment,
       loanAPR,
-      liquidationInsuranceCost,
       dcaWithoutDownPayment,
-      btcYield,
-      dcaCadence,
+      // liquidationInsuranceCost,
+      // btcYield,
+      // dcaCadence,
     ],
     queryFn: async () => {
       // Fetch the CSV data
@@ -82,10 +82,10 @@ export default function AnalyticsPage() {
         timePeriod,
         downPayment: downPaymentPercentage,
         loanAPR,
-        liquidationInsuranceCost,
         dcaWithoutDownPayment,
-        btcYield,
-        dcaCadence,
+        // liquidationInsuranceCost: 0,
+        // btcYield: 0,
+        // dcaCadence: 'monthly',
       })
 
       return result
@@ -117,13 +117,24 @@ export default function AnalyticsPage() {
     if (!analysisData || !point) return null
 
     const finalLoanAmount = loanAmount || DEFAULT_LOAN_AMOUNT
-    const totalLoanCost = finalLoanAmount + liquidationInsuranceCost
+    // const totalLoanCost = finalLoanAmount + liquidationInsuranceCost
+    const totalLoanCost = finalLoanAmount
     const loanReturns =
       point.loanReturns || point.profitLoan + point.btcLoan * point.price
     const dcaReturns =
       point.dcaReturns || point.profitDca + point.btcDca * point.price
     const loanCostPerBTC = totalLoanCost / point.btcLoan
     const dcaCostPerBTC = point.dollarsIn / point.btcDca
+
+    // Calculate DCAs remaining
+    // Since DCA cadence is monthly, we can calculate based on time period
+    const startDate = new Date(point.date)
+    const endDate = new Date(point.valDate)
+    const totalMonths = timePeriod
+    const elapsedMonths = Math.floor(
+      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30)
+    )
+    const dcasRemaining = Math.max(0, totalMonths - elapsedMonths)
 
     return {
       loanBTC: point.btcLoan,
@@ -132,8 +143,11 @@ export default function AnalyticsPage() {
       dcaReturns,
       loanCostPerBTC,
       dcaCostPerBTC,
+      loanTotalSpent: totalLoanCost,
+      dcaTotalSpent: point.dollarsIn,
+      dcasRemaining,
     }
-  }, [analysisData, point, loanAmount, liquidationInsuranceCost])
+  }, [analysisData, point, loanAmount, timePeriod])
 
   const handleStartDateChange = (date: string) => {
     setSelectedPoint(analysisData?.chartData.find((p) => p.date === date))
@@ -157,12 +171,12 @@ export default function AnalyticsPage() {
             onStartDateChange={handleStartDateChange}
             endDate={point?.valDate}
             // onEndDateChange={setEndDate}
-            liquidationInsuranceCost={liquidationInsuranceCost}
-            onLiquidationInsuranceCostChange={setLiquidationInsuranceCost}
-            dcaCadence={dcaCadence}
-            onDcaCadenceChange={setDcaCadence}
-            btcYield={btcYield}
-            onBtcYieldChange={setBtcYield}
+            // liquidationInsuranceCost={liquidationInsuranceCost}
+            // onLiquidationInsuranceCostChange={setLiquidationInsuranceCost}
+            // dcaCadence={dcaCadence}
+            // onDcaCadenceChange={setDcaCadence}
+            // btcYield={btcYield}
+            // onBtcYieldChange={setBtcYield}
             dcaWithoutDownPayment={dcaWithoutDownPayment}
             onDcaWithoutDownPaymentChange={setDcaWithoutDownPayment}
             isFetching={isFetching}
@@ -177,6 +191,7 @@ export default function AnalyticsPage() {
               dcaAmount={
                 analysisData?.averageMetrics?.avgMonthlyPaymentDCA || 0
               }
+              dcasRemaining={statsData?.dcasRemaining}
             />
           )}
         </div>
@@ -205,7 +220,15 @@ export default function AnalyticsPage() {
                     <Tab key="usd" title="USD" />
                   </Tabs>
 
-                  <Tooltip content="lorem ipsum dolor sit amet">
+                  <Tooltip
+                    content={
+                      <>
+                        BTC: Compare BTC amounts accumulated.
+                        <br />
+                        USD: Compare Cost per BTC (lower is better).
+                      </>
+                    }
+                  >
                     <span className="absolute top-1/2 -right-8 -translate-y-1/2">
                       <LuInfo
                         size={20}
@@ -289,6 +312,7 @@ export default function AnalyticsPage() {
                   selectedPoint={selectedPoint}
                   onPointClick={setSelectedPoint}
                   winPercentage={summary?.winPercentage}
+                  dcasRemaining={statsData?.dcasRemaining}
                 />
               ) : null}
             </CardBody>
@@ -303,6 +327,8 @@ export default function AnalyticsPage() {
               dcaReturns={statsData.dcaReturns}
               loanCostPerBTC={statsData.loanCostPerBTC}
               dcaCostPerBTC={statsData.dcaCostPerBTC}
+              loanTotalSpent={statsData.loanTotalSpent}
+              dcaTotalSpent={statsData.dcaTotalSpent}
             />
           )}
         </div>

@@ -6,10 +6,10 @@ import {
   Slider,
   Checkbox,
   NumberInput,
-  Radio,
-  RadioGroup,
-  RadioProps,
-  cn,
+  // Radio,
+  // RadioGroup,
+  // RadioProps,
+  // cn,
   DatePicker,
   Tooltip,
   Spinner,
@@ -33,12 +33,12 @@ interface Props {
   onStartDateChange?: (value: string) => void
   endDate?: string
   // onEndDateChange: (value: string) => void
-  liquidationInsuranceCost: number
-  onLiquidationInsuranceCostChange: (value: number) => void
-  dcaCadence: 'daily' | 'weekly' | 'monthly'
-  onDcaCadenceChange: (value: 'daily' | 'weekly' | 'monthly') => void
-  btcYield: number
-  onBtcYieldChange: (value: number) => void
+  // liquidationInsuranceCost: number
+  // onLiquidationInsuranceCostChange: (value: number) => void
+  // dcaCadence: 'daily' | 'weekly' | 'monthly'
+  // onDcaCadenceChange: (value: 'daily' | 'weekly' | 'monthly') => void
+  // btcYield: number
+  // onBtcYieldChange: (value: number) => void
   dcaWithoutDownPayment: boolean
   onDcaWithoutDownPaymentChange: (value: boolean) => void
   isFetching?: boolean
@@ -57,12 +57,12 @@ export function LoanVsDCASidebar({
   onStartDateChange,
   endDate,
   // onEndDateChange,
-  liquidationInsuranceCost,
-  onLiquidationInsuranceCostChange,
-  dcaCadence,
-  onDcaCadenceChange,
-  btcYield,
-  onBtcYieldChange,
+  // liquidationInsuranceCost,
+  // onLiquidationInsuranceCostChange,
+  // dcaCadence,
+  // onDcaCadenceChange,
+  // btcYield,
+  // onBtcYieldChange,
   dcaWithoutDownPayment,
   onDcaWithoutDownPaymentChange,
   isFetching,
@@ -229,7 +229,7 @@ export function LoanVsDCASidebar({
             }}
           />
 
-          <NumberInput
+          {/* <NumberInput
             hideStepper
             isWheelDisabled
             label="Liquidation Insurance Cost"
@@ -291,7 +291,7 @@ export function LoanVsDCASidebar({
                   'bg-default-200 data-[hover=true]:bg-default-300/70 group-data-[focus=true]:bg-default-200 text-default-700 border border-default-300/50',
               }}
             />
-          </div>
+          </div> */}
 
           <div className="flex items-center gap-2">
             <Checkbox
@@ -316,21 +316,21 @@ export function LoanVsDCASidebar({
   )
 }
 
-const CustomRadio = (props: RadioProps) => {
-  const { children, className, ...otherProps } = props
+// const CustomRadio = (props: RadioProps) => {
+//   const { children, className, ...otherProps } = props
 
-  return (
-    <Radio
-      {...otherProps}
-      className={cn('group', className)}
-      classNames={{
-        base: 'm-0 rounded-lg bg-default-200 transition-colors hover:bg-primary/5 data-[selected=true]:bg-primary/5 border border-default-300/50 data-[selected=true]:border-primary/50',
-        wrapper: 'hidden',
-        labelWrapper:
-          'ml-0 ms-0 px-3 [&>span]:group-data-[selected=true]:text-primary [&>span]:text-default-a [&>span]:font-medium [&>span]:group-data-[selected=true]:font-semibold',
-      }}
-    >
-      {children}
-    </Radio>
-  )
-}
+//   return (
+//     <Radio
+//       {...otherProps}
+//       className={cn('group', className)}
+//       classNames={{
+//         base: 'm-0 rounded-lg bg-default-200 transition-colors hover:bg-primary/5 data-[selected=true]:bg-primary/5 border border-default-300/50 data-[selected=true]:border-primary/50',
+//         wrapper: 'hidden',
+//         labelWrapper:
+//           'ml-0 ms-0 px-3 [&>span]:group-data-[selected=true]:text-primary [&>span]:text-default-a [&>span]:font-medium [&>span]:group-data-[selected=true]:font-semibold',
+//       }}
+//     >
+//       {children}
+//     </Radio>
+//   )
+// }

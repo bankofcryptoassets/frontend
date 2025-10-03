@@ -192,7 +192,7 @@ function simulateStart(
   liquidationInsuranceCost: number = 0,
   dcaWithoutDownPayment: boolean = false,
   btcYield: number = 0,
-  dcaCadence: 'daily' | 'weekly' | 'monthly' = 'daily'
+  dcaCadence: 'daily' | 'weekly' | 'monthly' = 'monthly'
 ): SimulationResult {
   const cashUpfront = loanAmount * downPayment // Dynamic down payment
   const loanPrincipal = loanAmount * (1 - downPayment) // Dynamic loan principal
@@ -504,8 +504,20 @@ export async function fullAnalysisBrowserEnhanced(
       options.dcaCadence
     )
 
-    const usdWinner =
-      simulation.profitLoan > simulation.profitDca ? 'loan' : 'dca'
+    // Calculate Cost per BTC for both strategies
+    const finalLoanAmount = options.loanAmount || 100_000
+    const liquidationCost = options.liquidationInsuranceCost || 0
+    const loanCostPerBTC =
+      simulation.btcLoan > 0
+        ? (finalLoanAmount + liquidationCost) / simulation.btcLoan
+        : Infinity
+    const dcaCostPerBTC =
+      simulation.btcDca > 0
+        ? simulation.dollarsIn / simulation.btcDca
+        : Infinity
+
+    // Lower cost per BTC is better (wins)
+    const usdWinner = loanCostPerBTC < dcaCostPerBTC ? 'loan' : 'dca'
     const btcWinner = simulation.btcLoan > simulation.btcDca ? 'loan' : 'dca'
 
     results.push({

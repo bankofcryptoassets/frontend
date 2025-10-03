@@ -10,6 +10,7 @@ import {
   ComposedChart,
   Legend,
   Line,
+  ReferenceArea,
   Scatter,
   XAxis,
   YAxis,
@@ -35,6 +36,7 @@ interface Props {
   selectedPoint?: ChartDataPoint
   onPointClick?: (point: ChartDataPoint) => void
   winPercentage?: string
+  dcasRemaining?: number
 }
 
 const CustomDot = (props: any) => {
@@ -62,8 +64,10 @@ const CustomDot = (props: any) => {
 export function LoanVsDCAChart({
   data,
   mode,
+  selectedPoint,
   onPointClick,
   winPercentage,
+  dcasRemaining,
 }: Props) {
   const [showMA, setShowMA] = useState(false)
 
@@ -125,6 +129,16 @@ export function LoanVsDCAChart({
             strokeDasharray="3 3"
             stroke="hsl(var(--heroui-default-200))"
           />
+
+          {/* Show grayish background from selected date onwards when DCAs are remaining */}
+          {selectedPoint && dcasRemaining && dcasRemaining > 0 && (
+            <ReferenceArea
+              x1={selectedPoint.date}
+              fill="hsl(var(--heroui-default-400))"
+              fillOpacity={0.5}
+              stroke="none"
+            />
+          )}
 
           <XAxis
             dataKey="date"
@@ -221,6 +235,12 @@ export function LoanVsDCAChart({
                   <div className="bg-danger size-2 rounded-full" />
                   <span className="text-default-a">DCA Strategy Wins</span>
                 </div>
+                {selectedPoint && !!dcasRemaining && (
+                  <div className="flex items-center gap-2.5">
+                    <div className="bg-default-400 size-3" />
+                    <span className="text-default-a">DCA Incomplete</span>
+                  </div>
+                )}
                 {showMA && (
                   <>
                     <div className="flex items-center gap-2.5">

@@ -5,12 +5,17 @@ import { Card, CardBody } from '@heroui/react'
 interface EMIStatsProps {
   emiAmount: number
   dcaAmount: number
+  dcasRemaining?: number
 }
 
-export function EMIStats({ emiAmount, dcaAmount }: EMIStatsProps) {
+export function EMIStats({
+  emiAmount,
+  dcaAmount,
+  dcasRemaining,
+}: EMIStatsProps) {
   return (
     <Card className="border-default-200 border">
-      <CardBody className="flex flex-row flex-wrap items-center justify-between gap-6 p-6">
+      <CardBody className="flex flex-row flex-wrap items-center justify-between gap-4 p-6">
         <div>
           <p className="text-default-d mb-1 text-sm font-medium">
             EMI (Monthly)
@@ -28,6 +33,20 @@ export function EMIStats({ emiAmount, dcaAmount }: EMIStatsProps) {
             <span className="text-lg">USDC</span>
           </p>
         </div>
+
+        {!!dcasRemaining && (
+          <div>
+            <p className="text-default-d mb-1 text-sm font-medium">
+              DCAs Remaining
+            </p>
+            <p className="text-secondary text-[28px] font-bold">
+              {dcasRemaining.toLocaleString(undefined, {
+                maximumFractionDigits: 0,
+              })}{' '}
+              <span className="text-lg">months</span>
+            </p>
+          </div>
+        )}
       </CardBody>
     </Card>
   )
@@ -40,6 +59,8 @@ interface StrategyStatsProps {
   dcaReturns: number
   loanCostPerBTC: number
   dcaCostPerBTC: number
+  loanTotalSpent: number
+  dcaTotalSpent: number
 }
 
 export function StrategyStats({
@@ -49,6 +70,8 @@ export function StrategyStats({
   dcaReturns,
   loanCostPerBTC,
   dcaCostPerBTC,
+  loanTotalSpent,
+  dcaTotalSpent,
 }: StrategyStatsProps) {
   return (
     <Card className="border-default-200 border max-lg:overflow-x-auto">
@@ -67,6 +90,9 @@ export function StrategyStats({
               </th>
               <th className="text-default-a pb-3.5 pl-5 font-medium">
                 Cost per BTC
+              </th>
+              <th className="text-default-a pb-3.5 pl-5 font-medium">
+                Total Dollar Spent
               </th>
             </tr>
           </thead>
@@ -95,6 +121,12 @@ export function StrategyStats({
                 })}{' '}
                 USDC
               </td>
+              <td className="text-primary pt-4 pl-5 text-lg font-bold">
+                {loanTotalSpent.toLocaleString(undefined, {
+                  maximumFractionDigits: 0,
+                })}{' '}
+                USDC
+              </td>
             </tr>
 
             <tr className="divide-default-200 divide-x">
@@ -116,6 +148,12 @@ export function StrategyStats({
               </td>
               <td className="text-secondary pt-3.5 pb-2 pl-5 text-lg font-bold">
                 {dcaCostPerBTC.toLocaleString(undefined, {
+                  maximumFractionDigits: 0,
+                })}{' '}
+                USDC
+              </td>
+              <td className="text-secondary pt-3.5 pb-2 pl-5 text-lg font-bold">
+                {dcaTotalSpent.toLocaleString(undefined, {
                   maximumFractionDigits: 0,
                 })}{' '}
                 USDC
