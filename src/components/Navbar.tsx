@@ -28,7 +28,7 @@ import { useState } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Image from 'next/image'
 import { useAuth } from '@/auth/useAuth'
-import { CONTRACT_ADDRESSES } from '@/utils/constants'
+import { CONTRACT_ADDRESSES, DCA_MINI_APP_URL } from '@/utils/constants'
 import { useAccount, useBalance } from 'wagmi'
 import numeral from 'numeral'
 import { GetBalanceData } from 'wagmi/query'
@@ -193,7 +193,8 @@ export const Navbar = () => {
           <NavbarItem className="hidden gap-2 sm:flex">
             <Button
               as={NextLink}
-              href="/borrow"
+              href={DCA_MINI_APP_URL}
+              target="_blank"
               color="primary"
               variant="shadow"
               className="h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
@@ -290,7 +291,8 @@ export const Navbar = () => {
           ) : (
             <Button
               as={NextLink}
-              href="/borrow"
+              href={DCA_MINI_APP_URL}
+              target="_blank"
               color="primary"
               variant="shadow"
               className="mt-4 h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
