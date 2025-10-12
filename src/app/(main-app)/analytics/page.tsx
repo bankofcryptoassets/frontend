@@ -2,6 +2,7 @@
 import { fullAnalysisBrowserEnhanced } from '@/scripts/LoanVsDCA'
 import {
   Alert,
+  Button,
   Card,
   CardBody,
   Spinner,
@@ -15,8 +16,9 @@ import { LoanVsDCAChart } from '@/components/analytics/LoanVsDCAChart'
 import { LoanVsDCASidebar } from '@/components/analytics/LoanVsDCASidebar'
 import { EMIStats, StrategyStats } from '@/components/analytics/LoanVsDCAStats'
 import { LuInfo } from 'react-icons/lu'
-import { DEFAULT_LOAN_AMOUNT } from '@/utils/constants'
+import { DCA_MINI_APP_URL, DEFAULT_LOAN_AMOUNT } from '@/utils/constants'
 import { JoinWishlist } from '@/components/landing/JoinWishlist'
+import NextLink from 'next/link'
 
 export default function AnalyticsPage() {
   const [mode, setMode] = useState<'btc' | 'usd'>('btc')
@@ -161,7 +163,18 @@ export default function AnalyticsPage() {
         <div className="flex h-full w-full flex-col gap-3 lg:w-[360px]">
           <Card className="border-default-200 border max-lg:overflow-x-auto">
             <CardBody className="flex flex-col items-center justify-center gap-4 px-5 py-4 text-center text-balance">
-              <div>Join the waitlist to get notified when we launch.</div>
+              <Button
+                className="h-13 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] px-8 py-3.5 text-base font-bold"
+                color="primary"
+                variant="shadow"
+                as={NextLink}
+                href={DCA_MINI_APP_URL}
+                target="_blank"
+              >
+                Buy Bitcoin Everyday
+              </Button>
+              <p className="text-default-a text-sm font-medium">OR</p>
+              <p>Join the waitlist to get notified when we launch.</p>
               <JoinWishlist inSmallContainer />
             </CardBody>
           </Card>
