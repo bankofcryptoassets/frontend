@@ -2,9 +2,8 @@
 import { DCA_MINI_APP_URL } from '@/utils/constants'
 import { Glow } from './Glow'
 import { HeroBitcoinAnimation } from './HeroBitcoinAnimation'
-import { Button, Link } from '@heroui/react'
+import { Button } from '@heroui/react'
 import NextLink from 'next/link'
-import { IoIosArrowRoundForward } from 'react-icons/io'
 
 export const Hero = () => {
   return (
@@ -39,7 +38,7 @@ export const Hero = () => {
               Buy Bitcoin Everyday
             </Button>
 
-            <Link
+            {/* <Link
               className="group flex h-13 items-center gap-1 px-6 py-3.5 text-base font-medium"
               color="primary"
               href="/borrow"
@@ -50,7 +49,7 @@ export const Hero = () => {
                 size={20}
                 className="transition-transform group-hover:translate-x-2"
               />
-            </Link>
+            </Link> */}
           </div>
         </div>
 

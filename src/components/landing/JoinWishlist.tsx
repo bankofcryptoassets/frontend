@@ -1,3 +1,4 @@
+'use client'
 import { Button, cn, Input } from '@heroui/react'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -23,9 +24,11 @@ const joinWaitlist = async (email: string): Promise<WaitlistResponse> => {
 export const JoinWishlist = ({
   isInHero = false,
   isLenderThemed = false,
+  inSmallContainer = false,
 }: {
   isInHero?: boolean
   isLenderThemed?: boolean
+  inSmallContainer?: boolean
 }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -92,15 +95,22 @@ export const JoinWishlist = ({
     <div className="flex w-full max-w-[520px] items-center gap-2">
       <Input
         placeholder="Enter your email for launch alerts + bonus sats"
-        className="w-full rounded-xl max-sm:h-full"
+        className={cn(
+          'w-full rounded-xl max-sm:h-full',
+          inSmallContainer && 'h-full'
+        )}
         classNames={{
           mainWrapper: 'w-full',
           inputWrapper: cn(
             'rounded-xl w-full pl-5 pr-2 bg-background/75! max-sm:p-3 border border-default-100 shadow-[0px_0px_4px_0px] shadow-default-800/10 bg-foreground/3 max-sm:h-full max-sm:pb-0',
-            isInHero && 'bg-foreground/5'
+            isInHero && 'bg-foreground/5',
+            inSmallContainer && 'p-3 h-full pb-0'
           ),
           input: 'text-sm',
-          innerWrapper: 'w-full max-sm:flex-col',
+          innerWrapper: cn(
+            'w-full max-sm:flex-col',
+            inSmallContainer && 'flex-col'
+          ),
         }}
         size="lg"
         value={email}

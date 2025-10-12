@@ -23,7 +23,7 @@ import {
   Accordion,
   AccordionItem,
 } from '@heroui/react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Image from 'next/image'
@@ -52,6 +52,7 @@ export const Logo = () => {
 }
 
 export const Navbar = () => {
+  const router = useRouter()
   const pathname = usePathname()
   const isMainApp = pathname !== '/'
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -129,6 +130,7 @@ export const Navbar = () => {
                       href={child.href}
                       onClick={() => {
                         child?.handleClick?.(setSelected)
+                        router.push(child.href)
                       }}
                       target={
                         child.href.startsWith('http') ? '_blank' : undefined

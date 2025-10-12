@@ -16,6 +16,7 @@ import { LoanVsDCASidebar } from '@/components/analytics/LoanVsDCASidebar'
 import { EMIStats, StrategyStats } from '@/components/analytics/LoanVsDCAStats'
 import { LuInfo } from 'react-icons/lu'
 import { DEFAULT_LOAN_AMOUNT } from '@/utils/constants'
+import { JoinWishlist } from '@/components/landing/JoinWishlist'
 
 export default function AnalyticsPage() {
   const [mode, setMode] = useState<'btc' | 'usd'>('btc')
@@ -62,7 +63,7 @@ export default function AnalyticsPage() {
     ],
     queryFn: async () => {
       // Fetch the CSV data
-      const response = await fetch('/data/BTCUSDT_1h.csv', {
+      const response = await fetch('/data/BTCUSDT_1h-sdfqwe.csv', {
         cache: 'force-cache',
         next: { revalidate: 0 },
       })
@@ -158,6 +159,13 @@ export default function AnalyticsPage() {
       <div className="container mx-auto flex h-full flex-col gap-5 px-4 py-6 lg:flex-row">
         {/* Sidebar */}
         <div className="flex h-full w-full flex-col gap-3 lg:w-[360px]">
+          <Card className="border-default-200 border max-lg:overflow-x-auto">
+            <CardBody className="flex flex-col items-center justify-center gap-4 px-5 py-4 text-center text-balance">
+              <div>Join the waitlist to get notified when we launch.</div>
+              <JoinWishlist inSmallContainer />
+            </CardBody>
+          </Card>
+
           <LoanVsDCASidebar
             loanAmount={loanAmount}
             onLoanAmountChange={setLoanAmount}

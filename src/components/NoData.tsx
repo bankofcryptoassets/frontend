@@ -1,4 +1,4 @@
-export const NoData = ({ message }: { message?: string }) => {
+export const NoData = ({ message }: { message?: React.ReactNode }) => {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-4">
       <svg
@@ -6,6 +6,7 @@ export const NoData = ({ message }: { message?: string }) => {
         height="41"
         viewBox="0 0 64 41"
         xmlns="http://www.w3.org/2000/svg"
+        className="size-30"
       >
         <title>No data</title>
         <g transform="translate(0 1)" fill="none" fillRule="evenodd">
@@ -25,7 +26,8 @@ export const NoData = ({ message }: { message?: string }) => {
           </g>
         </g>
       </svg>
-      <div className="text-default-600 text-center text-sm">
+
+      <div className="text-default-600 text-center text-lg">
         {message ?? 'No Data'}
       </div>
     </div>

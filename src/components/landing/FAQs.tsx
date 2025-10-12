@@ -1,7 +1,5 @@
 'use client'
-import { Accordion, AccordionItem, Link } from '@heroui/react'
-import NextLink from 'next/link'
-import { IoIosArrowRoundForward } from 'react-icons/io'
+import { Accordion, AccordionItem } from '@heroui/react'
 import { Glow } from './Glow'
 
 export const FAQs = () => {
@@ -20,7 +18,7 @@ export const FAQs = () => {
             No surprises.
           </p>
 
-          <Link
+          {/* <Link
             as={NextLink}
             href="/borrow"
             className="text-foreground group mt-2 w-fit gap-2 leading-tight font-medium"
@@ -30,7 +28,7 @@ export const FAQs = () => {
               size={24}
               className="transition-transform group-hover:translate-x-2"
             />
-          </Link>
+          </Link> */}
         </div>
 
         <div className="w-full max-w-[716px] max-lg:w-full max-lg:max-w-full">
