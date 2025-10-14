@@ -306,7 +306,10 @@ export function LoanVsDCASidebar({
               DCA without Down Payment
             </Checkbox>
 
-            <Tooltip content="DCA without Down Payment" placement="top">
+            <Tooltip
+              content="Calculate DCA without the down payment amount"
+              placement="top"
+            >
               <LuInfo className="text-default-600" size={16} />
             </Tooltip>
           </div>

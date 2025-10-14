@@ -21,7 +21,7 @@ const joinWaitlist = async (email: string): Promise<WaitlistResponse> => {
   return response.data
 }
 
-export const JoinWishlist = ({
+export const JoinWaitlist = ({
   isInHero = false,
   isLenderThemed = false,
   inSmallContainer = false,

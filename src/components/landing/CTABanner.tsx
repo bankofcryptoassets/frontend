@@ -1,5 +1,5 @@
 'use client'
-import { JoinWishlist } from './JoinWishlist'
+import { JoinWaitlist } from './JoinWaitlist'
 import { Button, Tabs } from '@heroui/react'
 import { Tab } from '@heroui/react'
 import { DCA_MINI_APP_URL } from '@/utils/constants'
@@ -81,7 +81,7 @@ export const CTABanner = () => {
                   </p>
                 </div>
 
-                <JoinWishlist />
+                <JoinWaitlist />
               </div>
             </Tab>
           </Tabs>

@@ -15,7 +15,7 @@ export function EMIStats({
 }: EMIStatsProps) {
   return (
     <Card className="border-default-200 border">
-      <CardBody className="flex flex-row flex-wrap items-center justify-between gap-4 p-6">
+      <CardBody className="flex flex-row flex-wrap items-center gap-x-10 gap-y-4 p-6">
         <div>
           <p className="text-default-d mb-1 text-sm font-medium">
             EMI (Monthly)

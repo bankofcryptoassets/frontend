@@ -9,7 +9,7 @@ import InlineSVG from 'react-inlinesvg'
 import { MdRemoveModerator } from 'react-icons/md'
 import { useState } from 'react'
 import { DCA_MINI_APP_URL } from '@/utils/constants'
-import { JoinWishlist } from './JoinWishlist'
+import { JoinWaitlist } from './JoinWaitlist'
 
 export const AboutBitmore = () => {
   const [selected, setSelected] = useState('dca')
@@ -109,7 +109,7 @@ export const AboutBitmore = () => {
                   and pay in monthly installments.
                 </p>
 
-                <JoinWishlist />
+                <JoinWaitlist />
 
                 <Image
                   src="/extras/borrow-page.png"

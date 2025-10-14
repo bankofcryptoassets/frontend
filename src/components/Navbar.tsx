@@ -23,7 +23,7 @@ import {
   Accordion,
   AccordionItem,
 } from '@heroui/react'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Image from 'next/image'
@@ -52,7 +52,6 @@ export const Logo = () => {
 }
 
 export const Navbar = () => {
-  const router = useRouter()
   const pathname = usePathname()
   const isMainApp = pathname !== '/'
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -130,7 +129,6 @@ export const Navbar = () => {
                       href={child.href}
                       onClick={() => {
                         child?.handleClick?.(setSelected)
-                        router.push(child.href)
                       }}
                       target={
                         child.href.startsWith('http') ? '_blank' : undefined
@@ -191,28 +189,28 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
 
-        {!isMainApp && (
-          <NavbarItem className="hidden gap-2 sm:flex">
-            <Button
-              as={NextLink}
-              href={DCA_MINI_APP_URL}
-              target="_blank"
-              color="primary"
-              variant="shadow"
-              className="h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
-              onPress={onMenuItemClick}
-              size="lg"
-            >
-              Launch App
-            </Button>
-          </NavbarItem>
-        )}
+        {/* {!isMainApp && ( */}
+        <NavbarItem className="hidden gap-2 sm:flex">
+          <Button
+            as={NextLink}
+            href={DCA_MINI_APP_URL}
+            target="_blank"
+            color="primary"
+            variant="shadow"
+            className="h-11 rounded-xl border-2 border-[#F6921A] bg-gradient-to-r from-[#F7931A] to-[#C46200] font-bold"
+            onPress={onMenuItemClick}
+            size="lg"
+          >
+            Launch App
+          </Button>
+        </NavbarItem>
+        {/* )} */}
 
-        {isMainApp && (
+        {/* {isMainApp && (
           <NavbarItem className="hidden gap-2 sm:flex">
             <CustomConnectButton />
           </NavbarItem>
-        )}
+        )} */}
       </NavbarContent>
 
       {/* Mobile menu */}

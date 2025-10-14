@@ -7,7 +7,6 @@ import { FaGithub, FaTelegramPlane } from 'react-icons/fa'
 import InlineSVG from 'react-inlinesvg'
 import { DCA_MINI_APP_URL } from '@/utils/constants'
 import { SetSelected, useCalculatorTabs } from '@/hooks/useCalculatorTabs'
-import { useRouter } from 'next/navigation'
 
 const MENU_ITEMS = [
   {
@@ -65,7 +64,6 @@ const SOCIAL_LINKS = [
 
 export const Footer = () => {
   const { setSelected } = useCalculatorTabs()
-  const router = useRouter()
 
   return (
     <footer className="relative z-0" id="footer">
@@ -113,7 +111,6 @@ export const Footer = () => {
                         isDisabled={!link.url}
                         onClick={() => {
                           link?.handleClick?.(setSelected)
-                          router.push(link.url)
                         }}
                       >
                         {link.text}

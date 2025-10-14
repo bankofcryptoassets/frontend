@@ -7,7 +7,7 @@ import { BiSolidWallet } from 'react-icons/bi'
 import { GoGoal } from 'react-icons/go'
 import { LendingChart } from './LendingChart'
 import { useState } from 'react'
-import { JoinWishlist } from './JoinWishlist'
+import { JoinWaitlist } from './JoinWaitlist'
 
 export const BorrowerLender = () => {
   const [selected, setSelected] = useState('borrower')
@@ -68,7 +68,7 @@ export const BorrowerLender = () => {
                   ))}
                 </div>
 
-                <JoinWishlist />
+                <JoinWaitlist />
               </div>
 
               <div className="grid flex-1 place-items-center max-lg:w-full">
@@ -110,7 +110,7 @@ export const BorrowerLender = () => {
                   ))}
                 </div>
 
-                <JoinWishlist isLenderThemed />
+                <JoinWaitlist isLenderThemed />
               </div>
 
               <div className="grid flex-1 place-items-center max-lg:w-full">

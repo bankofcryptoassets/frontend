@@ -23,7 +23,7 @@ export const TELEGRAM_BOT_ID = '7910535529' // @BitMor_Notifier_bot
 
 export const DEFAULT_LOAN_AMOUNT = 100_000
 export const MIN_DATE = '2017-08-17'
-export const MAX_DATE = '2025-05-08'
+export const MAX_DATE = '2025-10-10'
 
 export const OWNERSHIP_CALC_TIME_PERIOD = [
   { value: '6', label: '6 Months', y: 0.5 },

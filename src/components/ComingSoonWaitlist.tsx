@@ -1,6 +1,6 @@
 'use client'
 import { Card } from '@heroui/react'
-import { JoinWishlist } from './landing/JoinWishlist'
+import { JoinWaitlist } from './landing/JoinWaitlist'
 import { NoData } from './NoData'
 
 export const ComingSoonWaitlist = ({
@@ -30,14 +30,14 @@ export const ComingSoonWaitlist = ({
               <>
                 Coming soon
                 <br />
-                Join the waitlist to get notified when we launch.
+                Join the waitlist to get notified about loans
               </>
             }
           />
         </div>
 
         <div className="flex items-center justify-center">
-          <JoinWishlist />
+          <JoinWaitlist />
         </div>
       </Card>
     </div>

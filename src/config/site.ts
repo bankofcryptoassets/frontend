@@ -46,13 +46,13 @@ export const siteConfig = {
   ],
   navItemMainApp: [
     { id: 'borrow', label: 'Borrow $BTC', href: '/borrow', children: [] },
-    { id: 'invest', label: 'Invest', href: '/invest', children: [] },
-    {
-      id: 'portfolio',
-      label: 'My Portfolio',
-      href: '/portfolio',
-      children: [],
-    },
+    // { id: 'invest', label: 'Invest', href: '/invest', children: [] },
+    // {
+    //   id: 'portfolio',
+    //   label: 'My Portfolio',
+    //   href: '/portfolio',
+    //   children: [],
+    // },
     {
       id: 'analytics',
       label: 'Loan vs DCA Calculator',
