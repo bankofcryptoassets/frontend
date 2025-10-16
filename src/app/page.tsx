@@ -7,6 +7,7 @@ import {
   Testimonials,
   FAQs,
   CTABanner,
+  Roadmap,
 } from '@/components/landing'
 import { SmoothScroll } from '@/components/SmoothScroll'
 
@@ -17,6 +18,7 @@ export default function Home() {
       <AboutBitmore />
       <JustLikeMortgage />
       <BitcoinJourney />
+      <Roadmap />
       <Testimonials />
       <FAQs />
       <CTABanner />
