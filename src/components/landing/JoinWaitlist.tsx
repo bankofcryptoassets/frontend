@@ -137,7 +137,7 @@ export const JoinWaitlist = ({
           isIconOnly
           onPress={() => {
             trackEvent('Join Waitlist via Google')
-            router.push('https://backend.xefi.ai/api/auth/google')
+            router.push('https://dcaapp.xefi.ai/api/auth/google')
           }}
         >
           <Image

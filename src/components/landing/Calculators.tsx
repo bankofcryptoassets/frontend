@@ -16,11 +16,14 @@ export const Calculators = () => {
   const { selected, setSelected } = useCalculatorTabs()
   const { setSelected: setCTASelected } = useCTATabs()
   const { data: bitcoinPrice } = useQuery({
-    queryKey: ['/initialisation/getbtcprice'],
-    queryFn: () => axios.get<BitcoinPriceData>(`/initialisation/getbtcprice`),
+    queryKey: ['/misc/btcExchangeRate'],
+    queryFn: () =>
+      axios.get<BitcoinPriceData>(`/misc/btcExchangeRate
+`),
     staleTime: Infinity,
   })
-  const btcPrice = bitcoinPrice?.data?.data?.btcPrice || DEFAULT_BITCOIN_PRICE
+  const btcPrice =
+    bitcoinPrice?.data?.data?.convertedPrice || DEFAULT_BITCOIN_PRICE
 
   return (
     <Card
